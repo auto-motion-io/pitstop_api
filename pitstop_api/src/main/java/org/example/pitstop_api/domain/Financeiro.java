@@ -1,7 +1,6 @@
-package org.example.pitstop_api.Models;
+package org.example.pitstop_api.domain;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Financeiro {
     private String tipo;

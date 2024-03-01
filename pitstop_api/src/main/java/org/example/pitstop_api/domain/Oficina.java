@@ -1,4 +1,4 @@
-package org.example.pitstop_api.Models;
+package org.example.pitstop_api.domain;
 
 public class Oficina {
     private String nome;
