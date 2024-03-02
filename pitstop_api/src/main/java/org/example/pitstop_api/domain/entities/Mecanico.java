@@ -1,30 +1,27 @@
-package org.example.pitstop_api.domain;
+package org.example.pitstop_api.domain.entities;
 
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+
+@Table(name = "Pitstop_Mecanico")
+@Entity(name = "Mecanico")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Mecanico {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idMecanico;
+    @NotNull
     private String nome;
     private String telefone;
 
-    public Mecanico(String nome, String telefone) {
-        this.nome = nome;
-        this.telefone = telefone;
-    }
+    @OneToOne
+    @JoinColumn(name = "fkOficina") @NotNull
+    private Oficina oficinaMecanico;
 
-    public Mecanico() {
-    }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
 }

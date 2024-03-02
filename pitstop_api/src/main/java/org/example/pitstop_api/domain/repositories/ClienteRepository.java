@@ -1,10 +1,10 @@
-package org.example.pitstop_api.repositories;
+package org.example.pitstop_api.domain.repositories;
 
-import org.example.pitstop_api.domain.Cliente;
+import org.example.pitstop_api.domain.entities.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface ClienteRepository extends JpaRepository<Cliente,Long> {
+public interface ClienteRepository extends JpaRepository<Cliente,Integer> {
 
 
     @Query("select u from Cliente u where u.email = ?1")

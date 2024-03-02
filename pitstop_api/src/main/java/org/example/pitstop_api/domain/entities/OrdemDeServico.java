@@ -1,62 +1,33 @@
-package org.example.pitstop_api.domain;
+package org.example.pitstop_api.domain.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.util.Date;
 
+@Table(name = "Pitstop_OrdemDeServico")
+@Entity(name = "OrdemDeServico")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class OrdemDeServico {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idOrdem;
+    @NotNull
     private Date dataInicio;
     private Date dataFim;
     private String descricao;
     private String status;
-    private double valorTotal;
+    private Double valorTotal;
 
-    public OrdemDeServico(Date dataInicio, Date dataFim, String descricao, String status, double valorTotal) {
-        this.dataInicio = dataInicio;
-        this.dataFim = dataFim;
-        this.descricao = descricao;
-        this.status = status;
-        this.valorTotal = valorTotal;
-    }
 
-    public OrdemDeServico() {
-    }
-
-    public Date getDataInicio() {
-        return dataInicio;
-    }
-
-    public void setDataInicio(Date dataInicio) {
-        this.dataInicio = dataInicio;
-    }
-
-    public Date getDataFim() {
-        return dataFim;
-    }
-
-    public void setDataFim(Date dataFim) {
-        this.dataFim = dataFim;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public double getValorTotal() {
-        return valorTotal;
-    }
-
-    public void setValorTotal(double valorTotal) {
-        this.valorTotal = valorTotal;
-    }
+    @OneToOne @JoinColumn(name = "fkOficina") @NotNull
+    private Oficina oficina;
+    @OneToOne @JoinColumn(name = "fkVeiculo") @NotNull
+    private Veiculo veiculo;
+    @OneToOne @JoinColumn(name = "fkMecanico")
+    private Mecanico mecanico;
 }

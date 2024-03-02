@@ -1,10 +1,9 @@
-package org.example.pitstop_api.controllers;
+package org.example.pitstop_api.application.controllers;
 
 
-import jakarta.validation.constraints.Null;
-import org.example.pitstop_api.domain.Cliente;
-import org.example.pitstop_api.dto.RequestClienteDTO;
-import org.example.pitstop_api.repositories.ClienteRepository;
+import org.example.pitstop_api.domain.entities.Cliente;
+import org.example.pitstop_api.application.dtos.RequestClienteDTO;
+import org.example.pitstop_api.domain.repositories.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,11 +16,11 @@ import java.util.Optional;
 @RequestMapping("/clientes")
 public class ClienteController {
     @Autowired
-    private ClienteRepository repository;
+    private ClienteRepository clientRepository;
 
     @GetMapping()
     public ResponseEntity getAllClients(){
-        List<Cliente> clientes = repository.findAll();
+        List<Cliente> clientes = clientRepository.findAll();
         if(clientes.isEmpty())return ResponseEntity.status(204).body("Nenhum cliente encontrado");
         return ResponseEntity.ok(clientes);
     }
@@ -29,21 +28,21 @@ public class ClienteController {
     @GetMapping("/getByEmail")
     public ResponseEntity getClientLogin(@RequestParam String email){
         System.out.println(email);
-        Cliente cliente = repository.findByEmail(email);
+        Cliente cliente = clientRepository.findByEmail(email);
         return cliente == null? ResponseEntity.status(204).build() : ResponseEntity.ok(cliente);
     }
     @PostMapping
     public ResponseEntity postClient(@RequestBody @Validated RequestClienteDTO data){
-        repository.save( new Cliente(data));
+        clientRepository.save( new Cliente(data));
         return ResponseEntity.status(201).build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteClient(@PathVariable Long id){
-        Optional<Cliente> client = repository.findById(id);
+    public ResponseEntity<String> deleteClient(@PathVariable Integer id){
+        Optional<Cliente> client = clientRepository.findById(id);
 
         if(client.isPresent()){
-            repository.delete(client.get());
+            clientRepository.delete(client.get());
             return ResponseEntity.status(200).body("Cliente deletado");
         }
             return ResponseEntity.status(404).body("Cliente não encontrado");

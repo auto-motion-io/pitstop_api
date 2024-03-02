@@ -1,62 +1,29 @@
-package org.example.pitstop_api.domain;
+package org.example.pitstop_api.domain.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
+
+@Table(name = "Pitstop_Tarefa")
+@Entity(name = "Tarefa")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Tarefa {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idTarefa;
     private String descricao;
     private LocalDate dataCriacao;
     private LocalDate dataConclusao;
     private String prioridade;
     private String status;
 
-    public Tarefa(String descricao, LocalDate dataCriacao, LocalDate dataConclusao, String prioridade, String status) {
-        this.descricao = descricao;
-        this.dataCriacao = dataCriacao;
-        this.dataConclusao = dataConclusao;
-        this.prioridade = prioridade;
-        this.status = status;
-    }
-
-    public Tarefa() {
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public LocalDate getDataCriacao() {
-        return dataCriacao;
-    }
-
-    public void setDataCriacao(LocalDate dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
-
-    public LocalDate getDataConclusao() {
-        return dataConclusao;
-    }
-
-    public void setDataConclusao(LocalDate dataConclusao) {
-        this.dataConclusao = dataConclusao;
-    }
-
-    public String getPrioridade() {
-        return prioridade;
-    }
-
-    public void setPrioridade(String prioridade) {
-        this.prioridade = prioridade;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    @OneToOne @JoinColumn(name = "fkOficina") @NotNull
+    private Oficina oficina;
 }

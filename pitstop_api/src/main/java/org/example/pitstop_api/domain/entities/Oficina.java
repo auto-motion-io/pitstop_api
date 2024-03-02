@@ -1,50 +1,24 @@
-package org.example.pitstop_api.domain;
+package org.example.pitstop_api.domain.entities;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+
+import java.util.List;
+
+@Table(name = "Pitstop_Oficina")
+@Entity(name = "Oficina")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Oficina {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idOficina;
+    @NotNull
     private String nome;
     private String cep;
-    private int numero;
+    private String numero;
     private String complemento;
-
-    public Oficina(String nome, String cep, int numero, String complemento) {
-        this.nome = nome;
-        this.cep = cep;
-        this.numero = numero;
-        this.complemento = complemento;
-    }
-
-    public Oficina() {
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
-
-    public int getNumero() {
-        return numero;
-    }
-
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
-
-    public String getComplemento() {
-        return complemento;
-    }
-
-    public void setComplemento(String complemento) {
-        this.complemento = complemento;
-    }
 }
