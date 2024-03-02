@@ -1,4 +1,4 @@
-package org.example.pitstop_api.dto;
+package org.example.pitstop_api.application.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
