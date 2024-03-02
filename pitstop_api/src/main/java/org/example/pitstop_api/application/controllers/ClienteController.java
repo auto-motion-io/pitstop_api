@@ -1,6 +1,7 @@
 package org.example.pitstop_api.application.controllers;
 
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.example.pitstop_api.domain.entities.Cliente;
 import org.example.pitstop_api.application.dtos.RequestClienteDTO;
 import org.example.pitstop_api.domain.repositories.ClienteRepository;
@@ -24,7 +25,7 @@ public class ClienteController {
         if(clientes.isEmpty())return ResponseEntity.status(204).body("Nenhum cliente encontrado");
         return ResponseEntity.ok(clientes);
     }
-
+    @Operation(description = "A partir de um email, caso esteja cadastrado, retorna um, caso não exista, retorna 204 No content")
     @GetMapping("/getByEmail")
     public ResponseEntity getClientLogin(@RequestParam String email){
         System.out.println(email);
@@ -32,7 +33,7 @@ public class ClienteController {
         return cliente == null? ResponseEntity.status(204).build() : ResponseEntity.ok(cliente);
     }
     @PostMapping
-    public ResponseEntity postClient(@RequestBody @Validated RequestClienteDTO data){
+    public ResponseEntity postClient(@RequestBody RequestClienteDTO data){
         clientRepository.save( new Cliente(data));
         return ResponseEntity.status(201).build();
     }
