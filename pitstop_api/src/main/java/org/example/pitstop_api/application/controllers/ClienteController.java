@@ -2,12 +2,13 @@ package org.example.pitstop_api.application.controllers;
 
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.example.pitstop_api.domain.entities.Cliente;
 import org.example.pitstop_api.application.dtos.RequestClienteDTO;
-import org.example.pitstop_api.domain.repositories.ClienteRepository;
+import org.example.pitstop_api.domain.repositories.IClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.Optional;
 @RequestMapping("/clientes")
 public class ClienteController {
     @Autowired
-    private ClienteRepository clientRepository;
+    private IClienteRepository clientRepository;
 
     @GetMapping()
     public ResponseEntity getAllClients(){
