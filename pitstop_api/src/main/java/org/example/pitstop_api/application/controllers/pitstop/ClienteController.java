@@ -1,4 +1,4 @@
-package org.example.pitstop_api.application.controllers;
+package org.example.pitstop_api.application.controllers.pitstop;
 
 
 import io.swagger.v3.oas.annotations.Operation;

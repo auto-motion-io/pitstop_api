@@ -2,8 +2,15 @@ package org.example.pitstop_api.domain.entities.buscar;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import org.example.pitstop_api.domain.entities.Oficina;
-
+@Table(name = "Buscar_Avaliacao")
+@Entity(name = "Avaliacao")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Avaliacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

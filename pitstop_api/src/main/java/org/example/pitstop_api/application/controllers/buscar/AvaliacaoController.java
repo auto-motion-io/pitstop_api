@@ -1,9 +1,9 @@
-package org.example.pitstop_api.application.controllers;
+package org.example.pitstop_api.application.controllers.buscar;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/financeiro")
-public class FinanceiroController {
+@RequestMapping("/avaliacoes")
+public class AvaliacaoController {
 }

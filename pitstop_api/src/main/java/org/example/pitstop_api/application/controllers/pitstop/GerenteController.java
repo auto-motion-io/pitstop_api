@@ -1,9 +1,9 @@
-package org.example.pitstop_api.application.controllers;
+package org.example.pitstop_api.application.controllers.pitstop;
 
 import org.example.pitstop_api.application.dtos.GerenteDTO;
 import org.example.pitstop_api.domain.entities.Gerente;
 import org.example.pitstop_api.domain.entities.Oficina;
-import org.example.pitstop_api.domain.repositories.IGerenteRepository;
+import org.example.pitstop_api.domain.repositories.pitstop.IGerenteRepository;
 import org.example.pitstop_api.domain.repositories.IOficinaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

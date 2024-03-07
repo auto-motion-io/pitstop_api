@@ -1,4 +1,4 @@
-package org.example.pitstop_api.domain.repositories;
+package org.example.pitstop_api.domain.repositories.pitstop;
 
 import org.example.pitstop_api.domain.entities.pitstop.Gerente;
 import org.springframework.data.jpa.repository.JpaRepository;
