@@ -1,6 +1,6 @@
 package org.example.pitstop_api.domain.repositories;
 
-import org.example.pitstop_api.domain.entities.Cliente;
+import org.example.pitstop_api.domain.entities.pitstop.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

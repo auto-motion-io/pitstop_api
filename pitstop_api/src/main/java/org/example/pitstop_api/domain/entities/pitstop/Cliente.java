@@ -1,4 +1,4 @@
-package org.example.pitstop_api.domain.entities;
+package org.example.pitstop_api.domain.entities.pitstop;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,13 +17,11 @@ public class Cliente {
     private String nome;
     private String telefone;
     private String email;
-    private String endereco;
 
     public Cliente(RequestClienteDTO clienteDTO) {
         this.nome = clienteDTO.nome();
         this.telefone = clienteDTO.telefone();
         this.email = clienteDTO.email();
-        this.endereco = clienteDTO.endereco();
     }
 
 }

@@ -1,11 +1,11 @@
-package org.example.pitstop_api.domain.entities;
+package org.example.pitstop_api.domain.entities.pitstop;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.example.pitstop_api.domain.entities.Oficina;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 
 @Table(name = "Pitstop_Tarefa")

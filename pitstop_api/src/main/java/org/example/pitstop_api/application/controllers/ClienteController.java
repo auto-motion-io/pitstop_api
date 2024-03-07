@@ -2,12 +2,11 @@ package org.example.pitstop_api.application.controllers;
 
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.example.pitstop_api.domain.entities.Cliente;
+import org.example.pitstop_api.domain.entities.pitstop.Cliente;
 import org.example.pitstop_api.application.dtos.RequestClienteDTO;
 import org.example.pitstop_api.domain.repositories.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

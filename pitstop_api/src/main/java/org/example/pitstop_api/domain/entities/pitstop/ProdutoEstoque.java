@@ -1,8 +1,9 @@
-package org.example.pitstop_api.domain.entities;
+package org.example.pitstop_api.domain.entities.pitstop;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.example.pitstop_api.domain.entities.Oficina;
 
 @Table(name = "Pitstop_ProdutoEstoque")
 @Entity(name = "ProdutoEstoque")
@@ -20,6 +21,7 @@ public class ProdutoEstoque {
     private String localizacao;
     private Double valorCompra;
     private Double valorVenda;
+    private Double valorComMaoObra;
 
     @OneToOne @JoinColumn(name = "fkOficina") @NotNull
     private Oficina oficina;

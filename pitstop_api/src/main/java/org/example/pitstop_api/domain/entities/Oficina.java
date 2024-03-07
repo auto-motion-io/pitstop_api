@@ -18,7 +18,11 @@ public class Oficina {
     private Integer idOficina;
     @NotNull
     private String nome;
+    @NotNull
+    private String cnpj;
+    @NotNull
     private String cep;
+    @NotNull
     private String numero;
     private String complemento;
 }
