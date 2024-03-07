@@ -1,5 +1,6 @@
 package org.example.pitstop_api.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -12,7 +13,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+
 public class Oficina {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idOficina;
@@ -25,4 +26,19 @@ public class Oficina {
     @NotNull
     private String numero;
     private String complemento;
+
+    @OneToMany(mappedBy = "oficina") @JsonIgnore
+    private List<Gerente> gerentes;
+
+
+    @Override
+    public String toString() {
+        return "Oficina{" +
+                "idOficina=" + idOficina +
+                ", nome='" + nome + '\'' +
+                ", cep='" + cep + '\'' +
+                ", numero='" + numero + '\'' +
+                ", complemento='" + complemento + '\'' +
+                '}';
+    }
 }
