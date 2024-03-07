@@ -26,11 +26,7 @@ public class Oficina {
     @NotNull
     private String numero;
     private String complemento;
-
-    @OneToMany(mappedBy = "oficina") @JsonIgnore
-    private List<Gerente> gerentes;
-
-
+    
     @Override
     public String toString() {
         return "Oficina{" +
