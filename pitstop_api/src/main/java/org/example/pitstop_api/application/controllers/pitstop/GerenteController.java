@@ -1,8 +1,9 @@
 package org.example.pitstop_api.application.controllers.pitstop;
 
 import org.example.pitstop_api.application.dtos.GerenteDTO;
-import org.example.pitstop_api.domain.entities.Gerente;
+
 import org.example.pitstop_api.domain.entities.Oficina;
+import org.example.pitstop_api.domain.entities.pitstop.Gerente;
 import org.example.pitstop_api.domain.repositories.pitstop.IGerenteRepository;
 import org.example.pitstop_api.domain.repositories.IOficinaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,17 +36,18 @@ public class GerenteController {
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity cadastrar(@RequestBody GerenteDTO gerenteDTO){
-
+    public ResponseEntity<Gerente> cadastrar(@RequestBody GerenteDTO gerenteDTO){
         int getByEmailStatus = getByEmail(gerenteDTO.email()).getStatusCode().value();
         Oficina oficina = getOficina(gerenteDTO.fkOficina());
-        if(oficina==null)return ResponseEntity.badRequest().body("Oficina inválida");
+        if(oficina==null){
+            return ResponseEntity.badRequest().build();
+        }
         if(getByEmailStatus == 204){
             Gerente gerente = new Gerente(gerenteDTO,oficina);
             gerenteRepository.save(gerente);
-            return ResponseEntity.status(201).build();
+            return ResponseEntity.status(201).body(gerente);
       }else if (getByEmailStatus == 200){
-            return  ResponseEntity.status(400).body("Gerente com email já cadastrado");
+            return  ResponseEntity.status(400).build();
         }
         return ResponseEntity.status(400).build();
     }

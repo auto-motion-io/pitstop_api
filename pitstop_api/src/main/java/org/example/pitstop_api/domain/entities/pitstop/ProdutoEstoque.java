@@ -23,6 +23,6 @@ public class ProdutoEstoque {
     private Double valorVenda;
     private Double valorComMaoObra;
 
-    @OneToOne @JoinColumn(name = "fkOficina") @NotNull
+    @ManyToOne @JoinColumn(name = "fkOficina") @NotNull
     private Oficina oficina;
 }

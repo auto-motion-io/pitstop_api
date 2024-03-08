@@ -24,6 +24,6 @@ public class Tarefa {
     private String prioridade;
     private String status;
 
-    @OneToOne @JoinColumn(name = "fkOficina") @NotNull
+    @ManyToOne @JoinColumn(name = "fkOficina") @NotNull
     private Oficina oficina;
 }
