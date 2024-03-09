@@ -46,6 +46,7 @@ public class OficinaService {
     public void deletarOficina(Integer id) {
         oficinaRepository.findById(id).orElseThrow(()->new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + id));
         oficinaRepository.deleteById(id);
+
     }
 
 

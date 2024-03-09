@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.example.pitstop_api.domain.entities.pitstop.Gerente;
 
 import java.util.List;
 
@@ -27,4 +28,7 @@ public class Oficina {
     @NotNull
     private String numero;
     private String complemento;
+
+    @OneToOne(mappedBy = "oficina", cascade = CascadeType.ALL) @JsonIgnore
+    private Gerente gerente;
 }

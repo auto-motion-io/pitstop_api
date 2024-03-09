@@ -1,8 +1,10 @@
 package org.example.pitstop_api.application.services;
 
 
+import jakarta.transaction.Transactional;
 import org.example.pitstop_api.application.dtos.CreateGerenteDTO;
 import org.example.pitstop_api.application.dtos.LoginGerenteRequest;
+import org.example.pitstop_api.application.dtos.UpdateGerenteDTO;
 import org.example.pitstop_api.application.exception.DadoUnicoDuplicadoException;
 import org.example.pitstop_api.application.exception.RecursoNaoEncontradoException;
 import org.example.pitstop_api.application.exception.SenhaIncorretaException;
@@ -30,7 +32,7 @@ public class GerenteService {
         return gerenteRepository.findAll();
     }
 
-    public Gerente cadastrarGerente(CreateGerenteDTO novoGerenteDTO) {
+    public Gerente cadastrar(CreateGerenteDTO novoGerenteDTO) {
         Oficina oficina = pegarOficinaValida(novoGerenteDTO.fkOficina());
         verificarEmailDuplicado(novoGerenteDTO.email());
         oficinaComGerenteCadastrado(oficina);
@@ -45,6 +47,15 @@ public class GerenteService {
         if (gerente == null) throw new RecursoNaoEncontradoException("Usuário não encontrado com email: " + request.email());
         if (!(gerente.getSenha().equals(request.senha())))
             throw new SenhaIncorretaException("Usuário não autorizado, senha incorreta");
+        return gerente;
+    }
+
+    @Transactional
+    public Gerente atualizar(Integer id,UpdateGerenteDTO updateGerenteDTO){
+        Gerente gerente = gerenteRepository.findById(id).orElseThrow(()-> new RecursoNaoEncontradoException("Gerente não encontrado com o id: " + id));
+        gerente.setNome(updateGerenteDTO.nome());
+        gerente.setSobrenome(updateGerenteDTO.sobrenome());
+        gerenteRepository.save(gerente);
         return gerente;
     }
 

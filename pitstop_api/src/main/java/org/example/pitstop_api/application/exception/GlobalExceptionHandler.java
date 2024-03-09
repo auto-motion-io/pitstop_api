@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.sql.SQLException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -21,6 +23,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SenhaIncorretaException.class)
     public ResponseEntity<String> handleSenhaIncorretaException(SenhaIncorretaException ex){
         return ResponseEntity.status(401).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(SQLException.class)
+    public ResponseEntity<String> handleSQLException(SQLException ex){
+        return ResponseEntity.status(500).body("Operação não concluída SQLException: \n" +
+                ex.getMessage());
     }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGlobalException(Exception ex) {
