@@ -17,7 +17,7 @@ import java.util.Date;
 public class OrdemDeServico {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idOrdem;
-    @NotNull
+    private String token;
     private Date dataInicio;
     private Date dataFim;
     private String descricao;

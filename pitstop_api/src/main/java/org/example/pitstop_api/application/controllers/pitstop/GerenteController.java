@@ -1,63 +1,39 @@
 package org.example.pitstop_api.application.controllers.pitstop;
 
-import org.example.pitstop_api.application.dtos.GerenteDTO;
 
-import org.example.pitstop_api.domain.entities.Oficina;
+import jakarta.validation.Valid;
+import org.example.pitstop_api.application.dtos.CreateGerenteDTO;
+import org.example.pitstop_api.application.dtos.LoginGerenteRequest;
+import org.example.pitstop_api.application.services.GerenteService;
 import org.example.pitstop_api.domain.entities.pitstop.Gerente;
-import org.example.pitstop_api.domain.repositories.pitstop.IGerenteRepository;
-import org.example.pitstop_api.domain.repositories.IOficinaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/gerentes")
 public class GerenteController {
-    @Autowired
-    IGerenteRepository gerenteRepository;
 
     @Autowired
-    IOficinaRepository oficinaRepository;
+    private GerenteService gerenteService;
+
+
     @GetMapping()
-    public ResponseEntity getAll(){
-        List<Gerente> gerentes = gerenteRepository.findAll();
-        if(gerentes.isEmpty()) return ResponseEntity.status(204).body("Nenhum gerente encontrado");
-        return ResponseEntity.ok().body(gerentes);
+    public ResponseEntity<List<Gerente>> listarGerentes(){
+        return ResponseEntity.status(200).body(gerenteService.listarGerentes());
     }
 
-    public ResponseEntity getByEmail(String email){
-        Gerente gerente= gerenteRepository.findGerenteByEmail(email);
-        if(gerente == null) return ResponseEntity.status(204).build();
-        return ResponseEntity.status(200).build();
-
+    @PostMapping("/login")
+    public ResponseEntity<Gerente> login(@RequestBody @Valid LoginGerenteRequest request){
+        Gerente gerente = gerenteService.login(request);
+        return ResponseEntity.status(200).body(gerente);
     }
 
-    @PostMapping("/cadastrar")
-    public ResponseEntity<Gerente> cadastrar(@RequestBody GerenteDTO gerenteDTO){
-        int getByEmailStatus = getByEmail(gerenteDTO.email()).getStatusCode().value();
-        Oficina oficina = getOficina(gerenteDTO.fkOficina());
-        if(oficina==null){
-            return ResponseEntity.badRequest().build();
-        }
-        if(getByEmailStatus == 204){
-            Gerente gerente = new Gerente(gerenteDTO,oficina);
-            gerenteRepository.save(gerente);
-            return ResponseEntity.status(201).body(gerente);
-      }else if (getByEmailStatus == 200){
-            return  ResponseEntity.status(400).build();
-        }
-        return ResponseEntity.status(400).build();
-    }
-
-
-    public Oficina getOficina(Integer idOficina){
-        Optional<Oficina> optionalOficina = oficinaRepository.findById(idOficina);
-        if(optionalOficina.isPresent()){
-            return optionalOficina.get();
-        }
-        return null;
+    @PostMapping()
+    public ResponseEntity<Gerente> cadastrarGerente(@RequestBody CreateGerenteDTO createGerenteDTO){
+        Gerente gerente = gerenteService.cadastrarGerente(createGerenteDTO);
+        return ResponseEntity.status(201).body(gerente);
     }
 }

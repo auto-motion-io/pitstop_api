@@ -54,12 +54,20 @@ public class OficinaController {
         return ResponseEntity.ok(oficina);
     }
 
+
+    @Operation(summary = "Cadastra uma oficina")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Cadastra e retorna a oficina"),
+            @ApiResponse(responseCode = "409", description = "CNPJ Conflitante"),
+            @ApiResponse(responseCode = "500", description = "back deixou passar")
+    })
     @PostMapping
     public ResponseEntity<Oficina> criarOficina(@RequestBody Oficina oficina) {
         Oficina novaOficina = oficinaService.criarOficina(oficina);
         return ResponseEntity.status(HttpStatus.CREATED).body(novaOficina);
     }
 
+    @Operation(summary = "Atualiza os dados de uma oficina")
     @PutMapping("/{id}")
     public ResponseEntity<Oficina> atualizarOficina(@PathVariable Integer id, @Valid @RequestBody UpdateOficinaDTO oficinaAtualizada) {
         Oficina oficina = oficinaService.atualizarOficina(id, oficinaAtualizada);

@@ -27,15 +27,4 @@ public class Oficina {
     @NotNull
     private String numero;
     private String complemento;
-
-    @Override
-    public String toString() {
-        return "Oficina{" +
-                "idOficina=" + idOficina +
-                ", nome='" + nome + '\'' +
-                ", cep='" + cep + '\'' +
-                ", numero='" + numero + '\'' +
-                ", complemento='" + complemento + '\'' +
-                '}';
-    }
 }

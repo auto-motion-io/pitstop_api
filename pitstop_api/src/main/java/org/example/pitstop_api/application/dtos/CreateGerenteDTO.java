@@ -2,9 +2,8 @@ package org.example.pitstop_api.application.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.example.pitstop_api.domain.entities.Oficina;
 
-public record GerenteDTO(
+public record CreateGerenteDTO(
         @NotNull @NotBlank
         String email,
         @NotNull @NotBlank

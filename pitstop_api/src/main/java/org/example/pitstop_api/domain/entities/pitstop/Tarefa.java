@@ -19,8 +19,7 @@ public class Tarefa {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idTarefa;
     private String descricao;
-    private LocalDate dataCriacao;
-    private LocalDate dataConclusao;
+    private LocalDate dtDeadline;
     private String prioridade;
     private String status;
 

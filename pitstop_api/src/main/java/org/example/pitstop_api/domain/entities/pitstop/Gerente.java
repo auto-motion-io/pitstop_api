@@ -3,7 +3,7 @@ package org.example.pitstop_api.domain.entities.pitstop;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.example.pitstop_api.application.dtos.GerenteDTO;
+import org.example.pitstop_api.application.dtos.CreateGerenteDTO;
 import org.example.pitstop_api.domain.entities.Oficina;
 
 @Table(name = "Pitstop_Gerente")
@@ -29,6 +29,11 @@ public class Gerente {
     private Oficina oficina;
 
 
-    public Gerente(GerenteDTO gerenteDTO, Oficina oficina) {
+    public Gerente(CreateGerenteDTO createGerenteDTO, Oficina oficina) {
+        this.nome = createGerenteDTO.nome();
+        this.sobrenome = createGerenteDTO.sobrenome();
+        this.email = createGerenteDTO.email();
+        this.senha = createGerenteDTO.senha();
+        this.oficina = oficina;
     }
 }
