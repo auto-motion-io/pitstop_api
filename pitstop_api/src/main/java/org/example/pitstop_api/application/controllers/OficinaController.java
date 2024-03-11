@@ -76,8 +76,8 @@ public class OficinaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarOficina(@PathVariable Integer id) {
-        return ResponseEntity.status(501).build();
-        //oficinaService.deletarOficina(id);
-        //return ResponseEntity.noContent().build();
+       // return ResponseEntity.status(501).build();
+        oficinaService.deletarOficina(id);
+        return ResponseEntity.noContent().build();
     }
 }

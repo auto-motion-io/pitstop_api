@@ -16,14 +16,13 @@ import org.example.pitstop_api.domain.entities.Oficina;
 public class Gerente {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idGerente;
-
     private String nome;
-
     private String sobrenome;
-
     private String email;
-
     private String senha;
+
+    @Column(columnDefinition = "varchar(255) default 'PENDENTE'", nullable = true)
+    private String status;
 
     @OneToOne @JoinColumn(name = "fkOficina") @NotNull
     private Oficina oficina;
@@ -33,7 +32,8 @@ public class Gerente {
         this.nome = createGerenteDTO.nome();
         this.sobrenome = createGerenteDTO.sobrenome();
         this.email = createGerenteDTO.email();
-        this.senha = createGerenteDTO.senha();
+        this.senha = null;
+        this.status = "PENDENTE";
         this.oficina = oficina;
     }
 }

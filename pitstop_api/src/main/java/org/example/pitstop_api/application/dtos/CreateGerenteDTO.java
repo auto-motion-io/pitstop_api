@@ -7,8 +7,6 @@ public record CreateGerenteDTO(
         @NotNull @NotBlank
         String email,
         @NotNull @NotBlank
-        String senha,
-        @NotNull @NotBlank
         String nome,
         @NotNull @NotBlank
         String sobrenome,

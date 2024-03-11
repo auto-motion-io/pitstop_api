@@ -5,9 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record UpdateSenhaGerenteDTO(
         @NotNull @NotBlank
-        String nome,
-        @NotNull @NotBlank
-        String sobrenome
+        String senha
 ) {
 }
 
