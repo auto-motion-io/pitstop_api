@@ -3,6 +3,7 @@ package org.example.pitstop_api.application.exception;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -28,6 +29,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SQLException.class)
     public ResponseEntity<String> handleSQLException(SQLException ex){
         return ResponseEntity.status(500).body("Operação não concluída SQLException: \n" +
+                ex.getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex){
+        return ResponseEntity.status(406).body("Falha nas validações dos valores recebidos: \n" +
                 ex.getMessage());
     }
     @ExceptionHandler(Exception.class)

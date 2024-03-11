@@ -2,6 +2,7 @@ package org.example.pitstop_api.application.services;
 
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.example.pitstop_api.application.dtos.CreateGerenteDTO;
 import org.example.pitstop_api.application.dtos.LoginGerenteRequest;
 import org.example.pitstop_api.application.dtos.UpdateGerenteDTO;
@@ -42,7 +43,7 @@ public class GerenteService {
         return gerente;
     }
 
-    public Gerente login(LoginGerenteRequest request) {
+    public Gerente login(@Valid LoginGerenteRequest request) {
         Gerente gerente = gerenteRepository.findGerenteByEmail(request.email());
         if (gerente == null) throw new RecursoNaoEncontradoException("Usuário não encontrado com email: " + request.email());
         if (!(request.senha().equals(gerente.getSenha())))
