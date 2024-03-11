@@ -1,19 +1,43 @@
 package org.example.pitstop_api.application.controllers.pitstop;
 
 
-import io.swagger.v3.oas.annotations.Operation;
+import org.example.pitstop_api.application.dtos.CreateClienteDTO;
+import org.example.pitstop_api.application.services.ClienteService;
 import org.example.pitstop_api.domain.entities.pitstop.Cliente;
-import org.example.pitstop_api.application.dtos.RequestClienteDTO;
-import org.example.pitstop_api.domain.repositories.pitstop.IClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/clientes")
 public class ClienteController {
+    @Autowired
+    private ClienteService clienteService;
 
+    @GetMapping()
+    public ResponseEntity<List<Cliente>> listarTodos(){
+        return ResponseEntity.status(200).body(clienteService.listarClientes());
+    }
+    @PostMapping()
+    public ResponseEntity<Cliente> cadastrar(@RequestBody CreateClienteDTO novoCliente){
+        Cliente cliente = clienteService.cadastrar(novoCliente);
+        return ResponseEntity.status(201).body(cliente);
+    }
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deletar(@PathVariable int id){
+        clienteService.deletar(id);
+        return ResponseEntity.status(204).build();
+    }
+    @PutMapping("{id}")
+    public ResponseEntity<Cliente> atualizar(@PathVariable int id, @RequestBody CreateClienteDTO novoCliente){
+        Cliente cliente = clienteService.atualizar(id,novoCliente);
+        return ResponseEntity.status(200).body(cliente);
+    }
+    @GetMapping("{id}")
+    public ResponseEntity<Cliente> buscarPorId(@PathVariable int id){
+        Cliente cliente = clienteService.buscarPorId(id);
+        return ResponseEntity.status(200).body(cliente);
+    }
 }

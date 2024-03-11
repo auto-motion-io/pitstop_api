@@ -2,7 +2,7 @@ package org.example.pitstop_api.domain.entities.pitstop;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.pitstop_api.application.dtos.RequestClienteDTO;
+import org.example.pitstop_api.application.dtos.CreateClienteDTO;
 
 @Table(name = "Pitstop_Cliente")
 @Entity(name = "Cliente")
@@ -17,11 +17,6 @@ public class Cliente {
     private String nome;
     private String telefone;
     private String email;
-
-    public Cliente(RequestClienteDTO clienteDTO) {
-        this.nome = clienteDTO.nome();
-        this.telefone = clienteDTO.telefone();
-        this.email = clienteDTO.email();
+    public Cliente(CreateClienteDTO novoClienteDTO) {
     }
-
 }

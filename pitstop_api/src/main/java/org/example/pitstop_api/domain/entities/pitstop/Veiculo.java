@@ -4,7 +4,7 @@ package org.example.pitstop_api.domain.entities.pitstop;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.example.pitstop_api.domain.entities.pitstop.Cliente;
+import org.example.pitstop_api.application.dtos.CreateVeiculoDTO;
 
 @Table(name = "Pitstop_Veiculo")
 @Entity(name = "Veiculo")
@@ -24,4 +24,13 @@ public class Veiculo {
 
     @ManyToOne @JoinColumn(name = "fkCliente") @NotNull
     private Cliente cliente;
+
+    public Veiculo(CreateVeiculoDTO novoVeiculoDTO, Cliente cliente) {
+        this.placa = novoVeiculoDTO.placa();
+        this.marca = novoVeiculoDTO.marca();
+        this.modelo = novoVeiculoDTO.modelo();
+        this.anoFabricacao = novoVeiculoDTO.ano();
+        this.cor = novoVeiculoDTO.cor();
+        this.cliente = cliente;
+    }
 }
