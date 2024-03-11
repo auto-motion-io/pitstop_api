@@ -45,7 +45,7 @@ public class GerenteService {
     public Gerente login(LoginGerenteRequest request) {
         Gerente gerente = gerenteRepository.findGerenteByEmail(request.email());
         if (gerente == null) throw new RecursoNaoEncontradoException("Usuário não encontrado com email: " + request.email());
-        if (!(gerente.getSenha().equals(request.senha())))
+        if (!(request.senha().equals(gerente.getSenha())))
             throw new SenhaIncorretaException("Usuário não autorizado, senha incorreta");
         return gerente;
     }
