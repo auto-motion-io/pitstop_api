@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.example.pitstop_api.application.dtos.CreateGerenteDTO;
 import org.example.pitstop_api.application.dtos.LoginGerenteRequest;
 import org.example.pitstop_api.application.dtos.UpdateGerenteDTO;
+import org.example.pitstop_api.application.dtos.UpdateSenhaGerenteDTO;
 import org.example.pitstop_api.application.services.GerenteService;
 import org.example.pitstop_api.domain.entities.pitstop.Gerente;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,19 +25,34 @@ public class GerenteController {
     private GerenteService gerenteService;
 
 
+    @Operation(summary = "Retorna todos os gerentes cadastrados.")
     @GetMapping()
-    public ResponseEntity<List<Gerente>> listarTodos(){
+    public ResponseEntity<List<Gerente>> listarTodos() {
         return ResponseEntity.status(200).body(gerenteService.listarGerentes());
     }
 
+    @Operation(summary = "Retorna um gerente a partir de um email e senha")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retorna o gerente caso o email e a senha passada sejam válidas."),
+            @ApiResponse(responseCode = "401", description = "Caso encontre o email porém a senha não está correta"),
+            @ApiResponse(responseCode = "404", description = "Caso não encontre o email passado"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor :(")
+    })
     @PostMapping("/login")
-    public ResponseEntity<Gerente> login(@RequestBody @Valid LoginGerenteRequest request){
+    public ResponseEntity<Gerente> login(@RequestBody @Valid LoginGerenteRequest request) {
         Gerente gerente = gerenteService.login(request);
         return ResponseEntity.status(200).body(gerente);
     }
 
+
+    @Operation(summary = "Cadastra um gerente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Cria e retorna um gerente"),
+            @ApiResponse(responseCode = "409", description = "Caso o email já esteja cadastrado ou a oficina passada já possuir um gerente"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor :(")
+    })
     @PostMapping()
-    public ResponseEntity<Gerente> cadastrar(@RequestBody CreateGerenteDTO createGerenteDTO){
+    public ResponseEntity<Gerente> cadastrar(@RequestBody CreateGerenteDTO createGerenteDTO) {
         Gerente gerente = gerenteService.cadastrar(createGerenteDTO);
         return ResponseEntity.status(201).body(gerente);
     }
@@ -46,11 +62,23 @@ public class GerenteController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Atualiza e retorna o gerente atualizado"),
             @ApiResponse(responseCode = "404", description = "Não encontrou gerente com id passado"),
-            @ApiResponse(responseCode = "500", description = "Back deixou passar")
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor :(")
     })
     @PutMapping("{id}")
-    public ResponseEntity<Gerente> atualizar(@PathVariable int id, @RequestBody UpdateGerenteDTO updateGerenteDTO){
-        Gerente gerente = gerenteService.atualizar(id,updateGerenteDTO);
+    public ResponseEntity<Gerente> atualizar(@PathVariable int id, @RequestBody UpdateGerenteDTO updateGerenteDTO) {
+        Gerente gerente = gerenteService.atualizar(id, updateGerenteDTO);
+        return ResponseEntity.status(200).body(gerente);
+    }
+
+    @Operation(summary = "Atualiza a senha do gerente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Atualiza e retorna o gerente atualizado"),
+            @ApiResponse(responseCode = "404", description = "Não encontrou gerente com id passado"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor :(")
+    })
+    @PutMapping("/atualiza-senha/{id}")
+    public ResponseEntity<Gerente> atualizarSenha(@PathVariable int id, @RequestBody UpdateSenhaGerenteDTO updateSenhaGerenteDTO) {
+        Gerente gerente = gerenteService.atualizarSenha(id, updateSenhaGerenteDTO);
         return ResponseEntity.status(200).body(gerente);
     }
 }

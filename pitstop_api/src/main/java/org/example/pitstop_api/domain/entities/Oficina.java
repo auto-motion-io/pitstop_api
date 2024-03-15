@@ -3,6 +3,7 @@ package org.example.pitstop_api.domain.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.example.pitstop_api.domain.entities.pitstop.Gerente;
@@ -19,15 +20,16 @@ import java.util.List;
 public class Oficina {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer idOficina;
-    @NotNull
+    @NotNull @NotBlank
     private String nome;
-    @NotNull
+    @NotNull @NotBlank
     private String cnpj;
-    @NotNull
+    @NotNull @NotBlank
     private String cep;
-    @NotNull
+    @NotNull @NotBlank
     private String numero;
     private String complemento;
+    private boolean hasBuscar;
 
     @OneToOne(mappedBy = "oficina", cascade = CascadeType.ALL) @JsonIgnore
     private Gerente gerente;

@@ -62,7 +62,7 @@ public class OficinaController {
             @ApiResponse(responseCode = "500", description = "back deixou passar")
     })
     @PostMapping
-    public ResponseEntity<Oficina> criarOficina(@RequestBody Oficina oficina) {
+    public ResponseEntity<Oficina> criarOficina(@RequestBody @Valid Oficina oficina) {
         Oficina novaOficina = oficinaService.criarOficina(oficina);
         return ResponseEntity.status(HttpStatus.CREATED).body(novaOficina);
     }

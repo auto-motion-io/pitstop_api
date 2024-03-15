@@ -39,6 +39,7 @@ public class OficinaService {
         oficina.setCep(oficinaAtualizada.cep());
         oficina.setNumero(oficinaAtualizada.numero());
         oficina.setComplemento(oficinaAtualizada.complemento());
+        oficina.setHasBuscar(oficinaAtualizada.hasBuscar());
 
         return oficinaRepository.save(oficina);
     }

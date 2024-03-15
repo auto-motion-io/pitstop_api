@@ -1,6 +1,7 @@
 package org.example.pitstop_api.domain.entities.pitstop;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.example.pitstop_api.application.dtos.CreateGerenteDTO;
@@ -16,12 +17,15 @@ import org.example.pitstop_api.domain.entities.Oficina;
 public class Gerente {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idGerente;
+    @NotNull @NotBlank
     private String nome;
+    @NotNull @NotBlank
     private String sobrenome;
+    @NotNull @NotBlank
     private String email;
     private String senha;
 
-    @Column(columnDefinition = "varchar(255) default 'PENDENTE'", nullable = true)
+    @Column(columnDefinition = "varchar(255) default 'PENDENTE'")
     private String status;
 
     @OneToOne @JoinColumn(name = "fkOficina") @NotNull
