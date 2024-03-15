@@ -35,7 +35,7 @@ public class OficinaController {
     })
     @GetMapping
     public ResponseEntity<List<Oficina>> listarOficinas() {
-        List<Oficina> oficinas = oficinaService.listarOficinas();
+        List<Oficina> oficinas = oficinaService.listarTodos();
         if(oficinas.isEmpty())return ResponseEntity.status(204).build();
         return ResponseEntity.ok(oficinas);
     }
@@ -50,7 +50,7 @@ public class OficinaController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<Oficina> buscarOficinaPorId(@PathVariable Integer id) {
-        Oficina oficina = oficinaService.buscarOficinaPorId(id);
+        Oficina oficina = oficinaService.buscarPorId(id);
         return ResponseEntity.ok(oficina);
     }
 
@@ -63,21 +63,21 @@ public class OficinaController {
     })
     @PostMapping
     public ResponseEntity<Oficina> criarOficina(@RequestBody @Valid Oficina oficina) {
-        Oficina novaOficina = oficinaService.criarOficina(oficina);
+        Oficina novaOficina = oficinaService.criar(oficina);
         return ResponseEntity.status(HttpStatus.CREATED).body(novaOficina);
     }
 
     @Operation(summary = "Atualiza os dados de uma oficina")
     @PutMapping("/{id}")
     public ResponseEntity<Oficina> atualizarOficina(@PathVariable Integer id, @Valid @RequestBody UpdateOficinaDTO oficinaAtualizada) {
-        Oficina oficina = oficinaService.atualizarOficina(id, oficinaAtualizada);
+        Oficina oficina = oficinaService.atualizar(id, oficinaAtualizada);
         return ResponseEntity.ok(oficina);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarOficina(@PathVariable Integer id) {
        // return ResponseEntity.status(501).build();
-        oficinaService.deletarOficina(id);
+        oficinaService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 }

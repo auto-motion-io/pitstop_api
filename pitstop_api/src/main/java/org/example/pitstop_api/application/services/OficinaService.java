@@ -1,8 +1,10 @@
 package org.example.pitstop_api.application.services;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.example.pitstop_api.application.dtos.UpdateOficinaDTO;
 import org.example.pitstop_api.application.exception.DadoUnicoDuplicadoException;
 import org.example.pitstop_api.application.exception.RecursoNaoEncontradoException;
+import org.example.pitstop_api.application.services.strategies.OficinaServiceStrategy;
 import org.example.pitstop_api.domain.entities.Oficina;
 import org.example.pitstop_api.domain.repositories.IOficinaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,30 +13,28 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class OficinaService {
+public class OficinaService implements OficinaServiceStrategy{
 
     @Autowired
     private IOficinaRepository oficinaRepository;
 
-    public List<Oficina> listarOficinas() {
+    public List<Oficina> listarTodos() {
         return oficinaRepository.findAll();
     }
 
-    public Oficina buscarOficinaPorId(Integer id) {
+    public Oficina buscarPorId(Integer id) {
         return oficinaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + id));
     }
 
-    public Oficina criarOficina(Oficina oficina) {
+    public Oficina criar(Oficina oficina) {
         checarConflitoCnpj(oficina);
         return oficinaRepository.save(oficina);
     }
 
-    public Oficina atualizarOficina(Integer id, UpdateOficinaDTO oficinaAtualizada) {
+    public Oficina atualizar(Integer id, UpdateOficinaDTO oficinaAtualizada) {
         Oficina oficina = oficinaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + id));
-
-
         oficina.setNome(oficinaAtualizada.nome());
         oficina.setCep(oficinaAtualizada.cep());
         oficina.setNumero(oficinaAtualizada.numero());
@@ -44,10 +44,10 @@ public class OficinaService {
         return oficinaRepository.save(oficina);
     }
 
-    public void deletarOficina(Integer id) {
-        oficinaRepository.findById(id).orElseThrow(()->new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + id));
-        oficinaRepository.deleteById(id);
-
+    public void deletar(Integer id) {
+        //oficinaRepository.findById(id).orElseThrow(()->new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + id));
+        //oficinaRepository.deleteById(id);
+        throw new NotImplementedException("");
     }
 
 
@@ -57,8 +57,8 @@ public class OficinaService {
      * @param oficina Oficina a ser checada.
      * @return CnpjDuplicadoException caso o cnpj já esteja cadastrado.
      */
-    private void checarConflitoCnpj(Oficina oficina){
-        if(listarOficinas().stream().anyMatch(o->o.getCnpj().equals(oficina.getCnpj())))
+    public void checarConflitoCnpj(Oficina oficina){
+        if(listarTodos().stream().anyMatch(o->o.getCnpj().equals(oficina.getCnpj())))
             throw new DadoUnicoDuplicadoException("CNPJ já cadastrado");
     }
 }

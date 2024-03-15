@@ -11,7 +11,6 @@ public record UpdateOficinaDTO(
         @NotNull @NotBlank
         String numero,
         String complemento,
-        @NotNull @NotBlank
         boolean hasBuscar
 ) {
 };
