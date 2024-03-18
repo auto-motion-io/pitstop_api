@@ -22,7 +22,7 @@ public class OficinaService implements OficinaServiceStrategy{
         return oficinaRepository.findAll();
     }
 
-    public Oficina buscarPorId(Integer id) {
+    public Oficina buscarPorId(int id) {
         return oficinaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + id));
     }
@@ -32,7 +32,7 @@ public class OficinaService implements OficinaServiceStrategy{
         return oficinaRepository.save(oficina);
     }
 
-    public Oficina atualizar(Integer id, UpdateOficinaDTO oficinaAtualizada) {
+    public Oficina atualizar(int id, UpdateOficinaDTO oficinaAtualizada) {
         Oficina oficina = oficinaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + id));
         oficina.setNome(oficinaAtualizada.nome());
@@ -44,7 +44,7 @@ public class OficinaService implements OficinaServiceStrategy{
         return oficinaRepository.save(oficina);
     }
 
-    public void deletar(Integer id) {
+    public void deletar(int id) {
         //oficinaRepository.findById(id).orElseThrow(()->new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + id));
         //oficinaRepository.deleteById(id);
         throw new NotImplementedException("");

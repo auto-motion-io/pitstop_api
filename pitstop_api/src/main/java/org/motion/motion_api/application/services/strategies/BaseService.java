@@ -2,10 +2,10 @@ package org.motion.motion_api.application.services.strategies;
 
 import java.util.List;
 
-public interface BaseService <T,D> {
-    List<T> listarTodos();
-    T buscarPorId(Integer id);
-    T criar(T object);
-    T atualizar(Integer id, D dto);
-    void deletar(Integer id);
+public interface BaseService <E,DTOUpdate,DTOCreate> {
+    List<E> listarTodos();
+    E buscarPorId(int id);
+    E criar(DTOCreate object);
+    E atualizar(int id, DTOUpdate dto);
+    void deletar(int id);
 }

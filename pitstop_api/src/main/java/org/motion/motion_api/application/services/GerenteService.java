@@ -3,6 +3,7 @@ package org.motion.motion_api.application.services;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.apache.commons.lang3.NotImplementedException;
 import org.motion.motion_api.application.dtos.CreateGerenteDTO;
 import org.motion.motion_api.application.dtos.LoginGerenteRequest;
 import org.motion.motion_api.application.dtos.UpdateGerenteDTO;
@@ -10,6 +11,7 @@ import org.motion.motion_api.application.dtos.UpdateSenhaGerenteDTO;
 import org.motion.motion_api.application.exception.DadoUnicoDuplicadoException;
 import org.motion.motion_api.application.exception.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.exception.SenhaIncorretaException;
+import org.motion.motion_api.application.services.strategies.GerenteServiceStrategy;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.Gerente;
 import org.motion.motion_api.domain.repositories.IOficinaRepository;
@@ -21,7 +23,7 @@ import java.util.List;
 
 
 @Service
-public class GerenteService {
+public class GerenteService implements GerenteServiceStrategy {
 
     @Autowired
     IGerenteRepository gerenteRepository;
@@ -30,11 +32,15 @@ public class GerenteService {
     IOficinaRepository oficinaRepository;
 
 
-    public List<Gerente> listarGerentes() {
+    public List<Gerente> listarTodos() {
         return gerenteRepository.findAll();
     }
 
-    public Gerente cadastrar(CreateGerenteDTO novoGerenteDTO) {
+    public Gerente buscarPorId(int id) {
+        return gerenteRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Gerente não encontrado com o id: " + id));
+    }
+
+    public Gerente criar(CreateGerenteDTO novoGerenteDTO) {
         Oficina oficina = pegarOficinaValida(novoGerenteDTO.fkOficina());
         verificarEmailDuplicado(novoGerenteDTO.email());
         oficinaComGerenteCadastrado(oficina);
@@ -43,6 +49,30 @@ public class GerenteService {
 
         return gerente;
     }
+
+
+    @Transactional
+    public Gerente atualizar(int id, UpdateGerenteDTO updateGerenteDTO) {
+        Gerente gerente = buscarPorId(id);
+        gerente.setNome(updateGerenteDTO.nome());
+        gerente.setSobrenome(updateGerenteDTO.sobrenome());
+        gerenteRepository.save(gerente);
+        return gerente;
+    }
+
+    @Override
+    public void deletar(int id) {
+        throw new NotImplementedException();
+    }
+
+    @Transactional
+    public Gerente atualizarSenha(int id, UpdateSenhaGerenteDTO updateSenhaGerenteDTO) {
+        Gerente gerente = buscarPorId(id);
+        gerente.setSenha(updateSenhaGerenteDTO.senha());
+        gerenteRepository.save(gerente);
+        return gerente;
+    }
+
 
     public Gerente login(@Valid LoginGerenteRequest request) {
         Gerente gerente = gerenteRepository.findGerenteByEmail(request.email());
@@ -53,27 +83,6 @@ public class GerenteService {
         return gerente;
     }
 
-    @Transactional
-    public Gerente atualizar(Integer id, UpdateGerenteDTO updateGerenteDTO) {
-        Gerente gerente = getById(id);
-        gerente.setNome(updateGerenteDTO.nome());
-        gerente.setSobrenome(updateGerenteDTO.sobrenome());
-        gerenteRepository.save(gerente);
-        return gerente;
-    }
-
-    @Transactional
-    public Gerente atualizarSenha(Integer id, UpdateSenhaGerenteDTO updateSenhaGerenteDTO) {
-        Gerente gerente = getById(id);
-        gerente.setSenha(updateSenhaGerenteDTO.senha());
-        gerenteRepository.save(gerente);
-        return gerente;
-    }
-
-
-    private Gerente getById(int id) {
-        return gerenteRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Gerente não encontrado com o id: " + id));
-    }
 
     private void verificarEmailDuplicado(String email) {
         if (gerenteRepository.existsByEmail(email)) {
@@ -86,7 +95,7 @@ public class GerenteService {
      * @return Retorna uma oficina caso encontre ou uma exceção caso não.
      * @throws RecursoNaoEncontradoException
      */
-    private Oficina pegarOficinaValida(Integer fkOficina) {
+    private Oficina pegarOficinaValida(int fkOficina) {
         return oficinaRepository.findById(fkOficina).orElseThrow(() ->
                 new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + fkOficina));
 

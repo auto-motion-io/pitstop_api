@@ -31,7 +31,7 @@ public class OficinaController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Retorna as oficinas encontradas"),
             @ApiResponse(responseCode = "204", description = "Executou mas nenhuma oficina encontrada"),
-            @ApiResponse(responseCode = "500", description = "back deixou passar")
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
     @GetMapping
     public ResponseEntity<List<Oficina>> listarOficinas() {
@@ -46,7 +46,7 @@ public class OficinaController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Retorna a oficina encontrada"),
             @ApiResponse(responseCode = "404", description = "Não encontrou a oficina com o id buscado"),
-            @ApiResponse(responseCode = "500", description = "back deixou passar")
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
     @GetMapping("/{id}")
     public ResponseEntity<Oficina> buscarOficinaPorId(@PathVariable Integer id) {
@@ -59,7 +59,7 @@ public class OficinaController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Cadastra e retorna a oficina"),
             @ApiResponse(responseCode = "409", description = "CNPJ Conflitante"),
-            @ApiResponse(responseCode = "500", description = "back deixou passar")
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
     @PostMapping
     public ResponseEntity<Oficina> criarOficina(@RequestBody @Valid Oficina oficina) {

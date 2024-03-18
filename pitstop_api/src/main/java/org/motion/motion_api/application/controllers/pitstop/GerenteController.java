@@ -10,6 +10,7 @@ import org.motion.motion_api.application.dtos.LoginGerenteRequest;
 import org.motion.motion_api.application.dtos.UpdateGerenteDTO;
 import org.motion.motion_api.application.dtos.UpdateSenhaGerenteDTO;
 import org.motion.motion_api.application.services.GerenteService;
+import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.Gerente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,19 @@ public class GerenteController {
     @Operation(summary = "Retorna todos os gerentes cadastrados.")
     @GetMapping()
     public ResponseEntity<List<Gerente>> listarTodos() {
-        return ResponseEntity.status(200).body(gerenteService.listarGerentes());
+        return ResponseEntity.status(200).body(gerenteService.listarTodos());
+    }
+
+    @Operation(summary = "Busca um gerente por id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retorna o gerente encontrado"),
+            @ApiResponse(responseCode = "404", description = "Não encontrou a gerente com o id buscado"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<Gerente> buscarPorId(@PathVariable int id) {
+        Gerente gerente = gerenteService.buscarPorId(id);
+        return ResponseEntity.ok(gerente);
     }
 
     @Operation(summary = "Retorna um gerente a partir de um email e senha")
@@ -53,7 +66,7 @@ public class GerenteController {
     })
     @PostMapping()
     public ResponseEntity<Gerente> cadastrar(@RequestBody CreateGerenteDTO createGerenteDTO) {
-        Gerente gerente = gerenteService.cadastrar(createGerenteDTO);
+        Gerente gerente = gerenteService.criar(createGerenteDTO);
         return ResponseEntity.status(201).body(gerente);
     }
 

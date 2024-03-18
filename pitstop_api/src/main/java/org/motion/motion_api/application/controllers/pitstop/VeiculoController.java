@@ -26,19 +26,19 @@ public class VeiculoController {
         return ResponseEntity.status(201).body(veiculo);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable int id){
         veiculoService.deletar(id);
         return ResponseEntity.status(204).build();
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Veiculo> atualizar(@PathVariable int id, CreateVeiculoDTO novoVeiculoDTO){
         Veiculo veiculo = veiculoService.atualizar(id,novoVeiculoDTO);
         return ResponseEntity.status(200).body(veiculo);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Veiculo> buscarPorId(@PathVariable int id){
         Veiculo veiculo = veiculoService.buscarPorId(id);
         return ResponseEntity.status(200).body(veiculo);
