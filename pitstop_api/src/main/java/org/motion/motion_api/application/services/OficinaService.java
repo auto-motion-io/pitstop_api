@@ -57,7 +57,7 @@ public class OficinaService implements OficinaServiceStrategy{
      * @param oficina Oficina a ser checada.
      * @return CnpjDuplicadoException caso o cnpj já esteja cadastrado.
      */
-    public void checarConflitoCnpj(Oficina oficina){
+    private void checarConflitoCnpj(Oficina oficina){
         if(listarTodos().stream().anyMatch(o->o.getCnpj().equals(oficina.getCnpj())))
             throw new DadoUnicoDuplicadoException("CNPJ já cadastrado");
     }
