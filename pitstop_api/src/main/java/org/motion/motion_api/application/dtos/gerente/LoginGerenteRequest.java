@@ -1,14 +1,11 @@
-package org.motion.motion_api.application.dtos;
+package org.motion.motion_api.application.dtos.gerente;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record UpdateGerenteDTO(
+public record LoginGerenteRequest(
         @NotNull @NotBlank
-        String nome,
+        String email,
         @NotNull @NotBlank
-        String sobrenome
-) {
-}
-
-
+        String senha
+) { }

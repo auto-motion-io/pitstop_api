@@ -1,8 +1,12 @@
 package org.motion.motion_api.domain.entities.pitstop;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.core.util.Json;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.motion.motion_api.application.dtos.CreateTarefaDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 
 import java.time.LocalDate;
@@ -20,9 +24,16 @@ public class Tarefa {
     private Integer idTarefa;
     private String descricao;
     private LocalDate dtDeadline;
-    private String prioridade;
     private String status;
 
-    @ManyToOne @JoinColumn(name = "fkOficina") @NotNull
+
+    public Tarefa(CreateTarefaDTO createTarefaDTO, Oficina oficina) {
+        this.descricao = createTarefaDTO.descricao();
+        this.dtDeadline = createTarefaDTO.dtDeadline();
+        this.status = createTarefaDTO.status();
+        this.oficina = oficina;
+    }
+
+    @ManyToOne @JoinColumn(name = "fkOficina") @NotNull @JsonIgnore
     private Oficina oficina;
 }

@@ -4,14 +4,15 @@ package org.motion.motion_api.application.services;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.apache.commons.lang3.NotImplementedException;
-import org.motion.motion_api.application.dtos.CreateGerenteDTO;
-import org.motion.motion_api.application.dtos.LoginGerenteRequest;
-import org.motion.motion_api.application.dtos.UpdateGerenteDTO;
-import org.motion.motion_api.application.dtos.UpdateSenhaGerenteDTO;
+import org.motion.motion_api.application.dtos.gerente.CreateGerenteDTO;
+import org.motion.motion_api.application.dtos.gerente.LoginGerenteRequest;
+import org.motion.motion_api.application.dtos.gerente.UpdateGerenteDTO;
+import org.motion.motion_api.application.dtos.gerente.UpdateSenhaGerenteDTO;
 import org.motion.motion_api.application.exception.DadoUnicoDuplicadoException;
 import org.motion.motion_api.application.exception.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.exception.SenhaIncorretaException;
 import org.motion.motion_api.application.services.strategies.GerenteServiceStrategy;
+import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.Gerente;
 import org.motion.motion_api.domain.repositories.IOficinaRepository;
@@ -30,6 +31,8 @@ public class GerenteService implements GerenteServiceStrategy {
 
     @Autowired
     IOficinaRepository oficinaRepository;
+    @Autowired
+    ServiceHelper serviceHelper;
 
 
     public List<Gerente> listarTodos() {
@@ -41,7 +44,7 @@ public class GerenteService implements GerenteServiceStrategy {
     }
 
     public Gerente criar(CreateGerenteDTO novoGerenteDTO) {
-        Oficina oficina = pegarOficinaValida(novoGerenteDTO.fkOficina());
+        Oficina oficina = serviceHelper.pegarOficinaValida(novoGerenteDTO.fkOficina());
         verificarEmailDuplicado(novoGerenteDTO.email());
         oficinaComGerenteCadastrado(oficina);
         Gerente gerente = new Gerente(novoGerenteDTO, oficina);
@@ -90,16 +93,7 @@ public class GerenteService implements GerenteServiceStrategy {
         }
     }
 
-    /**
-     * @param fkOficina
-     * @return Retorna uma oficina caso encontre ou uma exceção caso não.
-     * @throws RecursoNaoEncontradoException
-     */
-    private Oficina pegarOficinaValida(int fkOficina) {
-        return oficinaRepository.findById(fkOficina).orElseThrow(() ->
-                new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + fkOficina));
 
-    }
 
     /**
      * @param oficina
