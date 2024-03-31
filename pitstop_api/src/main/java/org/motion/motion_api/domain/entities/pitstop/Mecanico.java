@@ -4,6 +4,7 @@ package org.motion.motion_api.domain.entities.pitstop;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.motion.motion_api.application.dtos.CreateMecanicoDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 
 @Table(name = "Pitstop_Mecanico")
@@ -25,4 +26,9 @@ public class Mecanico {
     private Oficina oficinaMecanico;
 
 
+    public Mecanico(CreateMecanicoDTO createMecanicoDTO, Oficina oficina) {
+        this.nome = createMecanicoDTO.nome();
+        this.telefone = createMecanicoDTO.telefone();
+        this.oficinaMecanico = oficina;
+    }
 }
