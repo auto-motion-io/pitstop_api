@@ -77,10 +77,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(Exception.class)
+
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex) {
         String path = pathInterceptor.getPath();
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), path, ErrorHelper.getStackTracePersonalizado(ex.getStackTrace()));
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), path, ErrorHelper.getStackTracePersonalizado(ex.getStackTrace()));
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

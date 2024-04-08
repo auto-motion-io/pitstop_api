@@ -6,6 +6,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.motion.motion_api.application.dtos.gerente.CreateGerenteDTO;
 import org.motion.motion_api.domain.entities.Oficina;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
 
 @Table(name = "Pitstop_Gerente")
 @Entity(name = "Gerente")
@@ -14,7 +18,7 @@ import org.motion.motion_api.domain.entities.Oficina;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Gerente {
+public class Gerente implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idGerente;
     @NotNull @NotBlank
@@ -28,16 +32,51 @@ public class Gerente {
     @Column(columnDefinition = "varchar(255) default 'PENDENTE'")
     private String status;
 
-    @OneToOne @JoinColumn(name = "fkOficina") @NotNull
+    @OneToOne @JoinColumn(name = "fk_oficina") @NotNull
     private Oficina oficina;
 
 
-    public Gerente(CreateGerenteDTO createGerenteDTO, Oficina oficina) {
+    public Gerente(CreateGerenteDTO createGerenteDTO, Oficina oficina,String senhaAutomatica) {
         this.nome = createGerenteDTO.nome();
         this.sobrenome = createGerenteDTO.sobrenome();
         this.email = createGerenteDTO.email();
-        this.senha = null;
+        this.senha = senhaAutomatica;
         this.status = "PENDENTE";
         this.oficina = oficina;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true ;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

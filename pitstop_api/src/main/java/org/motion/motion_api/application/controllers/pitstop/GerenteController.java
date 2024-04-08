@@ -10,9 +10,12 @@ import org.motion.motion_api.application.dtos.gerente.LoginGerenteRequest;
 import org.motion.motion_api.application.dtos.gerente.UpdateGerenteDTO;
 import org.motion.motion_api.application.dtos.gerente.UpdateSenhaGerenteDTO;
 import org.motion.motion_api.application.services.GerenteService;
+import org.motion.motion_api.application.services.authorization.AuthorizationService;
 import org.motion.motion_api.domain.entities.pitstop.Gerente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +26,10 @@ public class GerenteController {
 
     @Autowired
     private GerenteService gerenteService;
+    @Autowired
+    AuthorizationService authorizationService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
 
     @Operation(summary = "Retorna todos os gerentes cadastrados.")
@@ -51,9 +58,13 @@ public class GerenteController {
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor :(")
     })
     @PostMapping("/login")
-    public ResponseEntity<Gerente> login(@RequestBody @Valid LoginGerenteRequest request) {
-        Gerente gerente = gerenteService.login(request);
-        return ResponseEntity.status(200).body(gerente);
+    public ResponseEntity login(@RequestBody @Valid LoginGerenteRequest request) {
+        var usernamePassword = new UsernamePasswordAuthenticationToken(request.email(),request.senha());
+        var auth = this.authenticationManager.authenticate(usernamePassword);
+
+        //Gerente gerente = gerenteService.login(request);
+        return ResponseEntity.ok().build();
+        //return ResponseEntity.status(200).body(gerente);
     }
 
 
@@ -64,7 +75,7 @@ public class GerenteController {
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor :(")
     })
     @PostMapping()
-    public ResponseEntity<Gerente> cadastrar(@RequestBody CreateGerenteDTO createGerenteDTO) {
+    public ResponseEntity<Gerente> cadastrar(@RequestBody @Valid CreateGerenteDTO createGerenteDTO) {
         Gerente gerente = gerenteService.criar(createGerenteDTO);
         return ResponseEntity.status(201).body(gerente);
     }

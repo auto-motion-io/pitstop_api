@@ -4,13 +4,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CreateGerenteDTO(
-        @NotNull @NotBlank
+         @NotBlank
         String email,
-        @NotNull @NotBlank
+         @NotBlank
         String nome,
-        @NotNull @NotBlank
+        @NotBlank
         String sobrenome,
-        @NotNull @NotBlank
+        @NotNull
         Integer fkOficina
 ) {
 }

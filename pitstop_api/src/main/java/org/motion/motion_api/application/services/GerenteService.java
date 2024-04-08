@@ -18,9 +18,12 @@ import org.motion.motion_api.domain.entities.pitstop.Gerente;
 import org.motion.motion_api.domain.repositories.IOficinaRepository;
 import org.motion.motion_api.domain.repositories.pitstop.IGerenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -47,7 +50,9 @@ public class GerenteService implements GerenteServiceStrategy {
         Oficina oficina = serviceHelper.pegarOficinaValida(novoGerenteDTO.fkOficina());
         verificarEmailDuplicado(novoGerenteDTO.email());
         oficinaComGerenteCadastrado(oficina);
-        Gerente gerente = new Gerente(novoGerenteDTO, oficina);
+        String senhaGerada = UUID.randomUUID().toString();
+        senhaGerada = new BCryptPasswordEncoder().encode("123");
+        Gerente gerente = new Gerente(novoGerenteDTO, oficina,senhaGerada);
         gerenteRepository.save(gerente);
 
         return gerente;
