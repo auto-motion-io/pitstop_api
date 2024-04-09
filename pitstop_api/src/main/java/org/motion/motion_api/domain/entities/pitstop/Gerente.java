@@ -7,12 +7,14 @@ import lombok.*;
 import org.motion.motion_api.application.dtos.gerente.CreateGerenteDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
-@Table(name = "Pitstop_Gerente")
 @Entity(name = "Gerente")
+@Table(name = "Pitstop_Gerente")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -47,7 +49,7 @@ public class Gerente implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of( new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
     @Override

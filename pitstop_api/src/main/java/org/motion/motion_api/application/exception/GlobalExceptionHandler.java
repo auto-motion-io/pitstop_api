@@ -1,5 +1,6 @@
 package org.motion.motion_api.application.exception;
 
+import com.auth0.jwt.exceptions.JWTCreationException;
 import org.apache.commons.lang3.NotImplementedException;
 import org.motion.motion_api.application.exception.util.ErrorHelper;
 import org.motion.motion_api.application.exception.util.ErrorResponse;
@@ -75,6 +76,13 @@ public class GlobalExceptionHandler {
         String path = pathInterceptor.getPath();
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), path, ErrorHelper.getStackTracePersonalizado(ex.getStackTrace()));
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(JWTCreationException.class)
+    public ResponseEntity<ErrorResponse> handleJWTCreationException(JWTCreationException ex){
+        String path = pathInterceptor.getPath();
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), path, ErrorHelper.getStackTracePersonalizado(ex.getStackTrace(),10));
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

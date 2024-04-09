@@ -12,6 +12,7 @@ import org.motion.motion_api.application.dtos.gerente.UpdateSenhaGerenteDTO;
 import org.motion.motion_api.application.services.GerenteService;
 import org.motion.motion_api.application.services.authorization.AuthorizationService;
 import org.motion.motion_api.domain.entities.pitstop.Gerente;
+import org.motion.motion_api.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,6 +31,8 @@ public class GerenteController {
     AuthorizationService authorizationService;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private TokenService tokenService;
 
 
     @Operation(summary = "Retorna todos os gerentes cadastrados.")
@@ -61,9 +64,9 @@ public class GerenteController {
     public ResponseEntity login(@RequestBody @Valid LoginGerenteRequest request) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(request.email(),request.senha());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-
+        var token = tokenService.generateToken((Gerente) auth.getPrincipal());
         //Gerente gerente = gerenteService.login(request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(token);
         //return ResponseEntity.status(200).body(gerente);
     }
 
