@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.motion.motion_api.application.dtos.UpdateOficinaDTO;
 import org.motion.motion_api.application.services.OficinaService;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
 @RequestMapping("/oficinas")
+@SecurityRequirement(name = "motion_jwt")
 public class OficinaController {
 
     @Autowired
@@ -28,11 +30,6 @@ public class OficinaController {
 
 
     @Operation(summary = "Busca todas oficinas")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna as oficinas encontradas"),
-            @ApiResponse(responseCode = "204", description = "Executou mas nenhuma oficina encontrada"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    })
     @GetMapping
     public ResponseEntity<List<Oficina>> listarOficinas() {
         List<Oficina> oficinas = oficinaService.listarTodos();
@@ -43,11 +40,6 @@ public class OficinaController {
 
 
     @Operation(summary = "Busca uma oficina por id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna a oficina encontrada"),
-            @ApiResponse(responseCode = "404", description = "Não encontrou a oficina com o id buscado"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    })
     @GetMapping("/{id}")
     public ResponseEntity<Oficina> buscarOficinaPorId(@PathVariable Integer id) {
         Oficina oficina = oficinaService.buscarPorId(id);
@@ -56,11 +48,6 @@ public class OficinaController {
 
 
     @Operation(summary = "Cadastra uma oficina")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Cadastra e retorna a oficina"),
-            @ApiResponse(responseCode = "409", description = "CNPJ Conflitante"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    })
     @PostMapping
     public ResponseEntity<Oficina> criarOficina(@RequestBody @Valid Oficina oficina) {
         Oficina novaOficina = oficinaService.criar(oficina);
@@ -73,7 +60,7 @@ public class OficinaController {
         Oficina oficina = oficinaService.atualizar(id, oficinaAtualizada);
         return ResponseEntity.ok(oficina);
     }
-
+    @Operation(summary = "Deleta uma oficina e seus registros")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarOficina(@PathVariable Integer id) {
        // return ResponseEntity.status(501).build();

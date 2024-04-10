@@ -1,6 +1,7 @@
 package org.motion.motion_api.application.controllers.pitstop;
 
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.motion.motion_api.application.dtos.CreateClienteDTO;
 import org.motion.motion_api.application.services.ClienteService;
 import org.motion.motion_api.domain.entities.pitstop.Cliente;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/clientes")
+@SecurityRequirement(name = "motion_jwt")
 public class ClienteController {
     @Autowired
     private ClienteService clienteService;
