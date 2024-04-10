@@ -4,11 +4,9 @@ package org.motion.motion_api.application.controllers.pitstop;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import org.motion.motion_api.application.dtos.gerente.CreateGerenteDTO;
-import org.motion.motion_api.application.dtos.gerente.LoginGerenteRequest;
-import org.motion.motion_api.application.dtos.gerente.UpdateGerenteDTO;
-import org.motion.motion_api.application.dtos.gerente.UpdateSenhaGerenteDTO;
+import org.motion.motion_api.application.dtos.gerente.*;
 import org.motion.motion_api.application.services.GerenteService;
 import org.motion.motion_api.application.services.authorization.AuthorizationService;
 import org.motion.motion_api.domain.entities.pitstop.Gerente;
@@ -23,19 +21,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/gerentes")
+@SecurityRequirement(name = "javainuseapi")
 public class GerenteController {
 
     @Autowired
     private GerenteService gerenteService;
-    @Autowired
-    AuthorizationService authorizationService;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private TokenService tokenService;
 
 
-    @Operation(summary = "Retorna todos os gerentes cadastrados.")
+
+    @Operation(summary = "Retorna todos os gerentes cadastrados." ,security = {@SecurityRequirement(name = "bearer-key")})
     @GetMapping()
     public ResponseEntity<List<Gerente>> listarTodos() {
         return ResponseEntity.status(200).body(gerenteService.listarTodos());
@@ -61,13 +55,9 @@ public class GerenteController {
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor :(")
     })
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid LoginGerenteRequest request) {
-        var usernamePassword = new UsernamePasswordAuthenticationToken(request.email(),request.senha());
-        var auth = this.authenticationManager.authenticate(usernamePassword);
-        var token = tokenService.generateToken((Gerente) auth.getPrincipal());
-        //Gerente gerente = gerenteService.login(request);
-        return ResponseEntity.ok(token);
-        //return ResponseEntity.status(200).body(gerente);
+    public ResponseEntity<LoginGerenteResponse> login(@RequestBody @Valid LoginGerenteRequest request) {
+        LoginGerenteResponse response = gerenteService.login(request);
+        return ResponseEntity.status(200).body(response);
     }
 
 

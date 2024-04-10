@@ -4,20 +4,21 @@ package org.motion.motion_api.application.services;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.apache.commons.lang3.NotImplementedException;
-import org.motion.motion_api.application.dtos.gerente.CreateGerenteDTO;
-import org.motion.motion_api.application.dtos.gerente.LoginGerenteRequest;
-import org.motion.motion_api.application.dtos.gerente.UpdateGerenteDTO;
-import org.motion.motion_api.application.dtos.gerente.UpdateSenhaGerenteDTO;
+import org.motion.motion_api.application.dtos.gerente.*;
 import org.motion.motion_api.application.exception.DadoUnicoDuplicadoException;
 import org.motion.motion_api.application.exception.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.exception.SenhaIncorretaException;
+import org.motion.motion_api.application.services.authorization.AuthorizationService;
 import org.motion.motion_api.application.services.strategies.GerenteServiceStrategy;
 import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.Gerente;
 import org.motion.motion_api.domain.repositories.IOficinaRepository;
 import org.motion.motion_api.domain.repositories.pitstop.IGerenteRepository;
+import org.motion.motion_api.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,13 @@ public class GerenteService implements GerenteServiceStrategy {
     IOficinaRepository oficinaRepository;
     @Autowired
     ServiceHelper serviceHelper;
+
+    @Autowired
+    AuthorizationService authorizationService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private TokenService tokenService;
 
 
     public List<Gerente> listarTodos() {
@@ -82,13 +90,16 @@ public class GerenteService implements GerenteServiceStrategy {
     }
 
 
-    public Gerente login(@Valid LoginGerenteRequest request) {
+    public LoginGerenteResponse login(@Valid LoginGerenteRequest request) {
         Gerente gerente = gerenteRepository.findGerenteByEmail(request.email());
         if (gerente == null)
             throw new RecursoNaoEncontradoException("Usuário não encontrado com email: " + request.email());
-        if (!(request.senha().equals(gerente.getSenha())))
-            throw new SenhaIncorretaException("Usuário não autorizado, senha incorreta.");
-        return gerente;
+
+        var usernamePassword = new UsernamePasswordAuthenticationToken(request.email(),request.senha());
+        var auth = authenticationManager.authenticate(usernamePassword);
+        String token = tokenService.generateToken((Gerente) auth.getPrincipal());
+
+        return new LoginGerenteResponse(gerente.getIdGerente(),gerente.getEmail(), gerente.getSobrenome(), gerente.getStatus(),gerente.getOficina(),token);
     }
 
 
