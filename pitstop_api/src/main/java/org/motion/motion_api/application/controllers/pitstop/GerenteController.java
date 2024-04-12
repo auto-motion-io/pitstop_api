@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.annotation.security.PermitAll;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.motion.motion_api.application.dtos.gerente.*;
 import org.motion.motion_api.application.services.GerenteService;
@@ -53,7 +54,7 @@ public class GerenteController {
 
     @Operation(summary = "Cadastra um gerente")
     @PostMapping()@PermitAll
-    public ResponseEntity<Gerente> cadastrar(@RequestBody @Valid CreateGerenteDTO createGerenteDTO) {
+    public ResponseEntity<Gerente> cadastrar(@RequestBody @Valid CreateGerenteDTO createGerenteDTO) throws MessagingException {
         Gerente gerente = gerenteService.criar(createGerenteDTO);
         return ResponseEntity.status(201).body(gerente);
     }
