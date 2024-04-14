@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.apache.coyote.Response;
 import org.motion.motion_api.application.dtos.CreateTarefaDTO;
 import org.motion.motion_api.application.dtos.UpdateTarefaDTO;
+import org.motion.motion_api.application.helper.ListaObj;
+import org.motion.motion_api.application.helper.Ordenacao;
 import org.motion.motion_api.application.services.TarefaService;
 import org.motion.motion_api.domain.entities.pitstop.Tarefa;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,15 @@ public class TarefaController {
     public ResponseEntity<List<Tarefa>> listarTodasTarefasPorIdOficina(@PathVariable int id) {
         List<Tarefa> tarefas = tarefaService.listarTodasTarefasPorIdOficina(id);
         return tarefas.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(tarefas);
+    }
+
+    @Operation(summary = "Busca todas as tarefas, recebe o id da oficina buscada, ordenada dtDeadline")
+    @GetMapping("/{id}/ordenada-deadline")
+    public ResponseEntity<Tarefa[]> listarTodasTarefasPorIdOficinaOrdenadaPorDtDeadline(@PathVariable int id) {
+        List<Tarefa> tarefas = tarefaService.listarTodasTarefasPorIdOficina(id);
+        ListaObj<Tarefa> tarefasListaObj = new ListaObj<>(tarefas);
+        Ordenacao.quickSort(tarefasListaObj);
+        return tarefas.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(tarefasListaObj.getVetor());
     }
 
     @Operation(summary = "Cadastra uma tarefa")
