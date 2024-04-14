@@ -53,4 +53,11 @@ public class TarefaController {
     public ResponseEntity<Tarefa> atualizar(@RequestBody UpdateTarefaDTO updateTarefaDTO, @PathVariable int id) {
         return ResponseEntity.status(200).body(tarefaService.atualizar(id, updateTarefaDTO));
     }
+
+    @Operation(summary = "Deleta uma tarefa a partir de um id")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> remover(@PathVariable int id) {
+        tarefaService.deletar(id);
+        return ResponseEntity.status(201).build();
+    }
 }
