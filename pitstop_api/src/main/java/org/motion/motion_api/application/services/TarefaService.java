@@ -52,6 +52,7 @@ public class TarefaService {
 
 
     public void deletar(int id) {
-
+        Tarefa tarefa = buscarPorId(id);
+        tarefaRepository.delete(tarefa);
     }
 }
