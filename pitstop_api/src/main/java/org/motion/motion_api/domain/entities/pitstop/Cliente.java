@@ -2,7 +2,7 @@ package org.motion.motion_api.domain.entities.pitstop;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.motion.motion_api.application.dtos.CreateClienteDTO;
+import org.motion.motion_api.application.dtos.cliente.CreateClienteDTO;
 
 @Table(name = "Pitstop_Cliente")
 @Entity(name = "Cliente")

@@ -2,7 +2,7 @@ package org.motion.motion_api.application.controllers.pitstop;
 
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.motion.motion_api.application.dtos.CreateClienteDTO;
+import org.motion.motion_api.application.dtos.cliente.CreateClienteDTO;
 import org.motion.motion_api.application.services.ClienteService;
 import org.motion.motion_api.domain.entities.pitstop.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,13 +1,11 @@
 package org.motion.motion_api.application.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import org.motion.motion_api.application.dtos.UpdateOficinaDTO;
+import org.motion.motion_api.application.dtos.oficina.UpdateOficinaDTO;
 import org.motion.motion_api.application.services.OficinaService;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.springframework.web.bind.annotation.RequestMapping;

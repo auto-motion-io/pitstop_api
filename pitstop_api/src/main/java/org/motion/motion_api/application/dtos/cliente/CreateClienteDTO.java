@@ -1,16 +1,14 @@
-package org.motion.motion_api.application.dtos;
+package org.motion.motion_api.application.dtos.cliente;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record UpdateOficinaDTO(
+public record CreateClienteDTO(
         @NotNull @NotBlank
         String nome,
         @NotNull @NotBlank
-        String cep,
+        String telefone,
         @NotNull @NotBlank
-        String numero,
-        String complemento,
-        boolean hasBuscar
+        String email
 ) {
-};
+}

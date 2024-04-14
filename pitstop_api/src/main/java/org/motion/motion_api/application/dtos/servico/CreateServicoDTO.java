@@ -1,4 +1,4 @@
-package org.motion.motion_api.application.dtos;
+package org.motion.motion_api.application.dtos.servico;
 
 import jakarta.validation.constraints.NotBlank;
 

@@ -1,12 +1,10 @@
 package org.motion.motion_api.domain.entities.pitstop;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.core.util.Json;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.motion.motion_api.application.dtos.CreateTarefaDTO;
+import org.motion.motion_api.application.dtos.tarefa.CreateTarefaDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 
 import java.time.LocalDate;

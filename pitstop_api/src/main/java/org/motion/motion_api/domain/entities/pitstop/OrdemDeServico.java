@@ -1,11 +1,14 @@
 package org.motion.motion_api.domain.entities.pitstop;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.motion.motion_api.application.dtos.CreateOrdemDeServicoDTO;
+
+import org.motion.motion_api.application.dtos.ordemDeServico.CreateOrdemDeServicoDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Table(name = "Pitstop_OrdemDeServico")
@@ -18,44 +21,33 @@ import java.util.*;
 public class OrdemDeServico {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idOrdem;
-    private UUID uuid;
-    private String token;
-    private Date dataInicio;
-    private Date dataFim;
-    private String observacoes;
-    private Double desconto;
+    private LocalDate dataInicio;
+    private LocalDate dataFim;
     private String status;
+    private Double desconto;
     private Double valorTotal;
+    private String token;
+    private String tipoOs;
     private String garantia;
+    private String observacoes;
 
 
-    @OneToOne @JoinColumn(name = "fkOficina") @NotNull
+    @ManyToOne @JoinColumn(name = "idOficina")
+    @JsonIgnore
     private Oficina oficina;
-    @OneToOne @JoinColumn(name = "fkVeiculo")
+    @ManyToOne @JoinColumn(name = "idVeiculo")
+    @JsonIgnore
     private Veiculo veiculo;
-    @OneToOne @JoinColumn(name = "fkMecanico")
+    @ManyToOne @JoinColumn(name = "idMecanico")
+    @JsonIgnore
     private Mecanico mecanico;
+    @ManyToOne @JoinColumn(name = "idCliente")
+    @JsonIgnore
+    private Cliente cliente;
 
-    @ManyToMany
-    @JoinTable(name = "ordem_produto",
-            joinColumns = @JoinColumn(name = "ordem_id"),
-            inverseJoinColumns = @JoinColumn(name = "fkProdutoEstoque"))
+    @ManyToMany(cascade = CascadeType.ALL)
     private Set<ProdutoEstoque> produtos = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "ordem_servico",
-            joinColumns = @JoinColumn(name = "ordem_id"),
-            inverseJoinColumns = @JoinColumn(name = "fkServico"))
+    @ManyToMany(cascade = CascadeType.ALL)
     private Set<Servico> servicos = new HashSet<>();
-
-    public OrdemDeServico(CreateOrdemDeServicoDTO novaOrdemDeServicoDTO, Oficina oficina, Veiculo veiculo, Mecanico mecanico, ProdutoEstoque produtoEstoque) {
-        this.dataInicio = new Date();
-        this.dataFim = new Date();
-        this.observacoes = novaOrdemDeServicoDTO.descricao();
-        this.status = novaOrdemDeServicoDTO.status();
-        this.oficina = oficina;
-        this.garantia = novaOrdemDeServicoDTO.garantia();
-        this.veiculo = veiculo;
-        this.mecanico = mecanico;
-    }
 }

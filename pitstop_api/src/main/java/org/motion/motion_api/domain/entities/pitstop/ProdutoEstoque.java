@@ -3,12 +3,10 @@ package org.motion.motion_api.domain.entities.pitstop;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.motion.motion_api.application.dtos.CreateProdutoEstoqueDTO;
+import org.motion.motion_api.application.dtos.produtoEstoque.CreateProdutoEstoqueDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 
 import java.util.HashSet;
-import java.util.List;
-import java.util.ServiceLoader;
 import java.util.Set;
 
 @Table(name = "Pitstop_ProdutoEstoque")
@@ -31,9 +29,6 @@ public class ProdutoEstoque {
 
     @ManyToOne @JoinColumn(name = "fkOficina") @NotNull
     private Oficina oficina;
-
-    @ManyToMany(mappedBy = "produtos")
-    private Set<OrdemDeServico> ordensDeServico = new HashSet<>();
 
     public ProdutoEstoque(CreateProdutoEstoqueDTO createProdutoEstoqueDTO, Oficina oficina) {
         this.nome = createProdutoEstoqueDTO.nome();

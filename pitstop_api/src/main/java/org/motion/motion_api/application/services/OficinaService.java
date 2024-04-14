@@ -1,7 +1,7 @@
 package org.motion.motion_api.application.services;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.motion.motion_api.application.dtos.UpdateOficinaDTO;
+import org.motion.motion_api.application.dtos.oficina.UpdateOficinaDTO;
 import org.motion.motion_api.application.exception.DadoUnicoDuplicadoException;
 import org.motion.motion_api.application.exception.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.strategies.OficinaServiceStrategy;

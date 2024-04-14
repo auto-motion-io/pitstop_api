@@ -1,6 +1,6 @@
 package org.motion.motion_api.application.services;
 
-import org.motion.motion_api.application.dtos.CreateVeiculoDTO;
+import org.motion.motion_api.application.dtos.veiculo.CreateVeiculoDTO;
 import org.motion.motion_api.application.exception.RecursoNaoEncontradoException;
 import org.motion.motion_api.domain.entities.pitstop.Cliente;
 import org.motion.motion_api.domain.entities.pitstop.Veiculo;

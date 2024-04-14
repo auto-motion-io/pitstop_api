@@ -1,7 +1,6 @@
 package org.motion.motion_api.application.services;
 
-import org.motion.motion_api.application.dtos.CreateServicoDTO;
-import org.motion.motion_api.domain.entities.pitstop.OrdemDeServico;
+import org.motion.motion_api.application.dtos.servico.CreateServicoDTO;
 import org.motion.motion_api.domain.entities.pitstop.Servico;
 import org.motion.motion_api.domain.repositories.IOficinaRepository;
 import org.motion.motion_api.domain.repositories.pitstop.IOrdemDeServicoRepository;

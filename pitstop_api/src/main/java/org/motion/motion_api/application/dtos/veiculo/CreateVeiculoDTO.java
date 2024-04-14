@@ -1,4 +1,4 @@
-package org.motion.motion_api.application.dtos;
+package org.motion.motion_api.application.dtos.veiculo;
 
 import jakarta.validation.constraints.NotNull;
 

@@ -1,6 +1,6 @@
 package org.motion.motion_api.application.controllers.pitstop;
 
-import org.motion.motion_api.application.dtos.CreateVeiculoDTO;
+import org.motion.motion_api.application.dtos.veiculo.CreateVeiculoDTO;
 import org.motion.motion_api.application.services.VeiculoService;
 import org.motion.motion_api.domain.entities.pitstop.Veiculo;
 import org.springframework.beans.factory.annotation.Autowired;

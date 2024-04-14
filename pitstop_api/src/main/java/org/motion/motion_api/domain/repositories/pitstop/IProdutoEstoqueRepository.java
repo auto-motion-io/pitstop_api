@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface IProdutoEstoqueRepository extends JpaRepository<ProdutoEstoque,Integer> {
     List<ProdutoEstoque> findByNome(String nome);
+    List<ProdutoEstoque> findByNomeIn(List<String> nomes);
     List<ProdutoEstoque> findByOficina(Oficina oficina);
 }
