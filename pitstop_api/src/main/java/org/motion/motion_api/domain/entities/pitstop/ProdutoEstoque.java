@@ -1,5 +1,6 @@
 package org.motion.motion_api.domain.entities.pitstop;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -28,6 +29,7 @@ public class ProdutoEstoque {
     private String garantia;
 
     @ManyToOne @JoinColumn(name = "fkOficina") @NotNull
+    @JsonIgnore
     private Oficina oficina;
 
     public ProdutoEstoque(CreateProdutoEstoqueDTO createProdutoEstoqueDTO, Oficina oficina) {

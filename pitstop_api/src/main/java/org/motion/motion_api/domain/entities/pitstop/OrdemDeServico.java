@@ -2,10 +2,8 @@ package org.motion.motion_api.domain.entities.pitstop;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import org.motion.motion_api.application.dtos.ordemDeServico.CreateOrdemDeServicoDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 
 import java.time.LocalDate;
@@ -43,8 +41,8 @@ public class OrdemDeServico {
     private Mecanico mecanico;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    private Set<ProdutoEstoque> produtos = new HashSet<>();
+    private List<ProdutoEstoque> produtos = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
-    private Set<Servico> servicos = new HashSet<>();
+    private List<Servico> servicos = new ArrayList<>();
 }

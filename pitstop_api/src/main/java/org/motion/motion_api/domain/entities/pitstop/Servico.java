@@ -26,6 +26,7 @@ public class Servico {
     private String garantia;
 
     @ManyToOne @JoinColumn(name = "fkOficina") @NotNull
+    @JsonIgnore
     private Oficina oficina;
 
     public Servico(CreateServicoDTO createServicoDTO, Oficina oficina) {

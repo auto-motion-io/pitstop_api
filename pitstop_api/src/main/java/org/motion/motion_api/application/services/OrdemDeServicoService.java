@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static java.util.spi.ToolProvider.findFirst;
@@ -53,20 +54,11 @@ public class OrdemDeServicoService {
         ordemDeServico.setDataFim(createOrdemDeServicoDTO.dataFim());
         ordemDeServico.setTipoOs(createOrdemDeServicoDTO.tipoOs());
 
-        OrdemProdutosServicos ordemProdutosServicos = new OrdemProdutosServicos();
-        ProdutoEstoque produtoEstoque = produtoEstoqueRepository.findByNomeIn(createOrdemDeServicoDTO.produtos()).stream().findFirst().orElseThrow(()-> new RecursoNaoEncontradoException("Produto não encontrado com o nome: " + createOrdemDeServicoDTO.produtos().stream().findFirst().get()));
-        ordemDeServico.getProdutos().add(produtoEstoque);
+        List<ProdutoEstoque> produtoEstoque = produtoEstoqueRepository.findByNomeIn(createOrdemDeServicoDTO.produtos());
+        ordemDeServico.setProdutos(produtoEstoque);
 
-//        ordemProdutosServicos.setQuantidade(produtoEstoque.getQuantidade());
-//        ordemProdutosServicos.setValorUnitario(produtoEstoque.getValorComMaoObra());
-//        ordemProdutosServicos.setTipo(createOrdemDeServicoDTO.tipo());
-//        ordemProdutosServicos.setGarantia(createOrdemDeServicoDTO.garantia());
-//        ordemProdutosServicos.setOrdemDeServico(ordemDeServico);
-//        ordemProdutosServicos.setProdutoEstoque(produtoEstoque);
-
-        Servico servico = servicoRepository.findByNomeIn(createOrdemDeServicoDTO.servicos()).stream().findFirst().orElseThrow(()-> new RecursoNaoEncontradoException("Serviço não encontrado com o nome: " + createOrdemDeServicoDTO.servicos().stream().findFirst().get()));
-//        ordemProdutosServicos.setServico(servico);
-        ordemDeServico.getServicos().add(servico);
+        List<Servico> servico = servicoRepository.findByNomeIn(createOrdemDeServicoDTO.servicos());
+        ordemDeServico.setServicos(servico);
 
         ordemDeServico.setObservacoes(createOrdemDeServicoDTO.observacoes());
         ordemDeServicoRepository.save(ordemDeServico);
