@@ -46,9 +46,6 @@ public class OrdemDeServicoService {
         Veiculo veiculo = veiculoRepository.findById(createOrdemDeServicoDTO.fkVeiculo()).orElseThrow(()-> new RecursoNaoEncontradoException("Veículo não encontrado com o id: " + createOrdemDeServicoDTO.fkVeiculo()));
         ordemDeServico.setVeiculo(veiculo);
 
-        Cliente cliente = veiculo.getCliente();
-        ordemDeServico.setCliente(cliente);
-
         Mecanico mecanico = mecanicoRepository.findById(createOrdemDeServicoDTO.fkMecanico()).orElseThrow(()-> new RecursoNaoEncontradoException("Mecânico não encontrado com o id: " + createOrdemDeServicoDTO.fkMecanico()));
         ordemDeServico.setMecanico(mecanico);
 
@@ -56,10 +53,19 @@ public class OrdemDeServicoService {
         ordemDeServico.setDataFim(createOrdemDeServicoDTO.dataFim());
         ordemDeServico.setTipoOs(createOrdemDeServicoDTO.tipoOs());
 
+        OrdemProdutosServicos ordemProdutosServicos = new OrdemProdutosServicos();
         ProdutoEstoque produtoEstoque = produtoEstoqueRepository.findByNomeIn(createOrdemDeServicoDTO.produtos()).stream().findFirst().orElseThrow(()-> new RecursoNaoEncontradoException("Produto não encontrado com o nome: " + createOrdemDeServicoDTO.produtos().stream().findFirst().get()));
         ordemDeServico.getProdutos().add(produtoEstoque);
 
+//        ordemProdutosServicos.setQuantidade(produtoEstoque.getQuantidade());
+//        ordemProdutosServicos.setValorUnitario(produtoEstoque.getValorComMaoObra());
+//        ordemProdutosServicos.setTipo(createOrdemDeServicoDTO.tipo());
+//        ordemProdutosServicos.setGarantia(createOrdemDeServicoDTO.garantia());
+//        ordemProdutosServicos.setOrdemDeServico(ordemDeServico);
+//        ordemProdutosServicos.setProdutoEstoque(produtoEstoque);
+
         Servico servico = servicoRepository.findByNomeIn(createOrdemDeServicoDTO.servicos()).stream().findFirst().orElseThrow(()-> new RecursoNaoEncontradoException("Serviço não encontrado com o nome: " + createOrdemDeServicoDTO.servicos().stream().findFirst().get()));
+//        ordemProdutosServicos.setServico(servico);
         ordemDeServico.getServicos().add(servico);
 
         ordemDeServico.setObservacoes(createOrdemDeServicoDTO.observacoes());

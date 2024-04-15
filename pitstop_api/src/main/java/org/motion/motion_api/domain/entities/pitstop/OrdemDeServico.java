@@ -32,18 +32,15 @@ public class OrdemDeServico {
     private String observacoes;
 
 
-    @ManyToOne @JoinColumn(name = "idOficina")
+    @ManyToOne @JoinColumn(name = "fkOficina")
     @JsonIgnore
     private Oficina oficina;
-    @ManyToOne @JoinColumn(name = "idVeiculo")
+    @ManyToOne @JoinColumn(name = "fkVeiculo")
     @JsonIgnore
     private Veiculo veiculo;
-    @ManyToOne @JoinColumn(name = "idMecanico")
+    @ManyToOne @JoinColumn(name = "fkMecanico")
     @JsonIgnore
     private Mecanico mecanico;
-    @ManyToOne @JoinColumn(name = "idCliente")
-    @JsonIgnore
-    private Cliente cliente;
 
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<ProdutoEstoque> produtos = new HashSet<>();

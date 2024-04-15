@@ -1,6 +1,8 @@
 package org.motion.motion_api.application.services;
 
 import org.motion.motion_api.application.dtos.cliente.CreateClienteDTO;
+import org.motion.motion_api.application.services.util.ServiceHelper;
+import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.Cliente;
 import org.motion.motion_api.domain.repositories.pitstop.IClienteRepository;
 import org.motion.motion_api.domain.repositories.pitstop.IVeiculoRepository;
@@ -14,13 +16,13 @@ public class ClienteService {
     @Autowired
     private IClienteRepository clienteRepository;
     @Autowired
-    private IVeiculoRepository veiculoRepository;
-
+    private ServiceHelper serviceHelper;
     public List<Cliente> listarClientes(){
         return clienteRepository.findAll();
     }
     public Cliente cadastrar(CreateClienteDTO novoClienteDTO){
-        Cliente cliente = new Cliente(novoClienteDTO);
+        Oficina oficina = serviceHelper.pegarOficinaValida(novoClienteDTO.fkOficina());
+        Cliente cliente = new Cliente(novoClienteDTO, oficina);
         clienteRepository.save(cliente);
         return cliente;
     }

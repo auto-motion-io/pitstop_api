@@ -2,6 +2,7 @@ package org.motion.motion_api.application.controllers.pitstop;
 
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.motion.motion_api.application.dtos.cliente.CreateClienteDTO;
 import org.motion.motion_api.application.services.ClienteService;
 import org.motion.motion_api.domain.entities.pitstop.Cliente;
@@ -23,7 +24,7 @@ public class ClienteController {
         return ResponseEntity.status(200).body(clienteService.listarClientes());
     }
     @PostMapping()
-    public ResponseEntity<Cliente> cadastrar(@RequestBody CreateClienteDTO novoCliente){
+    public ResponseEntity<Cliente> cadastrar(@Valid @RequestBody CreateClienteDTO novoCliente){
         Cliente cliente = clienteService.cadastrar(novoCliente);
         return ResponseEntity.status(201).body(cliente);
     }

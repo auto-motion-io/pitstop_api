@@ -26,6 +26,8 @@ public record CreateOrdemDeServicoDTO(
         @NotBlank
         String tipoOs,
         @NotBlank
+        String tipo,
+        @NotBlank
         List<String> produtos,
         @NotBlank
         List<String> servicos,

@@ -23,12 +23,12 @@ public class Mecanico {
 
     @OneToOne
     @JoinColumn(name = "fkOficina") @NotNull
-    private Oficina oficinaMecanico;
+    private Oficina oficina;
 
 
     public Mecanico(CreateMecanicoDTO createMecanicoDTO, Oficina oficina) {
         this.nome = createMecanicoDTO.nome();
         this.telefone = createMecanicoDTO.telefone();
-        this.oficinaMecanico = oficina;
+        this.oficina = oficina;
     }
 }

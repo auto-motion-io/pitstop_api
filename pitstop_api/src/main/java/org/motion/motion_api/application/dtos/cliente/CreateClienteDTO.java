@@ -4,11 +4,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CreateClienteDTO(
-        @NotNull @NotBlank
+        @NotBlank
         String nome,
-        @NotNull @NotBlank
+        @NotBlank
         String telefone,
-        @NotNull @NotBlank
-        String email
-) {
+        @NotBlank
+        String email,
+        @NotNull
+        Integer fkOficina) {
 }

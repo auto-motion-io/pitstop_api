@@ -13,5 +13,18 @@ import lombok.*;
 public class OrdemProdutosServicos {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idOrdemProdutoServico;
+    private Integer quantidade;
+    private Double valorUnitario;
+    private String tipo;
+    private String garantia;
+
+    @ManyToOne @JoinColumn(name = "fkOrdemDeServico")
+    private OrdemDeServico ordemDeServico;
+
+    @ManyToOne @JoinColumn(name = "fkProdutoEstoque")
+    private ProdutoEstoque produtoEstoque;
+
+    @ManyToOne @JoinColumn(name = "fkServico")
+    private Servico servico;
 
 }
