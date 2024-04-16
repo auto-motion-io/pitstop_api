@@ -7,6 +7,7 @@ import org.motion.motion_api.application.dtos.ordemDeServico.CreateOrdemDeServic
 import org.motion.motion_api.application.services.OrdemDeServicoService;
 import org.motion.motion_api.domain.entities.pitstop.OrdemDeServico;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,5 +48,12 @@ public class OrdemDeServicoController {
     @PutMapping("/{id}")
     public OrdemDeServico atualizar(@PathVariable Integer id, @RequestBody CreateOrdemDeServicoDTO novaOrdemDeServicoDTO){
         return ordemDeServicoService.atualizar(id, novaOrdemDeServicoDTO);
+    }
+
+    @Operation(summary = "Download ordem de serviço em csv")
+    @GetMapping("/download-csv/{id}")
+    public ResponseEntity<byte[]> downloadCsvPorId(@PathVariable int id){
+        byte[] bytes = ordemDeServicoService.downloadCsvPorId(id);
+        return ResponseEntity.status(200).body(bytes);
     }
 }
