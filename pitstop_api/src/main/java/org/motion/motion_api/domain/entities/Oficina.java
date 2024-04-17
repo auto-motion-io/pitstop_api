@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.motion.motion_api.domain.entities.pitstop.Gerente;
 
+import java.util.Set;
+
 @Table(name = "Pitstop_Oficina")
 @Entity(name = "Oficina")
 @Getter
@@ -29,6 +31,6 @@ public class Oficina {
     private String complemento;
     private boolean hasBuscar;
 
-    @OneToOne(mappedBy = "oficina", cascade = CascadeType.ALL) @JsonIgnore
-    private Gerente gerente;
+    @OneToMany(mappedBy = "oficina", cascade = CascadeType.ALL) @JsonIgnore
+    private Set<Gerente> gerentes;
 }

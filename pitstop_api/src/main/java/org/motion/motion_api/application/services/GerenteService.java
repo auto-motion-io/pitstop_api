@@ -63,13 +63,13 @@ public class GerenteService implements GerenteServiceStrategy {
     public Gerente criar(CreateGerenteDTO novoGerenteDTO) throws MessagingException {
         Oficina oficina = serviceHelper.pegarOficinaValida(novoGerenteDTO.fkOficina());
         verificarEmailDuplicado(novoGerenteDTO.email());
-        oficinaComGerenteCadastrado(oficina);
+        //oficinaComGerenteCadastrado(oficina);
         String senhaGerada = geradorDeSenhaAleatoria();
         String senhaCriptografada = new BCryptPasswordEncoder().encode(senhaGerada);
         System.out.println(senhaGerada);
         Gerente gerente = new Gerente(novoGerenteDTO, oficina, senhaCriptografada);
-        enviarEmailComSenha(novoGerenteDTO, senhaGerada);
         gerenteRepository.save(gerente);
+        enviarEmailComSenha(novoGerenteDTO, senhaGerada);
 
         return gerente;
     }

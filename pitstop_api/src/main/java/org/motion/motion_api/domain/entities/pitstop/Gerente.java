@@ -34,7 +34,7 @@ public class Gerente implements UserDetails {
     @Column(columnDefinition = "varchar(255) default 'PENDENTE'")
     private String status;
 
-    @OneToOne @JoinColumn(name = "fk_oficina") @NotNull
+    @ManyToOne @JoinColumn(name = "fk_oficina") @NotNull
     private Oficina oficina;
 
 
