@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.apache.coyote.Response;
 import org.motion.motion_api.application.dtos.ordemDeServico.CreateOrdemDeServicoDTO;
+import org.motion.motion_api.application.dtos.ordemDeServico.UpdateOrdemDeServicoDTO;
 import org.motion.motion_api.application.services.OrdemDeServicoService;
 import org.motion.motion_api.domain.entities.pitstop.OrdemDeServico;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +49,8 @@ public class OrdemDeServicoController {
 
     @Operation(summary = "Atualizar ordem de serviço por id")
     @PutMapping("/{id}")
-    public ResponseEntity<OrdemDeServico> atualizar(@PathVariable Integer id, @RequestBody CreateOrdemDeServicoDTO novaOrdemDeServicoDTO){
-        return ResponseEntity.status(200).body(ordemDeServicoService.atualizar(id, novaOrdemDeServicoDTO));
+    public ResponseEntity<OrdemDeServico> atualizar(@PathVariable Integer id, @RequestBody UpdateOrdemDeServicoDTO alterarOrdemDeServicoDTO){
+        return ResponseEntity.status(200).body(ordemDeServicoService.atualizar(id, alterarOrdemDeServicoDTO));
     }
 
     @Operation(summary = "Download ordem de serviço em csv")

@@ -1,6 +1,7 @@
 package org.motion.motion_api.application.services;
 
 import org.motion.motion_api.application.dtos.ordemDeServico.CreateOrdemDeServicoDTO;
+import org.motion.motion_api.application.dtos.ordemDeServico.UpdateOrdemDeServicoDTO;
 import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.entities.Oficina;
@@ -46,7 +47,7 @@ public class OrdemDeServicoService {
         OrdemDeServico ordemDeServico = new OrdemDeServico();
         ordemDeServico.setStatus(createOrdemDeServicoDTO.status());
         ordemDeServico.setGarantia(createOrdemDeServicoDTO.garantia());
-        ordemDeServico.setToken(UUID.randomUUID().toString().substring(31, 36));
+        ordemDeServico.setToken(UUID.randomUUID().toString().substring(31, 36).toUpperCase());
 
         Oficina oficina = serviceHelper.pegarOficinaValida(createOrdemDeServicoDTO.fkOficina());
 
@@ -86,34 +87,33 @@ public class OrdemDeServicoService {
         ordemDeServicoRepository.delete(ordemDeServico);
     }
 
-    public OrdemDeServico atualizar(Integer id, CreateOrdemDeServicoDTO novaOrdemDeServicoDTO) {
+    public OrdemDeServico atualizar(Integer id, UpdateOrdemDeServicoDTO alterarOrdemDeServicoDTO) {
         OrdemDeServico ordemDeServico = buscarPorId(id);
-        ordemDeServico.setStatus(novaOrdemDeServicoDTO.status());
-        ordemDeServico.setGarantia(novaOrdemDeServicoDTO.garantia());
-        ordemDeServico.setToken(UUID.randomUUID().toString().substring(31, 36));
+        ordemDeServico.setStatus(alterarOrdemDeServicoDTO.status());
+        ordemDeServico.setGarantia(alterarOrdemDeServicoDTO.garantia());
 
-        Oficina oficina = serviceHelper.pegarOficinaValida(novaOrdemDeServicoDTO.fkOficina());
+        Oficina oficina = serviceHelper.pegarOficinaValida(alterarOrdemDeServicoDTO.fkOficina());
         ordemDeServico.setOficina(oficina);
 
-        Veiculo veiculo = veiculoRepository.findById(novaOrdemDeServicoDTO.fkVeiculo()).orElseThrow(() -> new RecursoNaoEncontradoException("Veículo não encontrado com o id: " + novaOrdemDeServicoDTO.fkVeiculo()));
+        Veiculo veiculo = veiculoRepository.findById(alterarOrdemDeServicoDTO.fkVeiculo()).orElseThrow(() -> new RecursoNaoEncontradoException("Veículo não encontrado com o id: " + alterarOrdemDeServicoDTO.fkVeiculo()));
         ordemDeServico.setVeiculo(veiculo);
 
-        Mecanico mecanico = mecanicoRepository.findById(novaOrdemDeServicoDTO.fkMecanico()).orElse(null);
+        Mecanico mecanico = mecanicoRepository.findById(alterarOrdemDeServicoDTO.fkMecanico()).orElse(null);
         if (mecanico != null) {
             ordemDeServico.setMecanico(mecanico);
         }
 
-        ordemDeServico.setDataInicio(novaOrdemDeServicoDTO.dataInicio());
-        ordemDeServico.setDataFim(novaOrdemDeServicoDTO.dataFim());
-        ordemDeServico.setTipoOs(novaOrdemDeServicoDTO.tipoOs());
+        ordemDeServico.setDataInicio(alterarOrdemDeServicoDTO.dataInicio());
+        ordemDeServico.setDataFim(alterarOrdemDeServicoDTO.dataFim());
+        ordemDeServico.setTipoOs(alterarOrdemDeServicoDTO.tipoOs());
 
-        List<ProdutoEstoque> produtoEstoque = produtoEstoqueRepository.findByNomeIn(novaOrdemDeServicoDTO.produtos());
+        List<ProdutoEstoque> produtoEstoque = produtoEstoqueRepository.findByNomeIn(alterarOrdemDeServicoDTO.produtos());
         ordemDeServico.setProdutos(produtoEstoque);
 
-        List<Servico> servico = servicoRepository.findByNomeIn(novaOrdemDeServicoDTO.servicos());
+        List<Servico> servico = servicoRepository.findByNomeIn(alterarOrdemDeServicoDTO.servicos());
         ordemDeServico.setServicos(servico);
 
-        ordemDeServico.setObservacoes(novaOrdemDeServicoDTO.observacoes());
+        ordemDeServico.setObservacoes(alterarOrdemDeServicoDTO.observacoes());
         ordemDeServicoRepository.save(ordemDeServico);
         return ordemDeServico;
     }
