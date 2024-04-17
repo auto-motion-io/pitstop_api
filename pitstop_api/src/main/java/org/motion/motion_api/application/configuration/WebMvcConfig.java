@@ -1,5 +1,5 @@
 package org.motion.motion_api.application.configuration;
-import org.motion.motion_api.application.exception.util.PathInterceptor;
+import org.motion.motion_api.application.exceptions.util.PathInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

@@ -1,11 +1,9 @@
-package org.motion.motion_api.application.exception;
+package org.motion.motion_api.application.exceptions;
 
-import com.auth0.jwt.exceptions.JWTCreationException;
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import org.apache.commons.lang3.NotImplementedException;
-import org.motion.motion_api.application.exception.util.ErrorHelper;
-import org.motion.motion_api.application.exception.util.ErrorResponse;
-import org.motion.motion_api.application.exception.util.PathInterceptor;
+import org.motion.motion_api.application.exceptions.util.ErrorHelper;
+import org.motion.motion_api.application.exceptions.util.ErrorResponse;
+import org.motion.motion_api.application.exceptions.util.PathInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

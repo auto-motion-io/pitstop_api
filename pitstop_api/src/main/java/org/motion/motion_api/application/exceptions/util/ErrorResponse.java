@@ -1,4 +1,4 @@
-package org.motion.motion_api.application.exception.util;
+package org.motion.motion_api.application.exceptions.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

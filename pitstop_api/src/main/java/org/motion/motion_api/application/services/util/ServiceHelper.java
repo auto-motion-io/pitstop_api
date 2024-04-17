@@ -1,10 +1,8 @@
 package org.motion.motion_api.application.services.util;
 
-import org.hibernate.annotations.SecondaryRow;
-import org.motion.motion_api.application.exception.RecursoNaoEncontradoException;
+import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.repositories.IOficinaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service

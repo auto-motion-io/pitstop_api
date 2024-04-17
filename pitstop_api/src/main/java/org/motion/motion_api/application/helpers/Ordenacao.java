@@ -1,9 +1,8 @@
-package org.motion.motion_api.application.helper;
+package org.motion.motion_api.application.helpers;
 
 import org.motion.motion_api.domain.entities.pitstop.Tarefa;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class Ordenacao {
 

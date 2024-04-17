@@ -1,7 +1,7 @@
 package org.motion.motion_api.application.services;
 
 import org.motion.motion_api.application.dtos.ordemDeServico.CreateOrdemDeServicoDTO;
-import org.motion.motion_api.application.exception.RecursoNaoEncontradoException;
+import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.*;
@@ -9,9 +9,7 @@ import org.motion.motion_api.domain.repositories.IOficinaRepository;
 import org.motion.motion_api.domain.repositories.pitstop.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;

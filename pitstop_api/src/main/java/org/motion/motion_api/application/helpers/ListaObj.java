@@ -1,4 +1,4 @@
-package org.motion.motion_api.application.helper;
+package org.motion.motion_api.application.helpers;
 
 import lombok.Getter;
 

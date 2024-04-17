@@ -1,4 +1,4 @@
-package org.motion.motion_api.application.exception.util;
+package org.motion.motion_api.application.exceptions.util;
 
 import java.util.ArrayList;
 import java.util.List;
