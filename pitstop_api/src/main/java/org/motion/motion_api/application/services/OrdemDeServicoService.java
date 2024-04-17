@@ -88,8 +88,32 @@ public class OrdemDeServicoService {
 
     public OrdemDeServico atualizar(Integer id, CreateOrdemDeServicoDTO novaOrdemDeServicoDTO) {
         OrdemDeServico ordemDeServico = buscarPorId(id);
-        ordemDeServico.setObservacoes(novaOrdemDeServicoDTO.observacoes());
         ordemDeServico.setStatus(novaOrdemDeServicoDTO.status());
+        ordemDeServico.setGarantia(novaOrdemDeServicoDTO.garantia());
+        ordemDeServico.setToken(UUID.randomUUID().toString().substring(31, 36));
+
+        Oficina oficina = serviceHelper.pegarOficinaValida(novaOrdemDeServicoDTO.fkOficina());
+        ordemDeServico.setOficina(oficina);
+
+        Veiculo veiculo = veiculoRepository.findById(novaOrdemDeServicoDTO.fkVeiculo()).orElseThrow(() -> new RecursoNaoEncontradoException("Veículo não encontrado com o id: " + novaOrdemDeServicoDTO.fkVeiculo()));
+        ordemDeServico.setVeiculo(veiculo);
+
+        Mecanico mecanico = mecanicoRepository.findById(novaOrdemDeServicoDTO.fkMecanico()).orElse(null);
+        if (mecanico != null) {
+            ordemDeServico.setMecanico(mecanico);
+        }
+
+        ordemDeServico.setDataInicio(novaOrdemDeServicoDTO.dataInicio());
+        ordemDeServico.setDataFim(novaOrdemDeServicoDTO.dataFim());
+        ordemDeServico.setTipoOs(novaOrdemDeServicoDTO.tipoOs());
+
+        List<ProdutoEstoque> produtoEstoque = produtoEstoqueRepository.findByNomeIn(novaOrdemDeServicoDTO.produtos());
+        ordemDeServico.setProdutos(produtoEstoque);
+
+        List<Servico> servico = servicoRepository.findByNomeIn(novaOrdemDeServicoDTO.servicos());
+        ordemDeServico.setServicos(servico);
+
+        ordemDeServico.setObservacoes(novaOrdemDeServicoDTO.observacoes());
         ordemDeServicoRepository.save(ordemDeServico);
         return ordemDeServico;
     }
