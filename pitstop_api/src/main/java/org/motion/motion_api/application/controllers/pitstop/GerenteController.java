@@ -73,4 +73,11 @@ public class GerenteController {
         Gerente gerente = gerenteService.atualizarSenha(id, updateSenhaGerenteDTO);
         return ResponseEntity.status(200).body(gerente);
     }
+
+    @Operation(summary = "Deleta um gerente")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable int id){
+        gerenteService.deletar(id);
+        return ResponseEntity.status(204).build();
+    }
 }

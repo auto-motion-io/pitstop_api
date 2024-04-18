@@ -33,41 +33,42 @@ import java.util.List;
 public class GerenteService implements GerenteServiceStrategy {
 
     @Autowired
-    IGerenteRepository gerenteRepository;
+    private IGerenteRepository gerenteRepository;
 
     @Autowired
-    IOficinaRepository oficinaRepository;
-    @Autowired
-    ServiceHelper serviceHelper;
+    private ServiceHelper serviceHelper;
 
     @Autowired
     AuthorizationService authorizationService;
+
     @Autowired
     private AuthenticationManager authenticationManager;
+
     @Autowired
     private TokenService tokenService;
 
     @Autowired
     private JavaMailSender emailSender;
 
-
     public List<Gerente> listarTodos() {
         return gerenteRepository.findAll();
     }
 
     public Gerente buscarPorId(int id) {
-        return gerenteRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Gerente não encontrado com o id: " + id));
+        return serviceHelper.pegarGerenteValido(id);
     }
 
     public Gerente criar(CreateGerenteDTO novoGerenteDTO) throws MessagingException {
         Oficina oficina = serviceHelper.pegarOficinaValida(novoGerenteDTO.fkOficina());
         verificarEmailDuplicado(novoGerenteDTO.email());
+
         //oficinaComGerenteCadastrado(oficina);
         String senhaGerada = geradorDeSenhaAleatoria();
         String senhaCriptografada = new BCryptPasswordEncoder().encode(senhaGerada);
-        System.out.println(senhaGerada);
+
         Gerente gerente = new Gerente(novoGerenteDTO, oficina, senhaCriptografada);
         gerenteRepository.save(gerente);
+
         enviarEmailComSenha(novoGerenteDTO, senhaGerada);
 
         return gerente;
@@ -77,21 +78,24 @@ public class GerenteService implements GerenteServiceStrategy {
     @Transactional
     public Gerente atualizar(int id, UpdateGerenteDTO updateGerenteDTO) {
         Gerente gerente = buscarPorId(id);
+
         gerente.setNome(updateGerenteDTO.nome());
         gerente.setSobrenome(updateGerenteDTO.sobrenome());
+
         gerenteRepository.save(gerente);
         return gerente;
     }
 
-    @Override
     public void deletar(int id) {
-        throw new NotImplementedException();
+        Gerente gerente = buscarPorId(id);
+        gerenteRepository.delete(gerente);
     }
 
     @Transactional
     public Gerente atualizarSenha(int id, UpdateSenhaGerenteDTO updateSenhaGerenteDTO) {
         Gerente gerente = buscarPorId(id);
-        gerente.setSenha(updateSenhaGerenteDTO.senha());
+        String senhaCriptografada = new BCryptPasswordEncoder().encode(updateSenhaGerenteDTO.senha());
+        gerente.setSenha(senhaCriptografada);
         gerenteRepository.save(gerente);
         return gerente;
     }

@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.motion.motion_api.domain.entities.pitstop.Gerente;
+import org.motion.motion_api.domain.entities.pitstop.InformacoesOficina;
 
 import java.util.Set;
 
@@ -33,4 +34,9 @@ public class Oficina {
 
     @OneToMany(mappedBy = "oficina", cascade = CascadeType.ALL) @JsonIgnore
     private Set<Gerente> gerentes;
+
+    @OneToOne @JoinColumn(name = "fkInformacoes") @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private InformacoesOficina informacoesOficina;
+
+
 }

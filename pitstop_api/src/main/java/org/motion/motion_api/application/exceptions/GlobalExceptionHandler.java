@@ -1,12 +1,14 @@
 package org.motion.motion_api.application.exceptions;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.apache.coyote.Response;
 import org.motion.motion_api.application.exceptions.util.ErrorHelper;
 import org.motion.motion_api.application.exceptions.util.ErrorResponse;
 import org.motion.motion_api.application.exceptions.util.PathInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -75,6 +77,13 @@ public class GlobalExceptionHandler {
         String path = pathInterceptor.getPath();
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), path, ErrorHelper.getStackTracePersonalizado(ex.getStackTrace()));
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException ex){
+        String path = pathInterceptor.getPath();
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.FORBIDDEN,ex.getMessage(),path,ErrorHelper.getStackTracePersonalizado(ex.getStackTrace()));
+        return new ResponseEntity<>(errorResponse,HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler
