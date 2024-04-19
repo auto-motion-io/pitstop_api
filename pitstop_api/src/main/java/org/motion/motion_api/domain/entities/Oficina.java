@@ -35,8 +35,11 @@ public class Oficina {
     @OneToMany(mappedBy = "oficina", cascade = CascadeType.ALL) @JsonIgnore
     private Set<Gerente> gerentes;
 
-    @OneToOne @JoinColumn(name = "fkInformacoes") @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @OneToOne @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private InformacoesOficina informacoesOficina;
 
-
+    @JsonIgnore
+    public void setInformacoesOficina(InformacoesOficina informacoesOficina) {
+        this.informacoesOficina = informacoesOficina;
+    }
 }
