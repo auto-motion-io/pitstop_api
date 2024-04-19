@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
 @SpringBootApplication
-@OpenAPIDefinition(info = @Info(title = "Motion API", version = "1.0", description = ""))
+@OpenAPIDefinition(info = @Info(title = "Pitstop API", version = "1.0", description = ""))
 @SecurityScheme(name = "motion_jwt", scheme = "bearer", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
 public class PitstopApiApplication {
 
