@@ -74,6 +74,13 @@ public class GerenteController {
         return ResponseEntity.status(200).body(gerente);
     }
 
+    @Operation(summary = "Envia email para recuperação de senha")
+    @PostMapping("/recuperar-senha")
+    public ResponseEntity<Void> recuperarSenhaPorEmail(@RequestBody RecuperarSenhaDTO recuperarSenhaDTO) throws MessagingException {
+        gerenteService.enviarEmailRecuperacao(recuperarSenhaDTO.getEmail());
+        return ResponseEntity.status(200).build();
+    }
+
     @Operation(summary = "Deleta um gerente")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable int id){

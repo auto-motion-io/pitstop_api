@@ -69,7 +69,7 @@ public class GerenteService implements GerenteServiceStrategy {
         Gerente gerente = new Gerente(novoGerenteDTO, oficina, senhaCriptografada);
         gerenteRepository.save(gerente);
 
-        enviarEmailComSenha(novoGerenteDTO, senhaGerada);
+        emailNovaSenha(novoGerenteDTO, senhaGerada);
 
         return gerente;
     }
@@ -113,6 +113,13 @@ public class GerenteService implements GerenteServiceStrategy {
         return new LoginGerenteResponse(gerente.getIdGerente(), gerente.getEmail(), gerente.getSobrenome(), gerente.getStatus(), gerente.getOficina(), token);
     }
 
+    public boolean enviarEmailRecuperacao(String email) throws MessagingException {
+        boolean exists = gerenteRepository.existsByEmail(email);
+        if(!exists) throw new RecursoNaoEncontradoException("Email não encontrado no sistema");
+        emailRecuperacao(email);
+        return true;
+    }
+
 
     private void verificarEmailDuplicado(String email) {
         if (gerenteRepository.existsByEmail(email)) {
@@ -143,7 +150,7 @@ public class GerenteService implements GerenteServiceStrategy {
         return sb.toString();
     }
 
-    private void enviarEmailComSenha(CreateGerenteDTO user, String password) throws MessagingException {
+    private void emailNovaSenha(CreateGerenteDTO user, String password) throws MessagingException {
         String htmlBody = "<html>" +
                 "<head><link href='https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap' rel='stylesheet'></head>" +
                 "<body style='font-family: Roboto, sans-serif;'><h2>Olá! " + user.nome() + "</h2>" +
@@ -161,6 +168,25 @@ public class GerenteService implements GerenteServiceStrategy {
         helper.setText(htmlBody, true); // Habilita o processamento de HTML
         emailSender.send(message);
     }
+
+    private void emailRecuperacao(String email) throws MessagingException {
+        String htmlBody = "<html>" +
+                "<head><link href='https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap' rel='stylesheet'></head>" +
+                "<body style='font-family: Roboto, sans-serif;'><h2>Recebemos uma mensagem informando que você esqueceu sua senha.<br> Se foi você, pode redefinir a senha agora.</h2>" +
+                "<a href='https://www.google.com' style='padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;'>Ir para o Google</a>"+
+                "<p>Atenciosamente,</p>" +
+                "<p>A equipe motion</p>" +
+                "</body></html>";
+
+
+        MimeMessage message = emailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        helper.setTo(email);
+        helper.setSubject("Recuperação de senha");
+        helper.setText(htmlBody, true); // Habilita o processamento de HTML
+        emailSender.send(message);
+    }
+
 
 
 
