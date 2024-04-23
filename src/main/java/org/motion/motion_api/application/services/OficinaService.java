@@ -64,9 +64,9 @@ public class OficinaService implements OficinaServiceStrategy{
     }
 
     public void deletar(int id) {
-        //oficinaRepository.findById(id).orElseThrow(()->new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + id));
-        //oficinaRepository.deleteById(id);
-        throw new NotImplementedException("");
+        oficinaRepository.findById(id).orElseThrow(()->new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + id));
+        oficinaRepository.deleteById(id);
+        //throw new NotImplementedException("");
     }
 
 
