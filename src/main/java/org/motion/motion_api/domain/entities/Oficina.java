@@ -2,6 +2,7 @@ package org.motion.motion_api.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -35,11 +36,8 @@ public class Oficina {
     @OneToMany(mappedBy = "oficina", cascade = CascadeType.ALL) @JsonIgnore
     private Set<Gerente> gerentes;
 
-    @OneToOne @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @OneToOne @JsonProperty(access = JsonProperty.Access.READ_ONLY) @Schema(hidden = true)
     private InformacoesOficina informacoesOficina;
 
-    @JsonIgnore
-    public void setInformacoesOficina(InformacoesOficina informacoesOficina) {
-        this.informacoesOficina = informacoesOficina;
-    }
+
 }
