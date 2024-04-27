@@ -40,4 +40,9 @@ public class FinanceiroService {
         return financeiroRepository.findAllByOficina_IdOficina(serviceHelper.pegarOficinaValida(idOficina).getIdOficina());
     }
 
+    public void deletarFinanceiro(int id){
+        if(serviceHelper.pegarOficinaValida(id)==null) return;
+        financeiroRepository.deleteById(id);
+    }
+
 }

@@ -41,5 +41,11 @@ public class FinanceiroController {
         return ResponseEntity.status(200).body(financas);
     }
 
+    @Operation(summary = "Deleta uma operação financeira.")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarFinanceiro(@PathVariable int id){
+        financeiroService.deletarFinanceiro(id);
+        return ResponseEntity.status(204).build();
+    }
 
 }
