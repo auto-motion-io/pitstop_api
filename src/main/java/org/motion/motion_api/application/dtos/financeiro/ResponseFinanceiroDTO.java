@@ -1,10 +1,12 @@
 package org.motion.motion_api.application.dtos.financeiro;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.motion.motion_api.domain.entities.pitstop.Financeiro;
 
 import java.time.LocalDate;
 
-@Data
+@Data @NoArgsConstructor
 public class ResponseFinanceiroDTO {
     private Integer idMovimento;
     private String transacao;
@@ -12,4 +14,16 @@ public class ResponseFinanceiroDTO {
     private LocalDate data;
     private Double valor;
     private String formaPagamento;
+
+    public ResponseFinanceiroDTO(Financeiro financeiro) {
+        this.idMovimento = financeiro.getIdMovimento();
+        this.transacao = financeiro.getTransacao();
+        this.categoria = financeiro.getCategoria();
+        this.data = financeiro.getData();
+        this.valor = financeiro.getValor();
+        this.formaPagamento = financeiro.getFormaPagamento();
+    }
 }
+
+
+

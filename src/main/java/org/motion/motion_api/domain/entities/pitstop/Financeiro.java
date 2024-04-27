@@ -1,5 +1,6 @@
 package org.motion.motion_api.domain.entities.pitstop;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -25,7 +26,7 @@ public class Financeiro {
     private Double valor;
     private String formaPagamento;
 
-    @OneToOne @JoinColumn(name = "fkOficina") @NotNull
+    @ManyToOne @JoinColumn(name = "fkOficina") @NotNull @JsonIgnore
     private Oficina oficina;
 
     public Financeiro(CreateFinanceiroDTO dto, Oficina oficina) {

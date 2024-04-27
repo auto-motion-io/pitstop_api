@@ -29,9 +29,15 @@ public class FinanceiroService {
         return new ResponseDataFinanceiro(valorTotalEntradas,valorTotalSaidas,saldo);
     }
 
-    public ResponseFinanceiroDTO registrarTransacaoFinanceira(CreateFinanceiroDTO dto){
+    public Financeiro registrarTransacaoFinanceira(CreateFinanceiroDTO dto){
         Oficina oficina = serviceHelper.pegarOficinaValida(dto.getIdOficina());
         Financeiro financeiro = new Financeiro(dto,oficina);
-        return null;
+        financeiroRepository.save(financeiro);
+        return financeiro;
     }
+
+    public List<Financeiro> listarTodasOperacoesFinanceiras(int idOficina) {
+        return financeiroRepository.findAllByOficina_IdOficina(serviceHelper.pegarOficinaValida(idOficina).getIdOficina());
+    }
+
 }
