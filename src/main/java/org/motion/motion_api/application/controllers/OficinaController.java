@@ -21,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/oficinas")
 @SecurityRequirement(name = "motion_jwt")
+@CrossOrigin(origins = "*")
 public class OficinaController {
 
     @Autowired
