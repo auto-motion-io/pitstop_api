@@ -9,15 +9,18 @@ import org.motion.motion_api.domain.entities.pitstop.*;
 import org.motion.motion_api.domain.repositories.IOficinaRepository;
 import org.motion.motion_api.domain.repositories.pitstop.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -118,49 +121,60 @@ public class OrdemDeServicoService {
         return ordemDeServico;
     }
 
-    public byte[] downloadCsvPorId(int id){
+    public FileSystemResource downloadCsvPorId(int id) throws IOException {
+        var sb = new StringBuilder();
         OrdemDeServico ordem = ordemDeServicoRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Ordem de serviço não encontrada com o id: " + id));
 
-        String filePath = "ordem_" + id + ".csv";
-        try (FileWriter writer = new FileWriter(filePath)) {
-            writer.append("IdOrdem,DataInicio,DataFim,Status,Desconto,ValorTotal,Token,TipoOs,Garantia,Observacoes,Oficina,Veiculo,Mecanico,Produtos,Servicos\n");
-            writer.append(String.valueOf(ordem.getIdOrdem())).append(",")
-                    .append(String.valueOf(ordem.getDataInicio())).append(",")
-                    .append(String.valueOf(ordem.getDataFim())).append(",")
-                    .append(ordem.getStatus()).append(",")
-                    .append(String.valueOf(ordem.getDesconto())).append(",")
-                    .append(String.valueOf(ordem.getValorTotal())).append(",")
-                    .append(ordem.getToken()).append(",")
-                    .append(ordem.getTipoOs()).append(",")
-                    .append(ordem.getGarantia()).append(",")
-                    .append(ordem.getObservacoes()).append(",")
-                    .append(ordem.getOficina().getNome()).append(",")
-                    .append(ordem.getVeiculo().getModelo()).append(",")
-                    .append(ordem.getMecanico() != null ? ordem.getMecanico().getNome() : "").append(",")
-                    .append(ordem.getProdutos().stream().map(ProdutoEstoque::getNome).collect(Collectors.joining(";"))).append(",")
-                    .append(ordem.getServicos().stream().map(Servico::getNome).collect(Collectors.joining(";")))
-                    .append("\n");
-        } catch (IOException e) {
-            // handle exception
+
+        String[] headers = {"id", "status", "garantia", "token", "fkOficina", "fkVeiculo", "fkMecanico", "dataInicio", "dataFim", "tipoOs", "produtos", "servicos", "observacoes"};
+
+        var sj1 = new StringJoiner(";");
+        for (String header : headers) {
+            sj1.add(header);
         }
 
-        byte[] csvBytes = null;
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line).append("\n");
-            }
-            csvBytes = sb.toString().getBytes();
-        } catch (IOException e) {
-            // handle exception
-        }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.setContentDispositionFormData("filename", "ordem_" + id + ".csv");
+        sb.append(sj1 + "\n");
 
-        return csvBytes;
+        var sj2 = new StringJoiner(";");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        sj2.add(ordem.getIdOrdem() != null ? ordem.getIdOrdem().toString() : "");
+        sj2.add(ordem.getStatus() != null ? ordem.getStatus() : "");
+        sj2.add(ordem.getGarantia() != null ? ordem.getGarantia() : "");
+        sj2.add(ordem.getToken() != null ? ordem.getToken() : "");
+        sj2.add(ordem.getOficina() != null && ordem.getOficina().getIdOficina() != null ? ordem.getOficina().getIdOficina().toString() : "");
+        sj2.add(ordem.getVeiculo() != null && ordem.getVeiculo().getIdVeiculo() != null ? ordem.getVeiculo().getIdVeiculo().toString() : "");
+        sj2.add(ordem.getMecanico() != null && ordem.getMecanico().getIdMecanico() != null ? ordem.getMecanico().getIdMecanico().toString() : "");
+        sj2.add(ordem.getDataInicio() != null ? ordem.getDataInicio().format(formatter) : "");
+        sj2.add(ordem.getDataFim() != null ? ordem.getDataFim().format(formatter) : "");
+        sj2.add(ordem.getTipoOs() != null ? ordem.getTipoOs() : "");
+        sj2.add(ordem.getProdutos() != null ? ordem.getProdutos().stream().map(ProdutoEstoque::getNome).collect(Collectors.joining(", ")) : "");
+        sj2.add(ordem.getServicos() != null ? ordem.getServicos().stream().map(Servico::getNome).collect(Collectors.joining(", ")) : "");
+        sj2.add(ordem.getObservacoes() != null ? ordem.getObservacoes() : "");
+
+
+        sb.append(sj2 + "\n");
+
+        FileWriter file = new FileWriter("report.csv");
+        file.write(sb.toString());
+        file.close();
+        var fileResource = new FileSystemResource("report.csv");
+
+        MediaType mediaType = MediaTypeFactory
+                .getMediaType(fileResource)
+                .orElse(MediaType.APPLICATION_OCTET_STREAM);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(mediaType);
+        // 3
+        ContentDisposition disposition = ContentDisposition
+                // 3.2
+                .attachment() // or .attachment()
+                // 3.1
+                .filename(fileResource.getFilename())
+                .build();
+        httpHeaders.setContentDisposition(disposition);
+
+        return fileResource;
     }
 }

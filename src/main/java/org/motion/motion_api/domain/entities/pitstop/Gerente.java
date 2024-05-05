@@ -30,9 +30,9 @@ public class Gerente implements UserDetails {
     @NotNull @NotBlank
     private String email;
     private String senha;
-
     @Column(columnDefinition = "varchar(255) default 'PENDENTE'")
     private String status;
+    private String fotoUrl;
 
     @ManyToOne @JoinColumn(name = "fk_oficina") @NotNull
     private Oficina oficina;

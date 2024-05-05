@@ -32,6 +32,7 @@ public class Oficina {
     private String numero;
     private String complemento;
     private boolean hasBuscar;
+    private String logoUrl;
 
     @OneToMany(mappedBy = "oficina", cascade = CascadeType.ALL) @JsonIgnore
     private Set<Gerente> gerentes;

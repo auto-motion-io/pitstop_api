@@ -3,15 +3,18 @@ package org.motion.motion_api.application.controllers.pitstop;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.apache.catalina.webresources.FileResource;
 import org.apache.coyote.Response;
 import org.motion.motion_api.application.dtos.ordemDeServico.CreateOrdemDeServicoDTO;
 import org.motion.motion_api.application.dtos.ordemDeServico.UpdateOrdemDeServicoDTO;
 import org.motion.motion_api.application.services.OrdemDeServicoService;
 import org.motion.motion_api.domain.entities.pitstop.OrdemDeServico;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -55,8 +58,23 @@ public class OrdemDeServicoController {
 
     @Operation(summary = "Download ordem de serviço em csv")
     @GetMapping("/download-csv/{id}")
-    public ResponseEntity<byte[]> downloadCsvPorId(@PathVariable int id){
-        byte[] bytes = ordemDeServicoService.downloadCsvPorId(id);
-        return ResponseEntity.status(200).body(bytes);
+    public ResponseEntity<FileSystemResource> downloadCsvPorId(@PathVariable int id) throws IOException {
+        FileSystemResource fileResource = ordemDeServicoService.downloadCsvPorId(id);
+        MediaType mediaType = MediaTypeFactory
+                .getMediaType(fileResource)
+                .orElse(MediaType.APPLICATION_OCTET_STREAM);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(mediaType);
+
+        ContentDisposition disposition = ContentDisposition
+                // 3.2
+                .attachment() // or .attachment()
+                // 3.1
+                .filename(fileResource.getFilename())
+                .build();
+        httpHeaders.setContentDisposition(disposition);
+
+        return new ResponseEntity<>(fileResource, httpHeaders, HttpStatus.OK);
+
     }
 }
