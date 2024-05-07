@@ -1,11 +1,10 @@
 package org.motion.motion_api.application.services;
 
-import org.motion.motion_api.application.dtos.cliente.CreateClienteDTO;
+import org.motion.motion_api.domain.dtos.cliente.CreateClienteDTO;
 import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.Cliente;
 import org.motion.motion_api.domain.repositories.pitstop.IClienteRepository;
-import org.motion.motion_api.domain.repositories.pitstop.IVeiculoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

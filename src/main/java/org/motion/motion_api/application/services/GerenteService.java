@@ -1,20 +1,22 @@
 package org.motion.motion_api.application.services;
 
 
+import jakarta.annotation.PostConstruct;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.apache.commons.lang3.NotImplementedException;
-import org.motion.motion_api.application.dtos.gerente.*;
 import org.motion.motion_api.application.exceptions.DadoUnicoDuplicadoException;
 import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.authorization.AuthorizationService;
+import org.motion.motion_api.application.services.observer.AccountCreationNotificationObserver;
+import org.motion.motion_api.application.services.observer.AccountCreationNotificationObserver.AccountCreationData;
+import org.motion.motion_api.application.services.observer.Subject;
 import org.motion.motion_api.application.services.strategies.GerenteServiceStrategy;
 import org.motion.motion_api.application.services.util.ServiceHelper;
+import org.motion.motion_api.domain.dtos.gerente.*;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.Gerente;
-import org.motion.motion_api.domain.repositories.IOficinaRepository;
 import org.motion.motion_api.domain.repositories.pitstop.IGerenteRepository;
 import org.motion.motion_api.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,21 +36,22 @@ public class GerenteService implements GerenteServiceStrategy {
 
     @Autowired
     private IGerenteRepository gerenteRepository;
-
     @Autowired
     private ServiceHelper serviceHelper;
-
     @Autowired
     AuthorizationService authorizationService;
-
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private TokenService tokenService;
-
     @Autowired
     private JavaMailSender emailSender;
+    private Subject subject = new Subject();
+
+    @PostConstruct
+    public void init() {
+        subject.addObserver(new AccountCreationNotificationObserver());
+    }
 
     public List<Gerente> listarTodos() {
         return gerenteRepository.findAll();
@@ -69,7 +72,8 @@ public class GerenteService implements GerenteServiceStrategy {
         Gerente gerente = new Gerente(novoGerenteDTO, oficina, senhaCriptografada);
         gerenteRepository.save(gerente);
 
-        emailNovaSenha(novoGerenteDTO, senhaGerada);
+
+        subject.notifyObservers(new AccountCreationData(gerente,senhaGerada,emailSender));
 
         return gerente;
     }
@@ -113,11 +117,10 @@ public class GerenteService implements GerenteServiceStrategy {
         return new LoginGerenteResponse(gerente.getIdGerente(), gerente.getEmail(), gerente.getSobrenome(), gerente.getStatus(), gerente.getOficina(), token);
     }
 
-    public boolean enviarEmailRecuperacao(String email) throws MessagingException {
+    public void enviarEmailRecuperacao(String email) throws MessagingException {
         boolean exists = gerenteRepository.existsByEmail(email);
         if(!exists) throw new RecursoNaoEncontradoException("Email não encontrado no sistema");
         emailRecuperacao(email);
-        return true;
     }
 
 
@@ -128,11 +131,7 @@ public class GerenteService implements GerenteServiceStrategy {
     }
 
 
-    /**
-     * @param oficina
-     * @return void
-     * @throws DadoUnicoDuplicadoException
-     */
+
     private void oficinaComGerenteCadastrado(Oficina oficina) {
         if (gerenteRepository.existsByOficina(oficina))
             throw new DadoUnicoDuplicadoException("Oficina com gerente já cadastrado");
@@ -150,24 +149,6 @@ public class GerenteService implements GerenteServiceStrategy {
         return sb.toString();
     }
 
-    private void emailNovaSenha(CreateGerenteDTO user, String password) throws MessagingException {
-        String htmlBody = "<html>" +
-                "<head><link href='https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap' rel='stylesheet'></head>" +
-                "<body style='font-family: Roboto, sans-serif;'><h2>Olá! " + user.nome() + "</h2>" +
-                "<p>Sua nova senha é: <strong>" + password + "</strong></p>" +
-                "<p>Ela poderá ser utilizada no seu primeiro acesso</p>" +
-                "<p>Atenciosamente,</p>" +
-                "<p>A equipe motion</p>" +
-                "</body></html>";
-
-
-        MimeMessage message = emailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-        helper.setTo(user.email());
-        helper.setSubject("Sua nova senha");
-        helper.setText(htmlBody, true); // Habilita o processamento de HTML
-        emailSender.send(message);
-    }
 
     private void emailRecuperacao(String email) throws MessagingException {
         String htmlBody = "<html>" +

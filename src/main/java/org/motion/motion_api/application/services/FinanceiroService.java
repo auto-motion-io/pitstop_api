@@ -1,8 +1,7 @@
 package org.motion.motion_api.application.services;
 
-import org.motion.motion_api.application.dtos.financeiro.CreateFinanceiroDTO;
-import org.motion.motion_api.application.dtos.financeiro.ResponseDataFinanceiro;
-import org.motion.motion_api.application.dtos.financeiro.ResponseFinanceiroDTO;
+import org.motion.motion_api.domain.dtos.financeiro.CreateFinanceiroDTO;
+import org.motion.motion_api.domain.dtos.financeiro.ResponseDataFinanceiro;
 import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.Financeiro;

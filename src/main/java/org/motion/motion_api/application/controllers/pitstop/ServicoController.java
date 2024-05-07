@@ -1,9 +1,7 @@
 package org.motion.motion_api.application.controllers.pitstop;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.motion.motion_api.application.dtos.servico.CreateServicoDTO;
+import org.motion.motion_api.domain.dtos.servico.CreateServicoDTO;
 import org.motion.motion_api.application.services.ServicoService;
 import org.motion.motion_api.domain.entities.pitstop.Servico;
 import org.springframework.beans.factory.annotation.Autowired;

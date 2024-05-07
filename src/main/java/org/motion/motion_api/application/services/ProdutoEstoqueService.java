@@ -1,6 +1,6 @@
 package org.motion.motion_api.application.services;
 
-import org.motion.motion_api.application.dtos.produtoEstoque.CreateProdutoEstoqueDTO;
+import org.motion.motion_api.domain.dtos.produtoEstoque.CreateProdutoEstoqueDTO;
 import org.motion.motion_api.domain.entities.pitstop.ProdutoEstoque;
 import org.motion.motion_api.domain.repositories.IOficinaRepository;
 import org.motion.motion_api.domain.repositories.pitstop.IOrdemDeServicoRepository;

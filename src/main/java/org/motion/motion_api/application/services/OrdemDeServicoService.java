@@ -1,7 +1,7 @@
 package org.motion.motion_api.application.services;
 
-import org.motion.motion_api.application.dtos.ordemDeServico.CreateOrdemDeServicoDTO;
-import org.motion.motion_api.application.dtos.ordemDeServico.UpdateOrdemDeServicoDTO;
+import org.motion.motion_api.domain.dtos.ordemDeServico.CreateOrdemDeServicoDTO;
+import org.motion.motion_api.domain.dtos.ordemDeServico.UpdateOrdemDeServicoDTO;
 import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.entities.Oficina;
@@ -13,11 +13,8 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.StringJoiner;

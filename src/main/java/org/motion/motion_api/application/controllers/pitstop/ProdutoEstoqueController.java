@@ -1,9 +1,7 @@
 package org.motion.motion_api.application.controllers.pitstop;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.motion.motion_api.application.dtos.produtoEstoque.CreateProdutoEstoqueDTO;
+import org.motion.motion_api.domain.dtos.produtoEstoque.CreateProdutoEstoqueDTO;
 import org.motion.motion_api.application.services.ProdutoEstoqueService;
 import org.motion.motion_api.domain.entities.pitstop.ProdutoEstoque;
 import org.springframework.beans.factory.annotation.Autowired;

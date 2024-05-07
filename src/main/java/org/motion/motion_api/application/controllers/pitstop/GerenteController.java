@@ -2,21 +2,15 @@ package org.motion.motion_api.application.controllers.pitstop;
 
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.annotation.security.PermitAll;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
-import org.motion.motion_api.application.dtos.gerente.*;
 import org.motion.motion_api.application.services.GerenteService;
-import org.motion.motion_api.application.services.authorization.AuthorizationService;
+import org.motion.motion_api.domain.dtos.gerente.*;
 import org.motion.motion_api.domain.entities.pitstop.Gerente;
-import org.motion.motion_api.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
