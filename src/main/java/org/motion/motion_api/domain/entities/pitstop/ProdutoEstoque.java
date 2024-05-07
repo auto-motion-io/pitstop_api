@@ -4,11 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.motion.motion_api.application.dtos.produtoEstoque.CreateProdutoEstoqueDTO;
+import org.motion.motion_api.domain.dtos.produtoEstoque.CreateProdutoEstoqueDTO;
 import org.motion.motion_api.domain.entities.Oficina;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Table(name = "Pitstop_ProdutoEstoque")
 @Entity(name = "ProdutoEstoque")

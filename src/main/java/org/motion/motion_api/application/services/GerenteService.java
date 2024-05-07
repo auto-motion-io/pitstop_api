@@ -1,20 +1,22 @@
 package org.motion.motion_api.application.services;
 
 
+import jakarta.annotation.PostConstruct;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.apache.commons.lang3.NotImplementedException;
-import org.motion.motion_api.application.dtos.gerente.*;
 import org.motion.motion_api.application.exceptions.DadoUnicoDuplicadoException;
 import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.authorization.AuthorizationService;
+import org.motion.motion_api.application.services.observer.AccountCreationNotificationObserver;
+import org.motion.motion_api.application.services.observer.AccountCreationNotificationObserver.AccountCreationData;
+import org.motion.motion_api.application.services.observer.Subject;
 import org.motion.motion_api.application.services.strategies.GerenteServiceStrategy;
 import org.motion.motion_api.application.services.util.ServiceHelper;
+import org.motion.motion_api.domain.dtos.gerente.*;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.Gerente;
-import org.motion.motion_api.domain.repositories.IOficinaRepository;
 import org.motion.motion_api.domain.repositories.pitstop.IGerenteRepository;
 import org.motion.motion_api.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,21 +36,22 @@ public class GerenteService implements GerenteServiceStrategy {
 
     @Autowired
     private IGerenteRepository gerenteRepository;
-
     @Autowired
     private ServiceHelper serviceHelper;
-
     @Autowired
     AuthorizationService authorizationService;
-
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private TokenService tokenService;
-
     @Autowired
     private JavaMailSender emailSender;
+    private Subject subject = new Subject();
+
+    @PostConstruct
+    public void init() {
+        subject.addObserver(new AccountCreationNotificationObserver());
+    }
 
     public List<Gerente> listarTodos() {
         return gerenteRepository.findAll();
@@ -69,7 +72,9 @@ public class GerenteService implements GerenteServiceStrategy {
         Gerente gerente = new Gerente(novoGerenteDTO, oficina, senhaCriptografada);
         gerenteRepository.save(gerente);
 
-        emailNovaSenha(novoGerenteDTO, senhaGerada);
+        //emailNovaSenha(novoGerenteDTO, senhaGerada);
+
+        subject.notifyObservers(new AccountCreationData(gerente,senhaGerada));
 
         return gerente;
     }

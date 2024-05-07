@@ -1,7 +1,7 @@
 package org.motion.motion_api.application.services;
 
-import org.motion.motion_api.application.dtos.tarefa.CreateTarefaDTO;
-import org.motion.motion_api.application.dtos.tarefa.UpdateTarefaDTO;
+import org.motion.motion_api.domain.dtos.tarefa.CreateTarefaDTO;
+import org.motion.motion_api.domain.dtos.tarefa.UpdateTarefaDTO;
 import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.entities.Oficina;

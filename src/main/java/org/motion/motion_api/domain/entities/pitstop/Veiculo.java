@@ -4,7 +4,7 @@ package org.motion.motion_api.domain.entities.pitstop;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.motion.motion_api.application.dtos.veiculo.CreateVeiculoDTO;
+import org.motion.motion_api.domain.dtos.veiculo.CreateVeiculoDTO;
 
 @Table(name = "Pitstop_Veiculo")
 @Entity(name = "Veiculo")

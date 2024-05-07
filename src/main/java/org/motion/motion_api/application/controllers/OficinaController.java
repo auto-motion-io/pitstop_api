@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import org.motion.motion_api.application.dtos.oficina.UpdateOficinaDTO;
+import org.motion.motion_api.domain.dtos.oficina.UpdateOficinaDTO;
 import org.motion.motion_api.application.services.OficinaService;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.springframework.web.bind.annotation.RequestMapping;
