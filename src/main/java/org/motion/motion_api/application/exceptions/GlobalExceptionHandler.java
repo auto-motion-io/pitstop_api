@@ -1,5 +1,6 @@
 package org.motion.motion_api.application.exceptions;
 
+import jakarta.mail.MessagingException;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.coyote.Response;
 import org.motion.motion_api.application.exceptions.util.ErrorHelper;
@@ -84,6 +85,13 @@ public class GlobalExceptionHandler {
         String path = pathInterceptor.getPath();
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.FORBIDDEN,ex.getMessage(),path,ErrorHelper.getStackTracePersonalizado(ex.getStackTrace()));
         return new ResponseEntity<>(errorResponse,HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(MessagingException.class)
+    public ResponseEntity<ErrorResponse> handleMessagingException(MessagingException ex){
+        String path = pathInterceptor.getPath();
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR,"Could not send email\n "+ex.getMessage(),path,ErrorHelper.getStackTracePersonalizado(ex.getStackTrace()));
+        return new ResponseEntity<>(errorResponse,HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler

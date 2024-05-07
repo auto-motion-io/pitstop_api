@@ -72,9 +72,8 @@ public class GerenteService implements GerenteServiceStrategy {
         Gerente gerente = new Gerente(novoGerenteDTO, oficina, senhaCriptografada);
         gerenteRepository.save(gerente);
 
-        //emailNovaSenha(novoGerenteDTO, senhaGerada);
 
-        subject.notifyObservers(new AccountCreationData(gerente,senhaGerada));
+        subject.notifyObservers(new AccountCreationData(gerente,senhaGerada,emailSender));
 
         return gerente;
     }
@@ -118,11 +117,10 @@ public class GerenteService implements GerenteServiceStrategy {
         return new LoginGerenteResponse(gerente.getIdGerente(), gerente.getEmail(), gerente.getSobrenome(), gerente.getStatus(), gerente.getOficina(), token);
     }
 
-    public boolean enviarEmailRecuperacao(String email) throws MessagingException {
+    public void enviarEmailRecuperacao(String email) throws MessagingException {
         boolean exists = gerenteRepository.existsByEmail(email);
         if(!exists) throw new RecursoNaoEncontradoException("Email não encontrado no sistema");
         emailRecuperacao(email);
-        return true;
     }
 
 
@@ -133,11 +131,7 @@ public class GerenteService implements GerenteServiceStrategy {
     }
 
 
-    /**
-     * @param oficina
-     * @return void
-     * @throws DadoUnicoDuplicadoException
-     */
+
     private void oficinaComGerenteCadastrado(Oficina oficina) {
         if (gerenteRepository.existsByOficina(oficina))
             throw new DadoUnicoDuplicadoException("Oficina com gerente já cadastrado");
@@ -155,24 +149,6 @@ public class GerenteService implements GerenteServiceStrategy {
         return sb.toString();
     }
 
-    private void emailNovaSenha(CreateGerenteDTO user, String password) throws MessagingException {
-        String htmlBody = "<html>" +
-                "<head><link href='https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap' rel='stylesheet'></head>" +
-                "<body style='font-family: Roboto, sans-serif;'><h2>Olá! " + user.nome() + "</h2>" +
-                "<p>Sua nova senha é: <strong>" + password + "</strong></p>" +
-                "<p>Ela poderá ser utilizada no seu primeiro acesso</p>" +
-                "<p>Atenciosamente,</p>" +
-                "<p>A equipe motion</p>" +
-                "</body></html>";
-
-
-        MimeMessage message = emailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-        helper.setTo(user.email());
-        helper.setSubject("Sua nova senha");
-        helper.setText(htmlBody, true); // Habilita o processamento de HTML
-        emailSender.send(message);
-    }
 
     private void emailRecuperacao(String email) throws MessagingException {
         String htmlBody = "<html>" +

@@ -10,18 +10,14 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 
-@Service
 public class AccountCreationNotificationObserver implements Observer {
 
-    @Autowired
-    private JavaMailSender emailSender;
 
     @Override
-    public void update(Object data) {
-        if (data instanceof AccountCreationData) {
-            AccountCreationData notificationData = (AccountCreationData) data;
-            Gerente gerente = notificationData.getGerente();
-            String senhaGerada = notificationData.getGeneratedPassword();
+    public void update(Object data) throws MessagingException {
+        if (data instanceof AccountCreationData accountCreationData) {
+            Gerente gerente = accountCreationData.getGerente();
+            String senhaGerada = accountCreationData.getGeneratedPassword();
 
             String htmlBody = "<html>" +
                     "<head><link href='https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap' rel='stylesheet'></head>" +
@@ -34,14 +30,14 @@ public class AccountCreationNotificationObserver implements Observer {
 
 
             try {
-                MimeMessage message = emailSender.createMimeMessage();
+                MimeMessage message = accountCreationData.emailSender.createMimeMessage();
                 MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
                 helper.setTo(gerente.getEmail());
                 helper.setSubject("Sua nova senha");
                 helper.setText(htmlBody, true); // Habilita o processamento de HTML
-                emailSender.send(message);
+                accountCreationData.emailSender.send(message);
             }catch (MessagingException ex){
-                ex.printStackTrace();
+                throw new MessagingException("Erro ao enviar email de notificação de criação de conta");
             }
         }
     }
@@ -51,10 +47,12 @@ public class AccountCreationNotificationObserver implements Observer {
     public static class AccountCreationData {
         private Gerente gerente;
         private String generatedPassword;
+        private JavaMailSender emailSender;
 
-        public AccountCreationData(Gerente gerente, String senhaGerada) {
+        public AccountCreationData(Gerente gerente, String senhaGerada, JavaMailSender emailSender) {
             this.gerente = gerente;
             this.generatedPassword = senhaGerada;
+            this.emailSender = emailSender;
         }
     }
 }
