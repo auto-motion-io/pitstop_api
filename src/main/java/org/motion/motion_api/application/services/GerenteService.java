@@ -114,7 +114,7 @@ public class GerenteService implements GerenteServiceStrategy {
         var auth = authenticationManager.authenticate(usernamePassword);
         String token = tokenService.generateToken((Gerente) auth.getPrincipal());
 
-        return new LoginGerenteResponse(gerente.getIdGerente(), gerente.getEmail(), gerente.getSobrenome(), gerente.getStatus(), gerente.getOficina(), token);
+        return new LoginGerenteResponse(gerente.getIdGerente(), gerente.getEmail(),gerente.getNome(), gerente.getSobrenome(), gerente.getStatus(), gerente.getOficina(), token);
     }
 
     public void enviarEmailRecuperacao(String email) throws MessagingException {

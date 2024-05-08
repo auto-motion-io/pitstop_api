@@ -6,6 +6,7 @@ public record LoginGerenteResponse
         (
                 Integer idGerente,
                 String email,
+                String nome,
                 String sobrenome,
                 String status,
                 Oficina oficina,
