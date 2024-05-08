@@ -31,6 +31,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/gerentes/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/gerentes").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/oficinas").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
