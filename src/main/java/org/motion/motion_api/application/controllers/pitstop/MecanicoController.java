@@ -1,6 +1,7 @@
 package org.motion.motion_api.application.controllers.pitstop;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.motion.motion_api.domain.dtos.mecanico.CreateMecanicoDTO;
 import org.motion.motion_api.application.services.MecanicoService;
 import org.motion.motion_api.domain.entities.pitstop.Mecanico;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/mecanicos")
+@SecurityRequirement(name = "motion_jwt")
 public class MecanicoController {
 
     @Autowired

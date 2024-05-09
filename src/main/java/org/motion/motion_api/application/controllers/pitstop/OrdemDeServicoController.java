@@ -1,6 +1,7 @@
 package org.motion.motion_api.application.controllers.pitstop;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.motion.motion_api.domain.dtos.ordemDeServico.CreateOrdemDeServicoDTO;
 import org.motion.motion_api.domain.dtos.ordemDeServico.UpdateOrdemDeServicoDTO;
 import org.motion.motion_api.application.services.OrdemDeServicoService;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ordemDeServicos")
+@SecurityRequirement(name = "motion_jwt")
 public class OrdemDeServicoController {
 
     @Autowired
