@@ -74,7 +74,12 @@ public class GerenteController {
         gerenteService.enviarEmailRecuperacao(recuperarSenhaDTO.getEmail());
         return ResponseEntity.status(200).build();
     }
-
+    @Operation(summary = "Atualiza a a url da foto do gerente")
+    @PutMapping("/atualiza-foto/{id}")
+    public ResponseEntity<Gerente> atualizarFoto(@PathVariable int id, @RequestBody @Valid UpdateFotoGerenteDTO updateFotoGerenteDTO) {
+        Gerente gerente = gerenteService.atualizarUrlFoto(id, updateFotoGerenteDTO);
+        return ResponseEntity.status(200).body(gerente);
+    }
     @Operation(summary = "Deleta um gerente")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable int id){

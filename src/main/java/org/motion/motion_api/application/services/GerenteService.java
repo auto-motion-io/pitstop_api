@@ -117,6 +117,14 @@ public class GerenteService implements GerenteServiceStrategy {
         return new LoginGerenteResponse(gerente.getIdGerente(), gerente.getEmail(),gerente.getNome(), gerente.getSobrenome(), gerente.getStatus(), gerente.getOficina(), token);
     }
 
+    @Transactional
+    public Gerente atualizarUrlFoto(int id, UpdateFotoGerenteDTO dto) {
+        Gerente gerente = buscarPorId(id);
+        gerente.setFotoUrl(dto.getUrl());
+        gerenteRepository.save(gerente);
+        return gerente;
+    }
+
     public void enviarEmailRecuperacao(String email) throws MessagingException {
         boolean exists = gerenteRepository.existsByEmail(email);
         if(!exists) throw new RecursoNaoEncontradoException("Email não encontrado no sistema");

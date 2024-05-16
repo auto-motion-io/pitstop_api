@@ -21,12 +21,12 @@ public class ServiceHelper {
     /**
      * @param id
      * @return Retorna uma oficina caso encontre ou uma exceção caso não.
+     * Pode ser usada para pegar uma oficina válida ou verificar se o id é válido.
      * @throws RecursoNaoEncontradoException
      */
     public  Oficina pegarOficinaValida(int id) {
         return oficinaRepository.findById(id).orElseThrow(() ->
                 new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + id));
-
     }
 
     /**

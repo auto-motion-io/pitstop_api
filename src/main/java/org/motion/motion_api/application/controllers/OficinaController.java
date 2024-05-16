@@ -3,8 +3,10 @@ package org.motion.motion_api.application.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 
 
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import org.motion.motion_api.domain.dtos.oficina.UpdateFotoOficinaDTO;
 import org.motion.motion_api.domain.dtos.oficina.UpdateOficinaDTO;
 import org.motion.motion_api.application.services.OficinaService;
 import org.motion.motion_api.domain.entities.Oficina;
@@ -59,6 +61,14 @@ public class OficinaController {
         Oficina oficina = oficinaService.atualizar(id, oficinaAtualizada);
         return ResponseEntity.ok(oficina);
     }
+
+    @Operation(summary = "Atualiza a logo de uma oficina")
+    @PutMapping("/atualiza-foto/{id}")
+    public ResponseEntity<Oficina> atualizarFotoOficina(@PathVariable Integer id, @Valid @RequestBody UpdateFotoOficinaDTO dto) {
+        Oficina oficina = oficinaService.atualizarLogoUrl(id, dto);
+        return ResponseEntity.ok(oficina);
+    }
+
     @Operation(summary = "Deleta uma oficina e seus registros")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarOficina(@PathVariable Integer id) {

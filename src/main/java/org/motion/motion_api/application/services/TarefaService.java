@@ -19,14 +19,11 @@ public class TarefaService {
     @Autowired
     private ITarefaRepository tarefaRepository;
     @Autowired
-    private IOficinaRepository oficinaRepository;
-    @Autowired
     ServiceHelper serviceHelper;
 
 
     public List<Tarefa> listarTodasTarefasPorIdOficina(int id) {
-        if (!oficinaRepository.existsById(id))
-            throw new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + id);
+        serviceHelper.pegarOficinaValida(id);
         return tarefaRepository.findByOficinaIdOficina(id);
     }
 
