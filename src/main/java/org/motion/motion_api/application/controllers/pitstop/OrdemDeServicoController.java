@@ -2,8 +2,8 @@ package org.motion.motion_api.application.controllers.pitstop;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.motion.motion_api.domain.dtos.ordemDeServico.CreateOrdemDeServicoDTO;
-import org.motion.motion_api.domain.dtos.ordemDeServico.UpdateOrdemDeServicoDTO;
+import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.CreateOrdemDeServicoDTO;
+import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.UpdateOrdemDeServicoDTO;
 import org.motion.motion_api.application.services.OrdemDeServicoService;
 import org.motion.motion_api.domain.entities.pitstop.OrdemDeServico;
 import org.springframework.beans.factory.annotation.Autowired;

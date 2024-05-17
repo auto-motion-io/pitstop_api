@@ -1,7 +1,7 @@
 package org.motion.motion_api.application.services;
 
-import org.motion.motion_api.domain.dtos.ordemDeServico.CreateOrdemDeServicoDTO;
-import org.motion.motion_api.domain.dtos.ordemDeServico.UpdateOrdemDeServicoDTO;
+import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.CreateOrdemDeServicoDTO;
+import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.UpdateOrdemDeServicoDTO;
 import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.entities.Oficina;

@@ -3,7 +3,7 @@ package org.motion.motion_api.domain.entities.pitstop;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.motion.motion_api.domain.dtos.cliente.CreateClienteDTO;
+import org.motion.motion_api.domain.dtos.pitstop.cliente.CreateClienteDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 
 @Table(name = "Pitstop_Cliente")

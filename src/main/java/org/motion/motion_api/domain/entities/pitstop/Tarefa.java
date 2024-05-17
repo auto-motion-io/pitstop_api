@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.motion.motion_api.domain.dtos.tarefa.CreateTarefaDTO;
+import org.motion.motion_api.domain.dtos.pitstop.tarefa.CreateTarefaDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 
 import java.time.LocalDate;

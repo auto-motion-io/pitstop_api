@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.motion.motion_api.domain.dtos.produtoEstoque.CreateProdutoEstoqueDTO;
+import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.CreateProdutoEstoqueDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 
 @Table(name = "Pitstop_ProdutoEstoque")

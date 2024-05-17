@@ -2,8 +2,8 @@ package org.motion.motion_api.application.controllers.pitstop;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.motion.motion_api.domain.dtos.financeiro.CreateFinanceiroDTO;
-import org.motion.motion_api.domain.dtos.financeiro.ResponseDataFinanceiro;
+import org.motion.motion_api.domain.dtos.pitstop.financeiro.CreateFinanceiroDTO;
+import org.motion.motion_api.domain.dtos.pitstop.financeiro.ResponseDataFinanceiro;
 import org.motion.motion_api.application.services.FinanceiroService;
 import org.motion.motion_api.domain.entities.pitstop.Financeiro;
 import org.springframework.beans.factory.annotation.Autowired;

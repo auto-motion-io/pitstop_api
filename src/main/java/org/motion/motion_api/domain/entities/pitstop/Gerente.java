@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.motion.motion_api.domain.dtos.gerente.CreateGerenteDTO;
+import org.motion.motion_api.domain.dtos.pitstop.gerente.CreateGerenteDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

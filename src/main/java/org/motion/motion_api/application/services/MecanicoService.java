@@ -1,6 +1,6 @@
 package org.motion.motion_api.application.services;
 
-import org.motion.motion_api.domain.dtos.mecanico.CreateMecanicoDTO;
+import org.motion.motion_api.domain.dtos.pitstop.mecanico.CreateMecanicoDTO;
 import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.Mecanico;

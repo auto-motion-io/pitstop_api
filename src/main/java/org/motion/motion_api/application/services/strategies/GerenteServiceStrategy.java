@@ -1,7 +1,7 @@
 package org.motion.motion_api.application.services.strategies;
 
 
-import org.motion.motion_api.domain.dtos.gerente.*;
+import org.motion.motion_api.domain.dtos.pitstop.gerente.*;
 import org.motion.motion_api.domain.entities.pitstop.Gerente;
 
 public interface GerenteServiceStrategy extends BaseService<Gerente, UpdateGerenteDTO, CreateGerenteDTO>  {

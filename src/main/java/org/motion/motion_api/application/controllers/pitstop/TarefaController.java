@@ -2,8 +2,8 @@ package org.motion.motion_api.application.controllers.pitstop;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.motion.motion_api.domain.dtos.tarefa.CreateTarefaDTO;
-import org.motion.motion_api.domain.dtos.tarefa.UpdateTarefaDTO;
+import org.motion.motion_api.domain.dtos.pitstop.tarefa.CreateTarefaDTO;
+import org.motion.motion_api.domain.dtos.pitstop.tarefa.UpdateTarefaDTO;
 import org.motion.motion_api.application.services.TarefaService;
 import org.motion.motion_api.domain.entities.pitstop.Tarefa;
 import org.springframework.beans.factory.annotation.Autowired;

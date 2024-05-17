@@ -7,7 +7,7 @@ import jakarta.annotation.security.PermitAll;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.motion.motion_api.application.services.GerenteService;
-import org.motion.motion_api.domain.dtos.gerente.*;
+import org.motion.motion_api.domain.dtos.pitstop.gerente.*;
 import org.motion.motion_api.domain.entities.pitstop.Gerente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

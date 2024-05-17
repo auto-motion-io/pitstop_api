@@ -1,12 +1,11 @@
 package org.motion.motion_api.application.services;
 
-import org.motion.motion_api.domain.dtos.tarefa.CreateTarefaDTO;
-import org.motion.motion_api.domain.dtos.tarefa.UpdateTarefaDTO;
+import org.motion.motion_api.domain.dtos.pitstop.tarefa.CreateTarefaDTO;
+import org.motion.motion_api.domain.dtos.pitstop.tarefa.UpdateTarefaDTO;
 import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.Tarefa;
-import org.motion.motion_api.domain.repositories.IOficinaRepository;
 import org.motion.motion_api.domain.repositories.pitstop.ITarefaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

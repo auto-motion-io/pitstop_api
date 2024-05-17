@@ -1,7 +1,7 @@
 package org.motion.motion_api.application.controllers.pitstop;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.motion.motion_api.domain.dtos.veiculo.CreateVeiculoDTO;
+import org.motion.motion_api.domain.dtos.pitstop.veiculo.CreateVeiculoDTO;
 import org.motion.motion_api.application.services.VeiculoService;
 import org.motion.motion_api.domain.entities.pitstop.Veiculo;
 import org.springframework.beans.factory.annotation.Autowired;

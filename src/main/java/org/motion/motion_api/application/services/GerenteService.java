@@ -14,7 +14,7 @@ import org.motion.motion_api.application.services.observer.AccountCreationNotifi
 import org.motion.motion_api.application.services.observer.Subject;
 import org.motion.motion_api.application.services.strategies.GerenteServiceStrategy;
 import org.motion.motion_api.application.services.util.ServiceHelper;
-import org.motion.motion_api.domain.dtos.gerente.*;
+import org.motion.motion_api.domain.dtos.pitstop.gerente.*;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.Gerente;
 import org.motion.motion_api.domain.repositories.pitstop.IGerenteRepository;
