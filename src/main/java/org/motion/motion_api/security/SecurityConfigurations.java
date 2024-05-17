@@ -33,6 +33,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/gerentes").permitAll()
                         .requestMatchers(HttpMethod.POST,"/oficinas").permitAll()
                         .requestMatchers(HttpMethod.GET,"/buscar-servico").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/ordemDeServicos/token/").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

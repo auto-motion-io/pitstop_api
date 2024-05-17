@@ -75,4 +75,10 @@ public class OrdemDeServicoController {
         return new ResponseEntity<>(fileResource, httpHeaders, HttpStatus.OK);
 
     }
+
+    @Operation(summary = "Buscar ordem de serviço por token")
+    @GetMapping("/token/{token}")
+    public ResponseEntity<OrdemDeServico> buscarPorToken(@PathVariable String token){
+        return ResponseEntity.ok(ordemDeServicoService.buscarPorToken(token));
+    }
 }

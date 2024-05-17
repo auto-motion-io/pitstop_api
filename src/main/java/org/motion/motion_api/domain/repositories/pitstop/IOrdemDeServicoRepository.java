@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface IOrdemDeServicoRepository extends JpaRepository<OrdemDeServico,Integer> {
     boolean existsByVeiculo(Veiculo veiculo);
+    OrdemDeServico findByToken (String token);
 }

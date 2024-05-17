@@ -174,4 +174,10 @@ public class OrdemDeServicoService {
 
         return fileResource;
     }
+
+    public OrdemDeServico buscarPorToken(String token) {
+        if (ordemDeServicoRepository.findByToken(token) == null)
+            throw new RecursoNaoEncontradoException("Ordem de serviço não encontrada com o token: " + token);
+        return ordemDeServicoRepository.findByToken(token);
+    }
 }
