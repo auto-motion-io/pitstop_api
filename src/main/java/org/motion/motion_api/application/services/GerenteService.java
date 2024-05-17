@@ -70,10 +70,9 @@ public class GerenteService implements GerenteServiceStrategy {
         String senhaCriptografada = new BCryptPasswordEncoder().encode(senhaGerada);
 
         Gerente gerente = new Gerente(novoGerenteDTO, oficina, senhaCriptografada);
-        gerenteRepository.save(gerente);
-
 
         subject.notifyObservers(new AccountCreationData(gerente,senhaGerada,emailSender));
+        gerenteRepository.save(gerente);
 
         return gerente;
     }

@@ -1,5 +1,6 @@
 package org.motion.motion_api.domain.entities.pitstop;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,6 @@ public class FotoGaleriaOficina {
     private int id;
     private String url;
 
-    @ManyToOne
+    @ManyToOne @JsonIgnore
     private Oficina oficina;
 }

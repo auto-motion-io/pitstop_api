@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/buscar-servico")
+@RequestMapping("/buscar-servicos")
 @SecurityRequirement(name = "motion_jwt")
 public class ServicoBuscarController {
 
