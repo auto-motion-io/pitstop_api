@@ -2,7 +2,7 @@ package org.motion.motion_api.application.services;
 
 import jakarta.transaction.Transactional;
 import org.motion.motion_api.application.services.util.ServiceHelper;
-import org.motion.motion_api.domain.dtos.oficina.UpdateFotoOficinaDTO;
+import org.motion.motion_api.domain.dtos.oficina.UpdateLogoOficinaDTO;
 import org.motion.motion_api.domain.dtos.oficina.UpdateOficinaDTO;
 import org.motion.motion_api.application.exceptions.DadoUnicoDuplicadoException;
 import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
@@ -59,7 +59,7 @@ public class OficinaService implements OficinaServiceStrategy{
     }
 
     @Transactional
-    public Oficina atualizarLogoUrl(int id, UpdateFotoOficinaDTO dto) {
+    public Oficina atualizarLogoUrl(int id, UpdateLogoOficinaDTO dto) {
         Oficina oficina = serviceHelper.pegarOficinaValida(id);
         oficina.setLogoUrl(dto.getUrl());
         return oficinaRepository.save(oficina);
