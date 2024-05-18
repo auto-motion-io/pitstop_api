@@ -68,12 +68,27 @@ public class GerenteController {
         return ResponseEntity.status(200).body(gerente);
     }
 
-    @Operation(summary = "Envia email para recuperação de senha")
-    @PostMapping("/recuperar-senha")
-    public ResponseEntity<Void> recuperarSenhaPorEmail(@RequestBody RecuperarSenhaDTO recuperarSenhaDTO) throws MessagingException {
+    //@Operation(summary = "Envia email para recuperação de senha")
+    //@PostMapping("/recuperar-senha")
+    public ResponseEntity<Void> recuperarSenhaPorEmail(@RequestBody SendEmailDTO recuperarSenhaDTO) throws MessagingException {
         gerenteService.enviarEmailRecuperacao(recuperarSenhaDTO.getEmail());
         return ResponseEntity.status(200).build();
     }
+
+    @Operation(summary = "Seta um token de um gerente pelo email e envia o email com o token.")
+    @PostMapping("/set-token")
+    public ResponseEntity<Void> setToken(@RequestBody @Valid SendEmailDTO dto) throws MessagingException {
+        gerenteService.enviarTokenConfirmacao(dto.getEmail());
+        return ResponseEntity.status(204).build();
+    }
+    @Operation(summary = "Confirma o token de um gerente, após a confirmação o token é removido.")
+    @PostMapping("/confirmar-token")
+    public ResponseEntity<Void> confirmarToken(@RequestBody @Valid ConfirmTokenDTO dto) {
+        gerenteService.validarTokenConfirmacao(dto);
+        return ResponseEntity.status(204).build();
+    }
+
+
     @Operation(summary = "Atualiza a a url da foto do gerente")
     @PutMapping("/atualiza-foto/{id}")
     public ResponseEntity<Gerente> atualizarFoto(@PathVariable int id, @RequestBody @Valid UpdateFotoGerenteDTO updateFotoGerenteDTO) {

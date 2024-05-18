@@ -33,6 +33,7 @@ public class Gerente implements UserDetails {
     @Column(columnDefinition = "varchar(255) default 'PENDENTE'")
     private String status;
     private String fotoUrl;
+    private String confirmToken;
 
     @ManyToOne @JoinColumn(name = "fk_oficina") @NotNull
     private Oficina oficina;

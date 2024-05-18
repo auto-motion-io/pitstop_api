@@ -2,7 +2,6 @@ package org.motion.motion_api.application.exceptions;
 
 import jakarta.mail.MessagingException;
 import org.apache.commons.lang3.NotImplementedException;
-import org.apache.coyote.Response;
 import org.motion.motion_api.application.exceptions.util.ErrorHelper;
 import org.motion.motion_api.application.exceptions.util.ErrorResponse;
 import org.motion.motion_api.application.exceptions.util.PathInterceptor;
@@ -38,8 +37,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(SenhaIncorretaException.class)
-    public ResponseEntity<ErrorResponse> handleSenhaIncorretaException(SenhaIncorretaException ex) {
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleSenhaIncorretaException(InvalidCredentialsException ex) {
         String path = pathInterceptor.getPath();
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED, ex.getMessage(), path, ErrorHelper.getStackTracePersonalizado(ex.getStackTrace()));
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);

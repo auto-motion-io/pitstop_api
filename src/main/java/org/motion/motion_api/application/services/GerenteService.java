@@ -7,6 +7,7 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.motion.motion_api.application.exceptions.DadoUnicoDuplicadoException;
+import org.motion.motion_api.application.exceptions.InvalidCredentialsException;
 import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.authorization.AuthorizationService;
 import org.motion.motion_api.application.services.observer.AccountCreationNotificationObserver;
@@ -71,7 +72,7 @@ public class GerenteService implements GerenteServiceStrategy {
 
         Gerente gerente = new Gerente(novoGerenteDTO, oficina, senhaCriptografada);
 
-        subject.notifyObservers(new AccountCreationData(gerente,senhaGerada,emailSender));
+        subject.notifyObservers(new AccountCreationData(gerente, senhaGerada, emailSender));
         gerenteRepository.save(gerente);
 
         return gerente;
@@ -113,7 +114,7 @@ public class GerenteService implements GerenteServiceStrategy {
         var auth = authenticationManager.authenticate(usernamePassword);
         String token = tokenService.generateToken((Gerente) auth.getPrincipal());
 
-        return new LoginGerenteResponse(gerente.getIdGerente(), gerente.getEmail(),gerente.getNome(), gerente.getSobrenome(), gerente.getStatus(), gerente.getOficina(), token);
+        return new LoginGerenteResponse(gerente.getIdGerente(), gerente.getEmail(), gerente.getNome(), gerente.getSobrenome(), gerente.getStatus(), gerente.getOficina(), token);
     }
 
     @Transactional
@@ -124,9 +125,30 @@ public class GerenteService implements GerenteServiceStrategy {
         return gerente;
     }
 
+    public void enviarTokenConfirmacao(String email) throws MessagingException {
+        Gerente gerente = gerenteRepository.findGerenteByEmail(email);
+        if (gerente == null) throw new RecursoNaoEncontradoException("Email não encontrado no sistema");
+
+        String token = geradorDeSenhaAleatoria();
+        gerente.setConfirmToken(token);
+        gerenteRepository.save(gerente);
+
+        emailTokenConfirmacao(email, token);
+    }
+
+    public void validarTokenConfirmacao(ConfirmTokenDTO dto) {
+        Gerente gerente = gerenteRepository.findGerenteByEmail(dto.getEmail());
+        if (gerente == null) throw new RecursoNaoEncontradoException("Email não encontrado no sistema");
+        if(gerente.getConfirmToken() == null) throw new RecursoNaoEncontradoException("Token não foi gerado");
+        if (!gerente.getConfirmToken().equalsIgnoreCase(dto.getToken())) throw new InvalidCredentialsException("Token inválido");
+
+        gerente.setConfirmToken(null);
+        gerenteRepository.save(gerente);
+    }
+
     public void enviarEmailRecuperacao(String email) throws MessagingException {
         boolean exists = gerenteRepository.existsByEmail(email);
-        if(!exists) throw new RecursoNaoEncontradoException("Email não encontrado no sistema");
+        if (!exists) throw new RecursoNaoEncontradoException("Email não encontrado no sistema");
         emailRecuperacao(email);
     }
 
@@ -138,7 +160,6 @@ public class GerenteService implements GerenteServiceStrategy {
     }
 
 
-
     private void oficinaComGerenteCadastrado(Oficina oficina) {
         if (gerenteRepository.existsByOficina(oficina))
             throw new DadoUnicoDuplicadoException("Oficina com gerente já cadastrado");
@@ -146,7 +167,7 @@ public class GerenteService implements GerenteServiceStrategy {
 
 
     private String geradorDeSenhaAleatoria() {
-        final String CARACTERES_PERMITIDOS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        final String CARACTERES_PERMITIDOS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         SecureRandom random = new SecureRandom();
         StringBuilder sb = new StringBuilder(6);
         for (int i = 0; i < 6; i++) {
@@ -161,7 +182,7 @@ public class GerenteService implements GerenteServiceStrategy {
         String htmlBody = "<html>" +
                 "<head><link href='https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap' rel='stylesheet'></head>" +
                 "<body style='font-family: Roboto, sans-serif;'><h2>Recebemos uma mensagem informando que você esqueceu sua senha.<br> Se foi você, pode redefinir a senha agora.</h2>" +
-                "<a href='https://www.google.com' style='padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;'>Ir para o Google</a>"+
+                "<a href='https://www.google.com' style='padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;'>Ir para o Google</a>" +
                 "<p>Atenciosamente,</p>" +
                 "<p>A equipe motion</p>" +
                 "</body></html>";
@@ -176,6 +197,23 @@ public class GerenteService implements GerenteServiceStrategy {
     }
 
 
+    private void emailTokenConfirmacao(String email, String token) throws MessagingException {
+        String htmlBody = "<html>" +
+                "<head><link href='https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap' rel='stylesheet'></head>" +
+                "<body style='font-family: Roboto, sans-serif;'><h2>Confirme seu email utilizando o token abaixo.<br></h2>" +
+                "<p>Token de confirmação: <strong>" + token + "</strong></p>" +
+                "<p>Atenciosamente,</p>" +
+                "<p>A equipe motion</p>" +
+                "</body></html>";
+
+
+        MimeMessage message = emailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        helper.setTo(email);
+        helper.setSubject("Confirme seu email motion");
+        helper.setText(htmlBody, true); // Habilita o processamento de HTML
+        emailSender.send(message);
+    }
 
 
 }
