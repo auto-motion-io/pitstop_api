@@ -6,6 +6,8 @@ import lombok.*;
 import org.motion.motion_api.domain.dtos.pitstop.cliente.CreateClienteDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 
+import java.time.LocalDate;
+
 @Table(name = "Pitstop_Cliente")
 @Entity(name = "Cliente")
 @Getter
@@ -19,6 +21,7 @@ public class Cliente {
     private String nome;
     private String telefone;
     private String email;
+    private LocalDate deletedAt;
 
     @ManyToOne @JoinColumn(name = "fkOficina")
     @JsonIgnore
