@@ -2,6 +2,7 @@ package org.motion.motion_api.application.controllers.pitstop;
 
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.annotation.security.PermitAll;
 import jakarta.mail.MessagingException;
@@ -68,23 +69,16 @@ public class GerenteController {
         return ResponseEntity.status(200).body(gerente);
     }
 
-    //@Operation(summary = "Envia email para recuperação de senha")
-    //@PostMapping("/recuperar-senha")
-    public ResponseEntity<Void> recuperarSenhaPorEmail(@RequestBody SendEmailDTO recuperarSenhaDTO) throws MessagingException {
-        gerenteService.enviarEmailRecuperacao(recuperarSenhaDTO.getEmail());
-        return ResponseEntity.status(200).build();
-    }
-
-    @Operation(summary = "Seta um token de um gerente pelo email e envia o email com o token.")
+    @Operation(summary = "Seta um token de um gerente pelo email e envia o email com o token. Recebe um parâmetro op que pode ser email ou senha para a respectiva operação")
     @PostMapping("/set-token")
-    public ResponseEntity<Void> setToken(@RequestBody @Valid SendEmailDTO dto) throws MessagingException {
-        gerenteService.enviarTokenConfirmacao(dto.getEmail());
+    public ResponseEntity<Void> setToken(@RequestBody @Valid SendEmailDTO dto, @RequestParam String op) throws MessagingException {
+        gerenteService.enviarTokenConfirmacao(dto.getEmail(),op);
         return ResponseEntity.status(204).build();
     }
-    @Operation(summary = "Confirma o token de um gerente, após a confirmação o token é removido.")
+    @Operation(summary = "Confirma o token de um gerente, após a confirmação o token é removido. Recebe um parâmetro op que pode ser email ou senha para a respectiva operação. Caso a operação seja confirmação de email não é necessário colocar a nova senha")
     @PostMapping("/confirmar-token")
-    public ResponseEntity<Void> confirmarToken(@RequestBody @Valid ConfirmTokenDTO dto) {
-        gerenteService.validarTokenConfirmacao(dto);
+    public ResponseEntity<Void> confirmarToken(@RequestBody @Valid ConfirmTokenDTO dto, @RequestParam String op) {
+        gerenteService.validarTokenConfirmacao(dto,op);
         return ResponseEntity.status(204).build();
     }
 
