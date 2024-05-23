@@ -1,6 +1,7 @@
 package org.motion.motion_api.application.controllers.pitstop;
 
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.motion.motion_api.domain.dtos.pitstop.cliente.CreateClienteDTO;
@@ -42,5 +43,13 @@ public class ClienteController {
     public ResponseEntity<Cliente> buscarPorId(@PathVariable int id){
         Cliente cliente = clienteService.buscarPorId(id);
         return ResponseEntity.status(200).body(cliente);
+    }
+
+    @Operation(summary = "Recebe um parâmetro e retorna todos os clientes que satisfazem esse parâmetro em algum campo (nome,email ou telefone)")
+    @GetMapping("/filtro")
+    public ResponseEntity<List<Cliente>> buscaPorFiltro(@RequestParam String param){
+        List<Cliente> clientes = clienteService.buscaPorFiltro(param);
+        if(clientes.isEmpty()) return ResponseEntity.status(204).build();
+        return ResponseEntity.status(200).body(clientes);
     }
 }

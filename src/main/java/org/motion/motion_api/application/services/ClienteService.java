@@ -39,4 +39,8 @@ public class ClienteService {
     public Cliente buscarPorId(Integer id){
         return clienteRepository.findById(id).orElseThrow(()-> new RuntimeException("Cliente não encontrado com o id: " + id));
     }
+
+    public List<Cliente> buscaPorFiltro(String param){
+        return clienteRepository.findAllByEmailContainingIgnoreCaseOrNomeContainingIgnoreCaseOrTelefoneContainingIgnoreCase(param,param,param);
+    }
 }
