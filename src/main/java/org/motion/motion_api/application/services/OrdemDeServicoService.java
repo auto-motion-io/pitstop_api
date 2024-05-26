@@ -22,7 +22,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class OrdemDeServicoService {
+public class
+OrdemDeServicoService {
 
     @Autowired
     IOrdemDeServicoRepository ordemDeServicoRepository;
