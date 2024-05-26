@@ -18,7 +18,7 @@ import java.util.*;
 @ToString
 public class OrdemDeServico {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idOrdem;
+    private Integer id;
     private LocalDate dataInicio;
     private LocalDate dataFim;
     private String status;

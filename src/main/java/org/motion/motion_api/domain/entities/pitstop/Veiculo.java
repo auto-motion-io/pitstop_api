@@ -15,7 +15,7 @@ import org.motion.motion_api.domain.dtos.pitstop.veiculo.CreateVeiculoDTO;
 @ToString
 public class Veiculo {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idVeiculo;
+    private Integer id;
     private String placa;
     private String marca;
     private String modelo;

@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @ToString
 public class Tarefa {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idTarefa;
+    private Integer id;
     private String descricao;
     private LocalDate dtDeadline;
     private String status;

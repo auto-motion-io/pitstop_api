@@ -53,6 +53,6 @@ public class MecanicoService {
     }
 
     public Mecanico buscarPorNomeEId(String nome, Integer id){
-        return mecanicoRepository.findByNome(nome).stream().filter(mecanico -> mecanico.getIdMecanico().equals(id)).findFirst().orElseThrow(()-> new RuntimeException("Mecânico não encontrado com o nome: " + nome + " e id: " + id));
+        return mecanicoRepository.findByNome(nome).stream().filter(mecanico -> mecanico.getId().equals(id)).findFirst().orElseThrow(()-> new RuntimeException("Mecânico não encontrado com o nome: " + nome + " e id: " + id));
     }
 }

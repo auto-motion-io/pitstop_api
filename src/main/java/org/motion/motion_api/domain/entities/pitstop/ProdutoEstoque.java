@@ -16,7 +16,7 @@ import org.motion.motion_api.domain.entities.Oficina;
 @ToString
 public class ProdutoEstoque {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idProduto;
+    private Integer id;
     private String nome;
     private Integer quantidade;
     private Double valorComMaoObra;

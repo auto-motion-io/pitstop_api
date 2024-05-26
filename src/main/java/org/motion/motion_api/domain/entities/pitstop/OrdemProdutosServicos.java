@@ -12,7 +12,7 @@ import lombok.*;
 @ToString
 public class OrdemProdutosServicos {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idOrdemProdutoServico;
+    private Integer id;
     private Integer quantidade;
     private Double valorUnitario;
     private String tipo;

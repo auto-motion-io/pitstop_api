@@ -22,7 +22,7 @@ import java.util.List;
 @ToString
 public class Gerente implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idGerente;
+    private Integer id;
     @NotNull @NotBlank
     private String nome;
     @NotNull @NotBlank

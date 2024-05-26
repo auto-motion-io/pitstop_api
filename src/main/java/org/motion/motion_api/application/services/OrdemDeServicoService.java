@@ -136,13 +136,13 @@ public class OrdemDeServicoService {
 
         var sj2 = new StringJoiner(";");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        sj2.add(ordem.getIdOrdem() != null ? ordem.getIdOrdem().toString() : "");
+        sj2.add(ordem.getId() != null ? ordem.getId().toString() : "");
         sj2.add(ordem.getStatus() != null ? ordem.getStatus() : "");
         sj2.add(ordem.getGarantia() != null ? ordem.getGarantia() : "");
         sj2.add(ordem.getToken() != null ? ordem.getToken() : "");
-        sj2.add(ordem.getOficina() != null && ordem.getOficina().getIdOficina() != null ? ordem.getOficina().getIdOficina().toString() : "");
-        sj2.add(ordem.getVeiculo() != null && ordem.getVeiculo().getIdVeiculo() != null ? ordem.getVeiculo().getIdVeiculo().toString() : "");
-        sj2.add(ordem.getMecanico() != null && ordem.getMecanico().getIdMecanico() != null ? ordem.getMecanico().getIdMecanico().toString() : "");
+        sj2.add(ordem.getOficina() != null && ordem.getOficina().getId() != null ? ordem.getOficina().getId().toString() : "");
+        sj2.add(ordem.getVeiculo() != null && ordem.getVeiculo().getId() != null ? ordem.getVeiculo().getId().toString() : "");
+        sj2.add(ordem.getMecanico() != null && ordem.getMecanico().getId() != null ? ordem.getMecanico().getId().toString() : "");
         sj2.add(ordem.getDataInicio() != null ? ordem.getDataInicio().format(formatter) : "");
         sj2.add(ordem.getDataFim() != null ? ordem.getDataFim().format(formatter) : "");
         sj2.add(ordem.getTipoOs() != null ? ordem.getTipoOs() : "");

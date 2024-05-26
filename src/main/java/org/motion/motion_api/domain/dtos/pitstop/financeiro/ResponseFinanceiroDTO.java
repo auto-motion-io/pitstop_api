@@ -16,7 +16,7 @@ public class ResponseFinanceiroDTO {
     private String formaPagamento;
 
     public ResponseFinanceiroDTO(Financeiro financeiro) {
-        this.idMovimento = financeiro.getIdMovimento();
+        this.idMovimento = financeiro.getId();
         this.transacao = financeiro.getTransacao();
         this.categoria = financeiro.getCategoria();
         this.data = financeiro.getData();

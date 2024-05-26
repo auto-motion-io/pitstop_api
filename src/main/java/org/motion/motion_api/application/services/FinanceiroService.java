@@ -19,7 +19,7 @@ public class FinanceiroService {
     private ServiceHelper serviceHelper;
 
     public ResponseDataFinanceiro listarDadosFinanceiros(int idOficina) {
-        List<Financeiro> financas = financeiroRepository.findAllByOficina_IdOficina(serviceHelper.pegarOficinaValida(idOficina).getIdOficina());
+        List<Financeiro> financas = financeiroRepository.findAllByOficina_Id(serviceHelper.pegarOficinaValida(idOficina).getId());
         List<Financeiro> saidas = financas.stream().filter(f -> f.getTransacao().equals("saida")).toList();
         List<Financeiro> entradas = financas.stream().filter(f -> f.getTransacao().equals("entrada")).toList();
         Double valorTotalEntradas = entradas.stream().mapToDouble(Financeiro::getValor).sum();
@@ -36,7 +36,7 @@ public class FinanceiroService {
     }
 
     public List<Financeiro> listarTodasOperacoesFinanceiras(int idOficina) {
-        return financeiroRepository.findAllByOficina_IdOficina(serviceHelper.pegarOficinaValida(idOficina).getIdOficina());
+        return financeiroRepository.findAllByOficina_Id(serviceHelper.pegarOficinaValida(idOficina).getId());
     }
 
     public void deletarFinanceiro(int id){

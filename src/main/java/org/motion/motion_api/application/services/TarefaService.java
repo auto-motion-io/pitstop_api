@@ -23,7 +23,7 @@ public class TarefaService {
 
     public List<Tarefa> listarTodasTarefasPorIdOficina(int id) {
         serviceHelper.pegarOficinaValida(id);
-        return tarefaRepository.findByOficinaIdOficina(id);
+        return tarefaRepository.findByOficinaId(id);
     }
 
 

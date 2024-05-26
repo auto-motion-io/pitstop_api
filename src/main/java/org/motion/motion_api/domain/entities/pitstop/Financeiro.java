@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @ToString
 public class Financeiro {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idMovimento;
+    private Integer id;
     private String transacao;
     private String categoria;
     private LocalDate data;

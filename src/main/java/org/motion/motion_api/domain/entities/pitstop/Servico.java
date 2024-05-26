@@ -16,7 +16,7 @@ import org.motion.motion_api.domain.entities.Oficina;
 @ToString
 public class Servico {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idServico;
+    private Integer id;
     private String nome;
     private String descricao;
     private Double valorServico;
