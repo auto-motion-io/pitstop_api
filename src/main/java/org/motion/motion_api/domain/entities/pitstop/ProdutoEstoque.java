@@ -18,6 +18,7 @@ public class ProdutoEstoque {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idProduto;
     private String nome;
+    private String modeloVeiculo;
     private Integer quantidade;
     private Double valorComMaoObra;
     private Double valorCompra;
@@ -31,8 +32,13 @@ public class ProdutoEstoque {
 
     public ProdutoEstoque(CreateProdutoEstoqueDTO createProdutoEstoqueDTO, Oficina oficina) {
         this.nome = createProdutoEstoqueDTO.nome();
+        this.modeloVeiculo = createProdutoEstoqueDTO.modeloVeiculo();
+        this.localizacao = createProdutoEstoqueDTO.localizacao();
         this.quantidade = createProdutoEstoqueDTO.quantidade();
+        this.valorCompra = createProdutoEstoqueDTO.valorCompra();
         this.valorVenda = createProdutoEstoqueDTO.valorVenda();
+        this.valorComMaoObra = createProdutoEstoqueDTO.valorComMaoObra();
+        this.garantia = createProdutoEstoqueDTO.garantia();
         this.oficina = oficina;
     }
 }

@@ -7,9 +7,19 @@ public record CreateProdutoEstoqueDTO(
         @NotBlank
         String nome,
         @NotBlank
+        String modeloVeiculo,
+        @NotBlank
         Integer quantidade,
         @NotBlank
+        String localizacao,
+        @NotBlank
+        Double valorCompra,
+        @NotBlank
         Double valorVenda,
+        @NotBlank
+        Double valorComMaoObra,
+        @NotBlank
+        String garantia,
         @NotBlank
         Integer fkOficina
 ) {
