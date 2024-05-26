@@ -36,11 +36,11 @@ import java.util.List;
 public class GerenteService implements GerenteServiceStrategy {
 
     @Autowired
+    AuthorizationService authorizationService;
+    @Autowired
     private IGerenteRepository gerenteRepository;
     @Autowired
     private ServiceHelper serviceHelper;
-    @Autowired
-    AuthorizationService authorizationService;
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
@@ -125,7 +125,7 @@ public class GerenteService implements GerenteServiceStrategy {
         return gerente;
     }
 
-    public void enviarTokenConfirmacao(String email) throws MessagingException {
+    public void enviarTokenConfirmacao(String email, String op) throws MessagingException {
         Gerente gerente = gerenteRepository.findGerenteByEmail(email);
         if (gerente == null) throw new RecursoNaoEncontradoException("Email não encontrado no sistema");
 
@@ -133,25 +133,27 @@ public class GerenteService implements GerenteServiceStrategy {
         gerente.setConfirmToken(token);
         gerenteRepository.save(gerente);
 
-        emailTokenConfirmacao(email, token);
+        if (op.equalsIgnoreCase("senha"))
+            emailRecuperacao(gerente);
+        else if (op.equalsIgnoreCase("email")) {
+            emailTokenConfirmacao(email, token);
+        }
     }
 
-    public void validarTokenConfirmacao(ConfirmTokenDTO dto) {
+    public void validarTokenConfirmacao(ConfirmTokenDTO dto, String op) {
         Gerente gerente = gerenteRepository.findGerenteByEmail(dto.getEmail());
         if (gerente == null) throw new RecursoNaoEncontradoException("Email não encontrado no sistema");
-        if(gerente.getConfirmToken() == null) throw new RecursoNaoEncontradoException("Token não foi gerado");
-        if (!gerente.getConfirmToken().equalsIgnoreCase(dto.getToken())) throw new InvalidCredentialsException("Token inválido");
+        if (gerente.getConfirmToken() == null) throw new RecursoNaoEncontradoException("Token não foi gerado");
+        if (!gerente.getConfirmToken().equalsIgnoreCase(dto.getToken()))
+            throw new InvalidCredentialsException("Token inválido");
 
         gerente.setConfirmToken(null);
+        if(op.equalsIgnoreCase("senha")){
+            String senhaCriptografada = new BCryptPasswordEncoder().encode(dto.getSenha());
+            gerente.setSenha(senhaCriptografada);
+        }
         gerenteRepository.save(gerente);
     }
-
-    public void enviarEmailRecuperacao(String email) throws MessagingException {
-        boolean exists = gerenteRepository.existsByEmail(email);
-        if (!exists) throw new RecursoNaoEncontradoException("Email não encontrado no sistema");
-        emailRecuperacao(email);
-    }
-
 
     private void verificarEmailDuplicado(String email) {
         if (gerenteRepository.existsByEmail(email)) {
@@ -178,21 +180,29 @@ public class GerenteService implements GerenteServiceStrategy {
     }
 
 
-    private void emailRecuperacao(String email) throws MessagingException {
-        String htmlBody = "<html>" +
-                "<head><link href='https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap' rel='stylesheet'></head>" +
-                "<body style='font-family: Roboto, sans-serif;'><h2>Recebemos uma mensagem informando que você esqueceu sua senha.<br> Se foi você, pode redefinir a senha agora.</h2>" +
-                "<a href='https://www.google.com' style='padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;'>Ir para o Google</a>" +
-                "<p>Atenciosamente,</p>" +
-                "<p>A equipe motion</p>" +
-                "</body></html>";
+    private void emailRecuperacao(Gerente gerente) throws MessagingException {
+
+        String htmlTemplate = "<html lang=\"en\">" +
+                "<head>" +
+                "    <meta charset=\"UTF-8\">" +
+                "    <link href='https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap' rel='stylesheet'>" +
+                "</head>" +
+                "<body style=\"font-family: Roboto,sans-serif;\">" +
+                "    <h2>Olá, %s.</h2><br>" +
+                "    <span>Insira este código para concluir a redefinição</span><br>" +
+                "    <h1>%s</h1>" +
+                "    <span>Se você não solicitou esse código, recomendamos que altere sua senha.</span>" +
+                "</body>" +
+                "</html>";
+
+        String htmlContent = String.format(htmlTemplate, gerente.getNome(), gerente.getConfirmToken());
 
 
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-        helper.setTo(email);
+        helper.setTo(gerente.getEmail());
         helper.setSubject("Recuperação de senha");
-        helper.setText(htmlBody, true); // Habilita o processamento de HTML
+        helper.setText(htmlContent, true);
         emailSender.send(message);
     }
 
