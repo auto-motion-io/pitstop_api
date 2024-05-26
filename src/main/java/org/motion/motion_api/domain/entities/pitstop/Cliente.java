@@ -21,6 +21,7 @@ public class Cliente {
     private String nome;
     private String telefone;
     private String email;
+    @JsonIgnore
     private LocalDate deletedAt;
 
     @ManyToOne @JoinColumn(name = "fkOficina")
