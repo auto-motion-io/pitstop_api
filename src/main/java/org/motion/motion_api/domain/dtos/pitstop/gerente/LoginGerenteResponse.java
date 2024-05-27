@@ -8,7 +8,6 @@ public record LoginGerenteResponse
                 String email,
                 String nome,
                 String sobrenome,
-                String status,
                 Oficina oficina,
                 String token
          )

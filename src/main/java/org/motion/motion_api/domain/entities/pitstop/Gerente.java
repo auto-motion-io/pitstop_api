@@ -30,8 +30,6 @@ public class Gerente implements UserDetails {
     @NotNull @NotBlank
     private String email;
     private String senha;
-    @Column(columnDefinition = "varchar(255) default 'PENDENTE'")
-    private String status;
     private String fotoUrl;
     private String confirmToken;
 
@@ -44,7 +42,6 @@ public class Gerente implements UserDetails {
         this.sobrenome = createGerenteDTO.sobrenome();
         this.email = createGerenteDTO.email();
         this.senha = senhaAutomatica;
-        this.status = "PENDENTE";
         this.oficina = oficina;
     }
 
