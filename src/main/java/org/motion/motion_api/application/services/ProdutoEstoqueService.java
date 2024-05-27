@@ -1,6 +1,7 @@
 package org.motion.motion_api.application.services;
 
 import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.CreateProdutoEstoqueDTO;
+import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.UpdateProdutoEstoqueDTO;
 import org.motion.motion_api.domain.entities.pitstop.ProdutoEstoque;
 import org.motion.motion_api.domain.repositories.IOficinaRepository;
 import org.motion.motion_api.domain.repositories.pitstop.IOrdemDeServicoRepository;
@@ -39,11 +40,17 @@ public class ProdutoEstoqueService {
         produtoEstoqueRepository.delete(produtoEstoque);
     }
     
-    public ProdutoEstoque atualizar(Integer id, ProdutoEstoque produtoEstoque){
+    public ProdutoEstoque atualizar(Integer id, UpdateProdutoEstoqueDTO produtoEstoque){
         ProdutoEstoque produtoEstoqueAtualizado = buscarPorId(id);
-        produtoEstoqueAtualizado.setNome(produtoEstoque.getNome());
-        produtoEstoqueAtualizado.setQuantidade(produtoEstoque.getQuantidade());
-        produtoEstoqueAtualizado.setValorVenda(produtoEstoque.getValorVenda());
+        produtoEstoqueAtualizado.setNome(produtoEstoque.nome());
+        produtoEstoqueAtualizado.setModeloVeiculo(produtoEstoque.modeloVeiculo());
+        produtoEstoqueAtualizado.setQuantidade(produtoEstoque.quantidade());
+        produtoEstoqueAtualizado.setLocalizacao(produtoEstoque.localizacao());
+        produtoEstoqueAtualizado.setValorCompra(produtoEstoque.valorCompra());
+        produtoEstoqueAtualizado.setValorVenda(produtoEstoque.valorVenda());
+        produtoEstoqueAtualizado.setValorComMaoObra(produtoEstoque.valorComMaoObra());
+        produtoEstoqueAtualizado.setGarantia(produtoEstoque.garantia());
+        produtoEstoqueAtualizado.setOficina(oficinaRepository.findById(produtoEstoque.fkOficina()).orElseThrow(()-> new RuntimeException("Oficina não encontrada com o id: " + produtoEstoque.fkOficina())));
         produtoEstoqueRepository.save(produtoEstoqueAtualizado);
         return produtoEstoqueAtualizado;
     }

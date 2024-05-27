@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.CreateProdutoEstoqueDTO;
 import org.motion.motion_api.application.services.ProdutoEstoqueService;
+import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.UpdateProdutoEstoqueDTO;
 import org.motion.motion_api.domain.entities.pitstop.ProdutoEstoque;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +48,7 @@ public class ProdutoEstoqueController {
 
     @Operation(summary = "Atualiza um produto de estoque por id")
     @PutMapping("/{id}")
-    public ResponseEntity<ProdutoEstoque> atualizar(@PathVariable int id, @RequestBody ProdutoEstoque produtoEstoque){
+    public ResponseEntity<ProdutoEstoque> atualizar(@PathVariable int id, @RequestBody UpdateProdutoEstoqueDTO produtoEstoque){
         ProdutoEstoque produtoEstoqueAtualizado = produtoEstoqueService.atualizar(id, produtoEstoque);
         return ResponseEntity.ok(produtoEstoqueAtualizado);
     }
