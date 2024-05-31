@@ -32,6 +32,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/gerentes/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/oficinas").permitAll()
                         .requestMatchers(HttpMethod.GET,"/oficinas").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/oficinas/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/buscar-servicos/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/ordemDeServicos/token/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/galerias/**").permitAll()
