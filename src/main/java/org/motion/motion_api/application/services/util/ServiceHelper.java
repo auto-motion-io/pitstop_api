@@ -34,9 +34,9 @@ public class ServiceHelper {
      * @return Retorna um gerente caso encontre ou uma exceção caso não.
      * @throws RecursoNaoEncontradoException
      */
-    public Gerente pegarGerenteValido(int id){
+    public Gerente pegarGerenteValido(int id) {
         return gerenteRepository.findById(id).orElseThrow(() ->
-                        new RecursoNaoEncontradoException("Gerente não encontrado com o id: " + id));
+                new RecursoNaoEncontradoException("Gerente não encontrado com o id: " + id));
     }
 
 }

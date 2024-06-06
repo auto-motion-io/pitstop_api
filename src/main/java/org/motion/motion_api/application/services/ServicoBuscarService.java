@@ -1,6 +1,8 @@
 package org.motion.motion_api.application.services;
 
+import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.dtos.buscar.CreateServicoBuscarDTO;
+import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.buscar.ServicoBuscar;
 import org.motion.motion_api.domain.repositories.buscar.IServicoBuscarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ public class ServicoBuscarService {
     @Autowired
     private IServicoBuscarRepository servicoBuscarRepository;
 
+    @Autowired
+    private ServiceHelper serviceHelper;
     public List<ServicoBuscar> listarServicos() {
         return servicoBuscarRepository.findAll();
     }
@@ -24,7 +28,10 @@ public class ServicoBuscarService {
     }
 
     public ServicoBuscar cadastrar(CreateServicoBuscarDTO novoServicoBuscar) {
+        Oficina oficina = serviceHelper.pegarOficinaValida(novoServicoBuscar.fkOficina());
         ServicoBuscar servicoBuscar = new ServicoBuscar(novoServicoBuscar);
+        servicoBuscar.setOficina(oficina);
+
         return servicoBuscarRepository.save(servicoBuscar);
     }
 
