@@ -89,10 +89,10 @@ public class OficinaService implements OficinaServiceStrategy{
     private InformacoesOficina setDefaultInfo(){
         return new InformacoesOficina(
                 "",
-                "08",
-                "18",
-                "10",
-                "18",
+                "08:00",
+                "18:00",
+                "10:00",
+                "18:00",
                 "false;true;true;true;true;true;true",
                 "carro;moto",
                 "combustão"

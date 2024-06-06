@@ -39,10 +39,10 @@ public class InformacoesOficinaController {
                             examples = @io.swagger.v3.oas.annotations.media.ExampleObject(
                                     value = "{\n" +
                                             "  \"whatsapp\": \"(11) 99999-9999\",\n" +
-                                            "  \"horarioIniSem\": \"08\",\n" +
-                                            "  \"horarioFimSem\": \"18\",\n" +
-                                            "  \"horarioIniFds\": \"08\",\n" +
-                                            "  \"horarioFimFds\": \"12\",\n" +
+                                            "  \"horarioIniSem\": \"08:00\",\n" +
+                                            "  \"horarioFimSem\": \"18:00\",\n" +
+                                            "  \"horarioIniFds\": \"08:00\",\n" +
+                                            "  \"horarioFimFds\": \"12:30\",\n" +
                                             "  \"diasSemanaAberto\": \"false;true;true;true;true;true;true\",\n" +
                                             "  \"tipoVeiculosTrabalha\": \"carro;moto\",\n" +
                                             "  \"tipoPropulsaoTrabalha\": \"combustao;eletrico;hibrido\"\n" +
