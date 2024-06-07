@@ -1,7 +1,9 @@
 package org.motion.motion_api.application.services;
 
+import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.CreateProdutoEstoqueDTO;
 import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.UpdateProdutoEstoqueDTO;
+import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.ProdutoEstoque;
 import org.motion.motion_api.domain.repositories.IOficinaRepository;
 import org.motion.motion_api.domain.repositories.pitstop.IOrdemDeServicoRepository;
@@ -20,6 +22,8 @@ public class ProdutoEstoqueService {
     IOficinaRepository oficinaRepository;
     @Autowired
     IOrdemDeServicoRepository ordemDeServicoRepository;
+    @Autowired
+    ServiceHelper serviceHelper;
     
     public List<ProdutoEstoque> listarProdutosEstoque(){
         return produtoEstoqueRepository.findAll();
@@ -27,6 +31,8 @@ public class ProdutoEstoqueService {
     
     public ProdutoEstoque cadastrar(CreateProdutoEstoqueDTO createProdutoEstoqueDTO){
         ProdutoEstoque produtoEstoque = new ProdutoEstoque(createProdutoEstoqueDTO, oficinaRepository.findById(createProdutoEstoqueDTO.fkOficina()).orElseThrow(()-> new RuntimeException("Oficina não encontrada com o id: " + createProdutoEstoqueDTO.fkOficina())));
+        Oficina oficina = serviceHelper.pegarOficinaValida(createProdutoEstoqueDTO.fkOficina());
+        produtoEstoque.setOficina(oficina);
         produtoEstoqueRepository.save(produtoEstoque);
         return produtoEstoque;
     }

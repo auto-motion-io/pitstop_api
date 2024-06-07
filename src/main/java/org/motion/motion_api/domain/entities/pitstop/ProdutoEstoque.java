@@ -27,7 +27,6 @@ public class ProdutoEstoque {
     private String garantia;
 
     @ManyToOne @JoinColumn(name = "fkOficina") @NotNull
-    @JsonIgnore
     private Oficina oficina;
 
     public ProdutoEstoque(CreateProdutoEstoqueDTO createProdutoEstoqueDTO, Oficina oficina) {
