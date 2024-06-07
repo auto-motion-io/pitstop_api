@@ -72,7 +72,7 @@ public class GerenteService implements GerenteServiceStrategy {
 
         Gerente gerente = new Gerente(novoGerenteDTO, oficina, senhaCriptografada);
 
-        subject.notifyObservers(new AccountCreationData(gerente, senhaGerada, emailSender));
+        //subject.notifyObservers(new AccountCreationData(gerente, senhaGerada, emailSender));
         gerenteRepository.save(gerente);
 
         return gerente;
