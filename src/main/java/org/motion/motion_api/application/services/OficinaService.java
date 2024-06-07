@@ -5,7 +5,6 @@ import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.dtos.oficina.UpdateLogoOficinaDTO;
 import org.motion.motion_api.domain.dtos.oficina.UpdateOficinaDTO;
 import org.motion.motion_api.application.exceptions.DadoUnicoDuplicadoException;
-import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.strategies.OficinaServiceStrategy;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.InformacoesOficina;
@@ -35,6 +34,9 @@ public class OficinaService implements OficinaServiceStrategy{
         return serviceHelper.pegarOficinaValida(id);
     }
 
+    public List<Oficina> buscarPorTipoVeiculo(String tipo){
+        return oficinaRepository.findByInformacoesOficina_TipoVeiculosTrabalhaContainingIgnoreCase(tipo);
+    }
     public Oficina criar(Oficina oficina) {
         checarConflitoCnpj(oficina);
 

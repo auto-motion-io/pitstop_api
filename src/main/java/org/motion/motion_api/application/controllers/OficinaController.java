@@ -46,6 +46,13 @@ public class OficinaController {
         return ResponseEntity.ok(oficina);
     }
 
+    @Operation(summary = "Busca oficinas por tipo de veículo recebendo um parametro tipo que pode ser, carro, moto etc")
+    @GetMapping("/tipo-veiculo")
+    public ResponseEntity<List<Oficina>> buscarOficinasPorTipoVeiculo(@RequestParam String tipo) {
+        List<Oficina> oficinas = oficinaService.buscarPorTipoVeiculo(tipo);
+        if(oficinas.isEmpty())return ResponseEntity.status(204).build();
+        return ResponseEntity.ok(oficinas);
+    }
 
     @Operation(summary = "Cadastra uma oficina")
     @PostMapping
