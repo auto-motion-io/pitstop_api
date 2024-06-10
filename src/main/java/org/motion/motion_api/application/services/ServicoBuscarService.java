@@ -1,5 +1,6 @@
 package org.motion.motion_api.application.services;
 
+import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.dtos.buscar.CreateServicoBuscarDTO;
 import org.motion.motion_api.domain.entities.Oficina;
@@ -36,7 +37,13 @@ public class ServicoBuscarService {
     }
 
     public void deletarServico(Integer id) {
+        servicoBuscarRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Serviço não encontrado com o id: " + id));
         servicoBuscarRepository.deleteById(id);
+    }
+
+    public List<ServicoBuscar> buscarPorOficina(Integer idOficina) {
+        Oficina o = serviceHelper.pegarOficinaValida(idOficina);
+        return servicoBuscarRepository.findByOficina(o);
     }
 
 }

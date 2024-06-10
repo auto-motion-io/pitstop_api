@@ -1,11 +1,13 @@
 package org.motion.motion_api.application.controllers.buscar;
 
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.motion.motion_api.application.services.ServicoBuscarService;
 import org.motion.motion_api.domain.dtos.buscar.CreateServicoBuscarDTO;
 import org.motion.motion_api.domain.entities.buscar.ServicoBuscar;
+import org.motion.motion_api.domain.entities.pitstop.Servico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,5 +42,13 @@ public class ServicoBuscarController {
     public ResponseEntity<Void> deletarServico(@PathVariable Integer id) {
         servicoBuscarService.deletarServico(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Busca os serviços que serão exibidos no buscar recebe o id da oficina")
+    @GetMapping("/oficina/{idOficina}")
+    public ResponseEntity<List<ServicoBuscar>> buscarPorOficina(@PathVariable int idOficina){
+        List<ServicoBuscar> servicos = servicoBuscarService.buscarPorOficina(idOficina);
+        if(servicos.isEmpty()) return ResponseEntity.status(204).build();
+        return ResponseEntity.ok(servicos);
     }
 }

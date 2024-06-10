@@ -1,6 +1,7 @@
 package org.motion.motion_api.domain.entities.pitstop;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -26,7 +27,7 @@ public class ProdutoEstoque {
     private String localizacao;
     private String garantia;
 
-    @ManyToOne @JoinColumn(name = "fkOficina") @NotNull
+    @ManyToOne @JoinColumn(name = "fkOficina") @NotNull @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Oficina oficina;
 
     public ProdutoEstoque(CreateProdutoEstoqueDTO createProdutoEstoqueDTO, Oficina oficina) {

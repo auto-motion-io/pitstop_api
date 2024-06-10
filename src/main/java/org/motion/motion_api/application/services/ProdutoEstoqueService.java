@@ -65,7 +65,7 @@ public class ProdutoEstoqueService {
         return produtoEstoqueRepository.findByNome(nome).stream().findFirst().orElseThrow(()-> new RuntimeException("Produto de estoque não encontrado com o nome: " + nome));
     }
 
-    public ProdutoEstoque buscarPorOficina(Integer idOficina){
-        return produtoEstoqueRepository.findByOficina(oficinaRepository.findById(idOficina).orElseThrow(()-> new RuntimeException("Oficina não encontrada com o id: " + idOficina))).stream().findFirst().orElseThrow(()-> new RuntimeException("Produto de estoque não encontrado para a oficina com o id: " + idOficina));
+    public List<ProdutoEstoque> buscarPorOficina(Integer idOficina){
+        return produtoEstoqueRepository.findByOficina(oficinaRepository.findById(idOficina).orElseThrow(()-> new RuntimeException("Oficina não encontrada com o id: " + idOficina))).stream().toList();
     }
 }

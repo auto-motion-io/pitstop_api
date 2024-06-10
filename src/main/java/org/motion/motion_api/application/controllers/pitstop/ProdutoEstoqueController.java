@@ -60,10 +60,11 @@ public class ProdutoEstoqueController {
         return ResponseEntity.ok(produtoEstoque);
     }
 
-    @Operation(summary = "Busca um produto de estoque por oficina")
+    @Operation(summary = "Busca todos os produtos do estoque de uma oficina")
     @GetMapping("/oficina/{idOficina}")
-    public ResponseEntity<ProdutoEstoque> buscarPorOficina(@PathVariable int idOficina){
-        ProdutoEstoque produtoEstoque = produtoEstoqueService.buscarPorOficina(idOficina);
+    public ResponseEntity<List<ProdutoEstoque>> buscarPorOficina(@PathVariable int idOficina){
+        List<ProdutoEstoque> produtoEstoque = produtoEstoqueService.buscarPorOficina(idOficina);
+        if(produtoEstoque.isEmpty()) return ResponseEntity.status(204).build();
         return ResponseEntity.ok(produtoEstoque);
     }
 }

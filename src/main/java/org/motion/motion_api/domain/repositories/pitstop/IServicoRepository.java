@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface IServicoRepository extends JpaRepository<Servico,Integer> {
     List<Servico> findByNomeIn(List<String> nomes);
+    List<Servico> findByOficina(Oficina oficina);
 }

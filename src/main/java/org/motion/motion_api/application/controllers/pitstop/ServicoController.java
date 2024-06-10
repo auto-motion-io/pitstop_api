@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.motion.motion_api.domain.dtos.pitstop.servico.CreateServicoDTO;
 import org.motion.motion_api.application.services.ServicoService;
+import org.motion.motion_api.domain.entities.pitstop.ProdutoEstoque;
 import org.motion.motion_api.domain.entities.pitstop.Servico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -52,5 +53,14 @@ public class ServicoController {
     public ResponseEntity<Servico> atualizar(@PathVariable int id, @RequestBody Servico servico){
         Servico servicoAtualizado = servicoService.atualizar(id, servico);
         return ResponseEntity.ok(servicoAtualizado);
+    }
+
+
+    @Operation(summary = "Busca os serviços da oficina, recebe o id da oficina.")
+    @GetMapping("/oficina/{idOficina}")
+    public ResponseEntity<List<Servico>> buscarPorOficina(@PathVariable int idOficina){
+        List<Servico> servicos = servicoService.buscarPorOficina(idOficina);
+        if(servicos.isEmpty()) return ResponseEntity.status(204).build();
+        return ResponseEntity.ok(servicos);
     }
 }

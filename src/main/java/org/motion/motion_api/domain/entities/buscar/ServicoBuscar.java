@@ -1,5 +1,6 @@
 package org.motion.motion_api.domain.entities.buscar;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import org.motion.motion_api.domain.dtos.buscar.CreateServicoBuscarDTO;
@@ -20,7 +21,7 @@ public class ServicoBuscar {
     private String descricao;
 
     @ManyToOne
-    @JoinColumn(name = "fkOficina")
+    @JoinColumn(name = "fkOficina") @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Oficina oficina;
 
     public ServicoBuscar(CreateServicoBuscarDTO novoServicoBuscar) {
