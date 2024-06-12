@@ -27,7 +27,7 @@ public class ProdutoEstoque {
     private String localizacao;
     private String garantia;
 
-    @ManyToOne @JoinColumn(name = "fkOficina") @NotNull @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToOne @JoinColumn(name = "fkOficina") @NotNull
     private Oficina oficina;
 
     public ProdutoEstoque(CreateProdutoEstoqueDTO createProdutoEstoqueDTO, Oficina oficina) {

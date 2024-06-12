@@ -21,7 +21,7 @@ public class ServicoBuscar {
     private String descricao;
 
     @ManyToOne
-    @JoinColumn(name = "fkOficina") @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JoinColumn(name = "fkOficina")
     private Oficina oficina;
 
     public ServicoBuscar(CreateServicoBuscarDTO novoServicoBuscar) {
