@@ -65,4 +65,12 @@ public class InformacoesOficinaController {
         return ResponseEntity.ok(info);
     }
 
+
+    @PutMapping("/atualiza-zap/{idOficina}")
+    @Operation(summary = "Recebe id da oficina, e número whatsapp formatado e atualiza o número whatsapp da oficina")
+    public ResponseEntity<InformacoesOficina> atualizarWhatsappOficina(@PathVariable int idOficina, @RequestBody String whatsapp) {
+        Oficina oficina = helper.pegarOficinaValida(idOficina);
+        oficina.getInformacoesOficina().setWhatsapp(whatsapp);
+        return ResponseEntity.status(200).body(repository.save(oficina.getInformacoesOficina()));
+    }
 }
