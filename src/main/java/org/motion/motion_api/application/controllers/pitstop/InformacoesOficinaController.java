@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.dtos.oficina.SetInfoOficinaDTO;
+import org.motion.motion_api.domain.dtos.oficina.UpdateWhatsappDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.InformacoesOficina;
 import org.motion.motion_api.domain.repositories.pitstop.InformacoesOficinaRepository;
@@ -68,9 +69,9 @@ public class InformacoesOficinaController {
 
     @PutMapping("/atualiza-zap/{idOficina}")
     @Operation(summary = "Recebe id da oficina, e número whatsapp formatado e atualiza o número whatsapp da oficina")
-    public ResponseEntity<InformacoesOficina> atualizarWhatsappOficina(@PathVariable int idOficina, @RequestBody String whatsapp) {
+    public ResponseEntity<InformacoesOficina> atualizarWhatsappOficina(@PathVariable int idOficina, @Valid UpdateWhatsappDTO dto) {
         Oficina oficina = helper.pegarOficinaValida(idOficina);
-        oficina.getInformacoesOficina().setWhatsapp(whatsapp);
+        oficina.getInformacoesOficina().setWhatsapp(dto.getWhatsapp());
         return ResponseEntity.status(200).body(repository.save(oficina.getInformacoesOficina()));
     }
 }
