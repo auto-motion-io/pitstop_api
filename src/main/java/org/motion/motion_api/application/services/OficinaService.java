@@ -37,6 +37,12 @@ public class OficinaService implements OficinaServiceStrategy{
     public List<Oficina> buscarPorTipoVeiculo(String tipo){
         return oficinaRepository.findByInformacoesOficina_TipoVeiculosTrabalhaContainingIgnoreCase(tipo);
     }
+
+    public List<Oficina> buscarPorTipoVeiculoPropulsaoMarca(String tipoVeiculo, String tipoPropulsao, String marca){
+        return oficinaRepository.findByInformacoesOficina_TipoVeiculosTrabalhaContainingIgnoreCaseAndInformacoesOficina_TipoPropulsaoTrabalhaContainingIgnoreCaseAndInformacoesOficina_MarcasVeiculosTrabalhaContainingIgnoreCase(tipoVeiculo, tipoPropulsao, marca);
+    }
+
+
     public Oficina criar(Oficina oficina) {
         checarConflitoCnpj(oficina);
 
@@ -86,7 +92,6 @@ public class OficinaService implements OficinaServiceStrategy{
         if(listarTodos().stream().anyMatch(o->o.getCnpj().equals(oficina.getCnpj())))
             throw new DadoUnicoDuplicadoException("CNPJ já cadastrado");
     }
-
 
     private InformacoesOficina setDefaultInfo(){
         return new InformacoesOficina(

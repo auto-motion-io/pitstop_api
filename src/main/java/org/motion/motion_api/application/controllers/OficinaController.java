@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import org.motion.motion_api.domain.dtos.oficina.UpdateLogoOficinaDTO;
 import org.motion.motion_api.domain.dtos.oficina.UpdateOficinaDTO;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+
 @RestController
 @RequestMapping("/oficinas")
 @SecurityRequirement(name = "motion_jwt")
@@ -33,10 +35,9 @@ public class OficinaController {
     @GetMapping
     public ResponseEntity<List<Oficina>> listarOficinas() {
         List<Oficina> oficinas = oficinaService.listarTodos();
-        if(oficinas.isEmpty())return ResponseEntity.status(204).build();
+        if (oficinas.isEmpty()) return ResponseEntity.status(204).build();
         return ResponseEntity.ok(oficinas);
     }
-
 
 
     @Operation(summary = "Busca uma oficina por id")
@@ -48,9 +49,20 @@ public class OficinaController {
 
     @Operation(summary = "Busca oficinas por tipo de veículo recebendo um parametro tipo que pode ser, carro, moto etc")
     @GetMapping("/tipo-veiculo")
-    public ResponseEntity<List<Oficina>> buscarOficinasPorTipoVeiculo(@RequestParam String tipo) {
+    public ResponseEntity<List<Oficina>> buscarOficinasPorTipoVeiculo(@RequestParam(required = false, defaultValue = "") String tipo) {
         List<Oficina> oficinas = oficinaService.buscarPorTipoVeiculo(tipo);
-        if(oficinas.isEmpty())return ResponseEntity.status(204).build();
+        if (oficinas.isEmpty()) return ResponseEntity.status(204).build();
+        return ResponseEntity.ok(oficinas);
+    }
+
+    @Operation(summary = "Busca oficinas por tipo de veiculo, propulsão e marca, recebe os três parametros")
+    @GetMapping("/tipo-veiculo-propulsao-marca")
+    public ResponseEntity<List<Oficina>> buscarOficinasPorTipoVeiculoPropulsaoMarca(
+            @RequestParam(required = false, defaultValue = "") String tipoVeiculo,
+            @RequestParam(required = false, defaultValue = "") String tipoPropulsao,
+            @RequestParam(required = false, defaultValue = "") String marca) {
+        List<Oficina> oficinas = oficinaService.buscarPorTipoVeiculoPropulsaoMarca(tipoVeiculo, tipoPropulsao, marca);
+        if (oficinas.isEmpty()) return ResponseEntity.status(204).build();
         return ResponseEntity.ok(oficinas);
     }
 
@@ -78,7 +90,7 @@ public class OficinaController {
     @Operation(summary = "Deleta uma oficina e seus registros")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarOficina(@PathVariable Integer id) {
-       // return ResponseEntity.status(501).build();
+        // return ResponseEntity.status(501).build();
         oficinaService.deletar(id);
         return ResponseEntity.noContent().build();
     }

@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface IOficinaRepository extends JpaRepository<Oficina,Integer> {
     List<Oficina> findByInformacoesOficina_TipoVeiculosTrabalhaContainingIgnoreCase(String tipoVeiculosTrabalha);
+    List<Oficina> findByInformacoesOficina_TipoVeiculosTrabalhaContainingIgnoreCaseAndInformacoesOficina_TipoPropulsaoTrabalhaContainingIgnoreCaseAndInformacoesOficina_MarcasVeiculosTrabalhaContainingIgnoreCase(String tipoVeiculosTrabalha, String tipoPropulsaoTrabalha, String marcasVeiculosTrabalha);
 }
