@@ -46,7 +46,8 @@ public class InformacoesOficinaController {
                                             "  \"horarioFimFds\": \"12:30\",\n" +
                                             "  \"diasSemanaAberto\": \"false;true;true;true;true;true;true\",\n" +
                                             "  \"tipoVeiculosTrabalha\": \"carro;moto\",\n" +
-                                            "  \"tipoPropulsaoTrabalha\": \"combustao;eletrico;hibrido\"\n" +
+                                            "  \"tipoPropulsaoTrabalha\": \"combustao;eletrico;hibrido\",\n" +
+                                            "  \"marcasVeiculosTrabalha\": \"chevrolet;ford;fiat\"\n" +
                                             "}"
                             )))
     })
@@ -62,6 +63,7 @@ public class InformacoesOficinaController {
         info.setDiasSemanaAberto(dto.getDiasSemanaAberto());
         info.setTipoVeiculosTrabalha(dto.getTipoVeiculosTrabalha());
         info.setTipoPropulsaoTrabalha(dto.getTipoPropulsaoTrabalha());
+        info.setMarcasVeiculosTrabalha(dto.getMarcasVeiculosTrabalha());
         repository.save(info);
         return ResponseEntity.ok(info);
     }

@@ -26,7 +26,7 @@ public class InformacoesOficina {
     private String tipoPropulsaoTrabalha;
     private String marcasVeiculosTrabalha;
 
-    public InformacoesOficina(String whatsapp, String horarioIniSem, String horarioFimSem, String horarioIniFds, String horarioFimFds, String diasSemanaAberto, String tipoVeiculosTrabalha, String tipoPropulsaoTrabalha) {
+    public InformacoesOficina(String whatsapp, String horarioIniSem, String horarioFimSem, String horarioIniFds, String horarioFimFds, String diasSemanaAberto, String tipoVeiculosTrabalha, String tipoPropulsaoTrabalha, String marcasVeiculosTrabalha) {
         this.whatsapp = whatsapp;
         this.horarioIniSem = horarioIniSem;
         this.horarioFimSem = horarioFimSem;
@@ -35,5 +35,6 @@ public class InformacoesOficina {
         this.diasSemanaAberto = diasSemanaAberto;
         this.tipoVeiculosTrabalha = tipoVeiculosTrabalha;
         this.tipoPropulsaoTrabalha = tipoPropulsaoTrabalha;
+        this.marcasVeiculosTrabalha = marcasVeiculosTrabalha;
     }
 }

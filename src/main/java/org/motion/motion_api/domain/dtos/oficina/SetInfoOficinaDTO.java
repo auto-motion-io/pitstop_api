@@ -21,4 +21,6 @@ public class SetInfoOficinaDTO {
     private String tipoVeiculosTrabalha;
     @NotBlank
     private String tipoPropulsaoTrabalha;
+    @NotBlank
+    private String marcasVeiculosTrabalha;
 }
