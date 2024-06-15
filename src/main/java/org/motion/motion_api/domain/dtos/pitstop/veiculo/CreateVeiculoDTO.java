@@ -1,15 +1,16 @@
 package org.motion.motion_api.domain.dtos.pitstop.veiculo;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CreateVeiculoDTO(
-        @NotNull
+        @NotBlank
         String placa,
-        @NotNull
+        @NotBlank
         String marca,
-        @NotNull
+        @NotBlank
         String modelo,
-        @NotNull
+        @NotBlank
         String cor,
         @NotNull
         Integer ano,

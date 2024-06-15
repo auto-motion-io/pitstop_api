@@ -1,6 +1,7 @@
 package org.motion.motion_api.application.controllers.pitstop;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.motion.motion_api.domain.dtos.pitstop.veiculo.CreateVeiculoDTO;
 import org.motion.motion_api.application.services.VeiculoService;
 import org.motion.motion_api.domain.entities.pitstop.Veiculo;
@@ -23,7 +24,7 @@ public class VeiculoController {
     }
 
     @PostMapping()
-    public ResponseEntity<Veiculo> cadastrar(CreateVeiculoDTO novoVeiculoDTO){
+    public ResponseEntity<Veiculo> cadastrar(@RequestBody @Valid CreateVeiculoDTO novoVeiculoDTO){
         Veiculo veiculo = veiculoService.cadastrar(novoVeiculoDTO);
         return ResponseEntity.status(201).body(veiculo);
     }
@@ -35,7 +36,7 @@ public class VeiculoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Veiculo> atualizar(@PathVariable int id, CreateVeiculoDTO novoVeiculoDTO){
+    public ResponseEntity<Veiculo> atualizar(@PathVariable int id, @RequestBody @Valid CreateVeiculoDTO novoVeiculoDTO){
         Veiculo veiculo = veiculoService.atualizar(id,novoVeiculoDTO);
         return ResponseEntity.status(200).body(veiculo);
     }

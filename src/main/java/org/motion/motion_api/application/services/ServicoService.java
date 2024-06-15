@@ -2,6 +2,7 @@ package org.motion.motion_api.application.services;
 
 import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.dtos.pitstop.servico.CreateServicoDTO;
+import org.motion.motion_api.domain.dtos.pitstop.servico.UpdateServicoDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.Servico;
 import org.motion.motion_api.domain.repositories.IOficinaRepository;
@@ -41,7 +42,7 @@ public class ServicoService {
         servicoRepository.delete(servico);
     }
 
-    public Servico atualizar(Integer id, Servico servico){
+    public Servico atualizar(Integer id, UpdateServicoDTO servico){
         Servico servicoAtualizado = buscarPorId(id);
         servicoAtualizado.setNome(servico.getNome());
         servicoAtualizado.setDescricao(servico.getDescricao());

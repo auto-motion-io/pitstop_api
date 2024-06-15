@@ -1,11 +1,13 @@
 package org.motion.motion_api.domain.dtos.pitstop.ordemDeServico;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 import java.util.List;
 
 
 public record CreateOrdemDeServicoDTO(
-        @NotBlank
+        @NotNull
         Integer fkOficina,
         @NotBlank
         String status,
@@ -13,15 +15,15 @@ public record CreateOrdemDeServicoDTO(
         String garantia,
         @NotBlank
         String token,
-        @NotBlank
+        @NotNull
         Integer fkVeiculo,
-        @NotBlank
+        @NotNull
         Integer fkCliente,
-        @NotBlank
+        @NotNull
         Integer fkMecanico,
-        @NotBlank
+        @NotNull
         LocalDate dataInicio,
-        @NotBlank
+        @NotNull
         LocalDate dataFim,
         @NotBlank
         String tipoOs,

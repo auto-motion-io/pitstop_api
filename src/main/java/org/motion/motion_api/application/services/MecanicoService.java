@@ -1,7 +1,9 @@
 package org.motion.motion_api.application.services;
 
+import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.domain.dtos.pitstop.mecanico.CreateMecanicoDTO;
 import org.motion.motion_api.application.services.util.ServiceHelper;
+import org.motion.motion_api.domain.dtos.pitstop.mecanico.UpdateMecanicoDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.Mecanico;
 import org.motion.motion_api.domain.repositories.IOficinaRepository;
@@ -32,7 +34,7 @@ public class MecanicoService {
     }
 
     public Mecanico buscarPorId(Integer id){
-        return mecanicoRepository.findById(id).orElseThrow(()-> new RuntimeException("Mecânico não encontrado com o id: " + id));
+        return mecanicoRepository.findById(id).orElseThrow(()-> new RecursoNaoEncontradoException("Mecânico não encontrado com o id: " + id));
     }
 
     public void deletar(Integer id){
@@ -40,7 +42,7 @@ public class MecanicoService {
         mecanicoRepository.delete(mecanico);
     }
 
-    public Mecanico atualizar(Integer id, Mecanico mecanico){
+    public Mecanico atualizar(Integer id, UpdateMecanicoDTO mecanico){
         Mecanico mecanicoAtualizado = buscarPorId(id);
         mecanicoAtualizado.setNome(mecanico.getNome());
         mecanicoAtualizado.setTelefone(mecanico.getTelefone());
@@ -49,7 +51,7 @@ public class MecanicoService {
     }
 
     public Mecanico buscarPorNome(String nome){
-        return mecanicoRepository.findByNome(nome).stream().findFirst().orElseThrow(()-> new RuntimeException("Mecânico não encontrado com o nome: " + nome));
+        return mecanicoRepository.findByNome(nome).stream().findFirst().orElseThrow(()-> new RecursoNaoEncontradoException("Mecânico não encontrado com o nome: " + nome));
     }
 
     public Mecanico buscarPorNomeEId(String nome, Integer id){

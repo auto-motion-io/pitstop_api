@@ -1,21 +1,22 @@
 package org.motion.motion_api.domain.dtos.pitstop.produtoEstoque;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record UpdateProdutoEstoqueDTO(
         @NotBlank
         String nome,
         @NotBlank
         String modeloVeiculo,
-        @NotBlank
+        @NotNull
         Integer quantidade,
         @NotBlank
         String localizacao,
-        @NotBlank
+        @NotNull
         Double valorCompra,
-        @NotBlank
+        @NotNull
         Double valorVenda,
-        @NotBlank
+        @NotNull
         Double valorComMaoObra,
         @NotBlank
         String garantia

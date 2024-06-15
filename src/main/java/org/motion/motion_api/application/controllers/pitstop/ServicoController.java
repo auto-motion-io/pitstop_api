@@ -2,8 +2,10 @@ package org.motion.motion_api.application.controllers.pitstop;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.motion.motion_api.domain.dtos.pitstop.servico.CreateServicoDTO;
 import org.motion.motion_api.application.services.ServicoService;
+import org.motion.motion_api.domain.dtos.pitstop.servico.UpdateServicoDTO;
 import org.motion.motion_api.domain.entities.pitstop.ProdutoEstoque;
 import org.motion.motion_api.domain.entities.pitstop.Servico;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +38,7 @@ public class ServicoController {
 
     @Operation(summary = "Cadastra um serviço")
     @PostMapping()
-    public ResponseEntity<Servico> cadastrar(@RequestBody CreateServicoDTO createServicoDTO){
+    public ResponseEntity<Servico> cadastrar(@RequestBody @Valid CreateServicoDTO createServicoDTO){
         Servico servico = servicoService.cadastrar(createServicoDTO);
         return ResponseEntity.status(201).body(servico);
     }
@@ -50,7 +52,7 @@ public class ServicoController {
 
     @Operation(summary = "Atualiza um serviço por id")
     @PutMapping("/{id}")
-    public ResponseEntity<Servico> atualizar(@PathVariable int id, @RequestBody Servico servico){
+    public ResponseEntity<Servico> atualizar(@PathVariable int id, @RequestBody @Valid UpdateServicoDTO servico){
         Servico servicoAtualizado = servicoService.atualizar(id, servico);
         return ResponseEntity.ok(servicoAtualizado);
     }

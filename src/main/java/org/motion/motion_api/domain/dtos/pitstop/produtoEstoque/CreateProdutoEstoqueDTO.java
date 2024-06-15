@@ -1,6 +1,7 @@
 package org.motion.motion_api.domain.dtos.pitstop.produtoEstoque;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.motion.motion_api.domain.entities.pitstop.ProdutoEstoque;
 
 public record CreateProdutoEstoqueDTO(
@@ -12,15 +13,15 @@ public record CreateProdutoEstoqueDTO(
         Integer quantidade,
         @NotBlank
         String localizacao,
-        @NotBlank
+        @NotNull
         Double valorCompra,
-        @NotBlank
+        @NotNull
         Double valorVenda,
-        @NotBlank
+        @NotNull
         Double valorComMaoObra,
         @NotBlank
         String garantia,
-        @NotBlank
+        @NotNull
         Integer fkOficina
 ) {
 }

@@ -2,6 +2,7 @@ package org.motion.motion_api.application.controllers.pitstop;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.CreateOrdemDeServicoDTO;
 import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.UpdateOrdemDeServicoDTO;
 import org.motion.motion_api.application.services.OrdemDeServicoService;
@@ -30,7 +31,7 @@ public class OrdemDeServicoController {
 
     @Operation(summary = "Cadastrar ordem de serviço")
     @PostMapping()
-    public ResponseEntity<OrdemDeServico> cadastrar(@RequestBody CreateOrdemDeServicoDTO novaOrdemDeServicoDTO){
+    public ResponseEntity<OrdemDeServico> cadastrar(@RequestBody @Valid CreateOrdemDeServicoDTO novaOrdemDeServicoDTO){
         return ResponseEntity.status(201).body(ordemDeServicoService.cadastrar(novaOrdemDeServicoDTO));
     }
 
@@ -50,7 +51,7 @@ public class OrdemDeServicoController {
 
     @Operation(summary = "Atualizar ordem de serviço por id")
     @PutMapping("/{id}")
-    public ResponseEntity<OrdemDeServico> atualizar(@PathVariable Integer id, @RequestBody UpdateOrdemDeServicoDTO alterarOrdemDeServicoDTO){
+    public ResponseEntity<OrdemDeServico> atualizar(@PathVariable Integer id, @RequestBody @Valid UpdateOrdemDeServicoDTO alterarOrdemDeServicoDTO){
         return ResponseEntity.status(200).body(ordemDeServicoService.atualizar(id, alterarOrdemDeServicoDTO));
     }
 

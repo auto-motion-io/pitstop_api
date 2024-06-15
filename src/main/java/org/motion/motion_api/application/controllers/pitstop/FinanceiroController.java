@@ -2,6 +2,7 @@ package org.motion.motion_api.application.controllers.pitstop;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.motion.motion_api.domain.dtos.pitstop.financeiro.CreateFinanceiroDTO;
 import org.motion.motion_api.domain.dtos.pitstop.financeiro.ResponseDataFinanceiro;
 import org.motion.motion_api.application.services.FinanceiroService;
@@ -28,7 +29,7 @@ public class FinanceiroController {
 
     @Operation(summary = "Registra uma transação financeira.")
     @PostMapping()
-    public ResponseEntity<Financeiro> registrarTransacaoFinanceira(@RequestBody CreateFinanceiroDTO dto){
+    public ResponseEntity<Financeiro> registrarTransacaoFinanceira(@RequestBody @Valid CreateFinanceiroDTO dto){
         Financeiro financeiro = financeiroService.registrarTransacaoFinanceira(dto);
         return ResponseEntity.status(201).body(financeiro);
     }

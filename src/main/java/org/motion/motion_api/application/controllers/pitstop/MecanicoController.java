@@ -2,8 +2,10 @@ package org.motion.motion_api.application.controllers.pitstop;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.motion.motion_api.domain.dtos.pitstop.mecanico.CreateMecanicoDTO;
 import org.motion.motion_api.application.services.MecanicoService;
+import org.motion.motion_api.domain.dtos.pitstop.mecanico.UpdateMecanicoDTO;
 import org.motion.motion_api.domain.entities.pitstop.Mecanico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,7 @@ public class MecanicoController {
 
     @Operation(summary = "Cadastra um mecânico")
     @PostMapping()
-    public ResponseEntity<Mecanico> cadastrar(@RequestBody CreateMecanicoDTO createMecanicoDTO){
+    public ResponseEntity<Mecanico> cadastrar(@RequestBody @Valid CreateMecanicoDTO createMecanicoDTO){
         Mecanico mecanico = mecanicoService.cadastrar(createMecanicoDTO);
         return ResponseEntity.status(201).body(mecanico);
     }
@@ -48,7 +50,7 @@ public class MecanicoController {
 
     @Operation(summary = "Atualiza um mecânico por id")
     @PutMapping("/{id}")
-    public ResponseEntity<Mecanico> atualizar(@PathVariable int id, @RequestBody Mecanico mecanico){
+    public ResponseEntity<Mecanico> atualizar(@PathVariable int id, @RequestBody UpdateMecanicoDTO mecanico){
         Mecanico mecanicoAtualizado = mecanicoService.atualizar(id, mecanico);
         return ResponseEntity.ok(mecanicoAtualizado);
     }
