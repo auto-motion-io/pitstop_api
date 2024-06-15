@@ -49,6 +49,7 @@ public class OficinaService implements OficinaServiceStrategy{
         InformacoesOficina informacoesOficina = setDefaultInfo();
 
         informacoesOficinaRepository.save(informacoesOficina);
+        oficina.setLogoUrl("https://jeyoqssrkcibrvhoobsk.supabase.co/storage/v1/object/public/ofc-photos/base_oficina_image.png");
         oficina.setInformacoesOficina(informacoesOficina);
         return oficinaRepository.save(oficina);
     }
