@@ -18,8 +18,6 @@ public record UpdateProdutoEstoqueDTO(
         @NotBlank
         Double valorComMaoObra,
         @NotBlank
-        String garantia,
-        @NotBlank
-        Integer fkOficina
+        String garantia
 ) {
 }

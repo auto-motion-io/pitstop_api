@@ -43,6 +43,7 @@ public class ServicoService {
 
     public Servico atualizar(Integer id, Servico servico){
         Servico servicoAtualizado = buscarPorId(id);
+        servicoAtualizado.setNome(servico.getNome());
         servicoAtualizado.setDescricao(servico.getDescricao());
         servicoAtualizado.setValorServico(servico.getValorServico());
         servicoAtualizado.setGarantia(servico.getGarantia());

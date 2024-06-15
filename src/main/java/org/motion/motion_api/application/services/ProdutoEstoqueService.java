@@ -1,5 +1,6 @@
 package org.motion.motion_api.application.services;
 
+import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.CreateProdutoEstoqueDTO;
 import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.UpdateProdutoEstoqueDTO;
@@ -38,7 +39,7 @@ public class ProdutoEstoqueService {
     }
     
     public ProdutoEstoque buscarPorId(Integer id){
-        return produtoEstoqueRepository.findById(id).orElseThrow(()-> new RuntimeException("Produto de estoque não encontrado com o id: " + id));
+        return produtoEstoqueRepository.findById(id).orElseThrow(()-> new RecursoNaoEncontradoException("Produto de estoque não encontrado com o id: " + id));
     }
     
     public void deletar(Integer id){
@@ -56,16 +57,15 @@ public class ProdutoEstoqueService {
         produtoEstoqueAtualizado.setValorVenda(produtoEstoque.valorVenda());
         produtoEstoqueAtualizado.setValorComMaoObra(produtoEstoque.valorComMaoObra());
         produtoEstoqueAtualizado.setGarantia(produtoEstoque.garantia());
-        produtoEstoqueAtualizado.setOficina(oficinaRepository.findById(produtoEstoque.fkOficina()).orElseThrow(()-> new RuntimeException("Oficina não encontrada com o id: " + produtoEstoque.fkOficina())));
         produtoEstoqueRepository.save(produtoEstoqueAtualizado);
         return produtoEstoqueAtualizado;
     }
     
     public ProdutoEstoque buscarPorNome(String nome){
-        return produtoEstoqueRepository.findByNome(nome).stream().findFirst().orElseThrow(()-> new RuntimeException("Produto de estoque não encontrado com o nome: " + nome));
+        return produtoEstoqueRepository.findByNome(nome).stream().findFirst().orElseThrow(()-> new RecursoNaoEncontradoException("Produto de estoque não encontrado com o nome: " + nome));
     }
 
     public List<ProdutoEstoque> buscarPorOficina(Integer idOficina){
-        return produtoEstoqueRepository.findByOficina(oficinaRepository.findById(idOficina).orElseThrow(()-> new RuntimeException("Oficina não encontrada com o id: " + idOficina))).stream().toList();
+        return produtoEstoqueRepository.findByOficina(oficinaRepository.findById(idOficina).orElseThrow(()-> new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + idOficina))).stream().toList();
     }
 }

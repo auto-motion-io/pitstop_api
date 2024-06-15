@@ -2,6 +2,7 @@ package org.motion.motion_api.application.controllers.pitstop;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.CreateProdutoEstoqueDTO;
 import org.motion.motion_api.application.services.ProdutoEstoqueService;
 import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.UpdateProdutoEstoqueDTO;
@@ -27,7 +28,7 @@ public class ProdutoEstoqueController {
 
     @Operation(summary = "Cadastra um produto de estoque")
     @PostMapping()
-    public ResponseEntity<ProdutoEstoque> cadastrar(@RequestBody CreateProdutoEstoqueDTO createProdutoEstoqueDTO){
+    public ResponseEntity<ProdutoEstoque> cadastrar(@RequestBody @Valid CreateProdutoEstoqueDTO createProdutoEstoqueDTO){
         ProdutoEstoque produtoEstoque = produtoEstoqueService.cadastrar(createProdutoEstoqueDTO);
         return ResponseEntity.status(201).body(produtoEstoque);
     }
@@ -48,7 +49,7 @@ public class ProdutoEstoqueController {
 
     @Operation(summary = "Atualiza um produto de estoque por id")
     @PutMapping("/{id}")
-    public ResponseEntity<ProdutoEstoque> atualizar(@PathVariable int id, @RequestBody UpdateProdutoEstoqueDTO produtoEstoque){
+    public ResponseEntity<ProdutoEstoque> atualizar(@PathVariable int id, @RequestBody @Valid UpdateProdutoEstoqueDTO produtoEstoque){
         ProdutoEstoque produtoEstoqueAtualizado = produtoEstoqueService.atualizar(id, produtoEstoque);
         return ResponseEntity.ok(produtoEstoqueAtualizado);
     }
