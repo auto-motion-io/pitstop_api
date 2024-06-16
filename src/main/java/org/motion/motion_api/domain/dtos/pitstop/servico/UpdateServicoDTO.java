@@ -1,6 +1,7 @@
 package org.motion.motion_api.domain.dtos.pitstop.servico;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -9,7 +10,7 @@ public class UpdateServicoDTO {
     private String nome;
     @NotBlank
     private String descricao;
-    @NotBlank
+    @NotNull
     private Double valorServico;
     @NotBlank
     private String garantia;
