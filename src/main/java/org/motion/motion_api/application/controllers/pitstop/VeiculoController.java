@@ -46,4 +46,11 @@ public class VeiculoController {
         Veiculo veiculo = veiculoService.buscarPorId(id);
         return ResponseEntity.status(200).body(veiculo);
     }
+
+    @GetMapping("/buscar-por-cliente/{idCliente}")
+    public ResponseEntity<List<Veiculo>> buscarPorCliente(@PathVariable int idCliente){
+        List<Veiculo> veiculos = veiculoService.buscarPorIdCliente(idCliente);
+        if(veiculos.isEmpty()) return ResponseEntity.status(204).build();
+        return ResponseEntity.status(200).body(veiculos);
+    }
 }

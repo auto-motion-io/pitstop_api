@@ -31,8 +31,14 @@ public class VeiculoService {
         return veiculo;
     }
     public Veiculo buscarPorId(Integer id){
-        return veiculoRepository.findById(id).orElseThrow(()-> new RuntimeException("Veiculo não encontrado com o id: " + id));
+        return veiculoRepository.findById(id).orElseThrow(()-> new RecursoNaoEncontradoException("Veiculo não encontrado com o id: " + id));
     }
+
+    public List<Veiculo> buscarPorIdCliente(Integer idCliente){
+        Cliente cliente = clienteRepository.findById(idCliente).orElseThrow(()-> new RecursoNaoEncontradoException("Cliente não encontrado com o id: " + idCliente));
+        return veiculoRepository.findAllByCliente(cliente);
+    }
+
     public void deletar(Integer id){
         Veiculo veiculo = buscarPorId(id);
         if(ordemDeServicoRepository.existsByVeiculo(veiculo)){
