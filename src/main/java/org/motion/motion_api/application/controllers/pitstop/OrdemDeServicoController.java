@@ -29,6 +29,14 @@ public class OrdemDeServicoController {
         return ResponseEntity.status(200).body(ordemDeServicoService.listarOrdensDeServico());
     }
 
+    @Operation(summary = "Listar ordens de serviço por id da oficina")
+    @GetMapping("/oficina/{idOficina}")
+    public ResponseEntity<List<OrdemDeServico>> listarOrdensDeServicoPorOficina(@PathVariable Integer idOficina){
+        List<OrdemDeServico> ordemDeServicos = ordemDeServicoService.listarOrdensDeServicoPorOficina(idOficina);
+        if(ordemDeServicos.isEmpty()) return ResponseEntity.status(204).build();
+        return ResponseEntity.status(200).body(ordemDeServicos);
+    }
+
     @Operation(summary = "Cadastrar ordem de serviço")
     @PostMapping()
     public ResponseEntity<OrdemDeServico> cadastrar(@RequestBody @Valid CreateOrdemDeServicoDTO novaOrdemDeServicoDTO){

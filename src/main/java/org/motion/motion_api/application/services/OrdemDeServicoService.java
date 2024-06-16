@@ -44,6 +44,11 @@ OrdemDeServicoService {
         return ordemDeServicoRepository.findAll();
     }
 
+    public List<OrdemDeServico> listarOrdensDeServicoPorOficina(Integer idOficina) {
+        Oficina oficina = oficinaRepository.findById(idOficina).
+                orElseThrow(() -> new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + idOficina));
+        return ordemDeServicoRepository.findAllByOficina(oficina);
+    }
     public OrdemDeServico cadastrar(CreateOrdemDeServicoDTO createOrdemDeServicoDTO) {
         OrdemDeServico ordemDeServico = new OrdemDeServico();
         ordemDeServico.setStatus(createOrdemDeServicoDTO.status());
