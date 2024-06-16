@@ -33,6 +33,11 @@ public class MecanicoService {
         return mecanico;
     }
 
+    public List<Mecanico> listarMecanicosPorOficina(Integer idOficina){
+        Oficina oficina = oficinaRepository.findById(idOficina).orElseThrow(()-> new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + idOficina));
+        return mecanicoRepository.findAllByOficina(oficina);
+    }
+
     public Mecanico buscarPorId(Integer id){
         return mecanicoRepository.findById(id).orElseThrow(()-> new RecursoNaoEncontradoException("Mecânico não encontrado com o id: " + id));
     }
