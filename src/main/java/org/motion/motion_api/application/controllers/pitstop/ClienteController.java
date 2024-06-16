@@ -24,6 +24,15 @@ public class ClienteController {
     public ResponseEntity<List<Cliente>> listarTodos(){
         return ResponseEntity.status(200).body(clienteService.listarClientes());
     }
+
+    @Operation(summary = "Recebe um id de oficina e retorna todos os clientes que pertencem a essa oficina")
+    @GetMapping("/oficina/{id}")
+    public ResponseEntity<List<Cliente>> listarPorOficina(@PathVariable int id){
+        List<Cliente> clientes = clienteService.listarPorOficina(id);
+        if(clientes.isEmpty()) return ResponseEntity.status(204).build();
+        return ResponseEntity.status(200).body(clientes);
+    }
+
     @PostMapping()
     public ResponseEntity<Cliente> cadastrar(@Valid @RequestBody CreateClienteDTO novoCliente){
         Cliente cliente = clienteService.cadastrar(novoCliente);

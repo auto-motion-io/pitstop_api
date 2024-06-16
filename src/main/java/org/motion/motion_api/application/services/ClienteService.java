@@ -19,9 +19,17 @@ public class ClienteService {
     private IClienteRepository clienteRepository;
     @Autowired
     private ServiceHelper serviceHelper;
+
     public List<Cliente> listarClientes(){
         return clienteRepository.findAll().stream().filter(c -> c.getDeletedAt() == null).toList();
     }
+
+
+    public List<Cliente> listarPorOficina(int id){
+        Oficina oficina = serviceHelper.pegarOficinaValida(id);
+        return clienteRepository.findAllByOficina(oficina).stream().filter(c -> c.getDeletedAt() == null).toList();
+    }
+
     public Cliente cadastrar(CreateClienteDTO novoClienteDTO){
         Oficina oficina = serviceHelper.pegarOficinaValida(novoClienteDTO.fkOficina());
         Cliente cliente = new Cliente(novoClienteDTO, oficina);
