@@ -26,6 +26,16 @@ public class ProdutoEstoqueController {
         return ResponseEntity.status(200).body(produtoEstoqueService.listarProdutosEstoque());
     }
 
+    @Operation(summary = "Retorna todos os produtos que encaixam em uma faixa de preço", description = "Recebe os parâmetros de preço mínimo e máximo e caso não receba os valores o default é 0 e 99999 respectivamente.")
+    @GetMapping("/preco")
+    public ResponseEntity<List<ProdutoEstoque>> listarPorPreco(
+            @RequestParam(required = false,defaultValue = "0") double precoMinimo,
+            @RequestParam(required = false, defaultValue = "99999") double precoMaximo){
+        List<ProdutoEstoque> produtos = produtoEstoqueService.listarPorPreco(precoMinimo, precoMaximo);
+        if(produtos.isEmpty()) return ResponseEntity.status(204).build();
+        return ResponseEntity.ok(produtos);
+    }
+
     @Operation(summary = "Cadastra um produto de estoque")
     @PostMapping()
     public ResponseEntity<ProdutoEstoque> cadastrar(@RequestBody @Valid CreateProdutoEstoqueDTO createProdutoEstoqueDTO){
