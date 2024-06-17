@@ -4,6 +4,7 @@ package org.motion.motion_api.application.controllers.buscar;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.motion.motion_api.application.services.ServicoBuscarService;
 import org.motion.motion_api.domain.dtos.buscar.CreateServicoBuscarDTO;
 import org.motion.motion_api.domain.entities.buscar.ServicoBuscar;
@@ -31,6 +32,15 @@ public class ServicoBuscarController {
     @GetMapping("/{id}")
     public ResponseEntity<ServicoBuscar> buscarServicoPorId(@PathVariable Integer id) {
         return ResponseEntity.ok(servicoBuscarService.buscarServicoPorId(id));
+    }
+
+    @Operation(summary = "Busca buscar-serviços com o filtro de tipoVeiculo que a oficina atende")
+    @GetMapping(value = "/tipo-veiculo")
+    public ResponseEntity<List<ServicoBuscar>> buscarPorTipoVeiculo(@RequestParam(required = false, defaultValue = "") String tipoVeiculo){
+        List<ServicoBuscar> servicos = servicoBuscarService.buscarPorTipoVeiculo(tipoVeiculo);
+        System.out.println(tipoVeiculo);
+        if(servicos.isEmpty()) return ResponseEntity.status(204).build();
+        return ResponseEntity.ok(servicos);
     }
 
     @PostMapping()

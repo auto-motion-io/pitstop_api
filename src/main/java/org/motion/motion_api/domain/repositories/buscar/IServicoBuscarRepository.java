@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface IServicoBuscarRepository extends JpaRepository<ServicoBuscar, Integer> {
     List<ServicoBuscar> findByOficina(Oficina oficina);
+    List<ServicoBuscar> findAllByOficina_InformacoesOficinaTipoVeiculosTrabalhaContainingIgnoreCase(String tipoVeiculo);
 }

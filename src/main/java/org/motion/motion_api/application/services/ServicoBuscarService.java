@@ -28,6 +28,11 @@ public class ServicoBuscarService {
             () -> new RuntimeException("Serviço não encontrado com o id: " + id));
     }
 
+    public List<ServicoBuscar> buscarPorTipoVeiculo(String tipoVeiculo) {
+        List<ServicoBuscar> servicos = servicoBuscarRepository.findAllByOficina_InformacoesOficinaTipoVeiculosTrabalhaContainingIgnoreCase(tipoVeiculo);
+        return servicos;
+    }
+
     public ServicoBuscar cadastrar(CreateServicoBuscarDTO novoServicoBuscar) {
         Oficina oficina = serviceHelper.pegarOficinaValida(novoServicoBuscar.fkOficina());
         ServicoBuscar servicoBuscar = new ServicoBuscar(novoServicoBuscar);
