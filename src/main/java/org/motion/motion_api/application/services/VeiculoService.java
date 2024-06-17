@@ -1,7 +1,9 @@
 package org.motion.motion_api.application.services;
 
+import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.dtos.pitstop.veiculo.CreateVeiculoDTO;
 import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
+import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.Cliente;
 import org.motion.motion_api.domain.entities.pitstop.Veiculo;
 import org.motion.motion_api.domain.repositories.pitstop.IClienteRepository;
@@ -20,6 +22,8 @@ public class VeiculoService {
     IClienteRepository clienteRepository;
     @Autowired
     IOrdemDeServicoRepository ordemDeServicoRepository;
+    @Autowired
+    ServiceHelper serviceHelper;
 
     public List<Veiculo> listarVeiculos(){
         return veiculoRepository.findAll();
@@ -37,6 +41,11 @@ public class VeiculoService {
     public List<Veiculo> buscarPorIdCliente(Integer idCliente){
         Cliente cliente = clienteRepository.findById(idCliente).orElseThrow(()-> new RecursoNaoEncontradoException("Cliente não encontrado com o id: " + idCliente));
         return veiculoRepository.findAllByCliente(cliente);
+    }
+
+    public List<Veiculo> buscarPorIdOficina(Integer idOficina){
+        Oficina oficina = serviceHelper.pegarOficinaValida(idOficina);
+        return veiculoRepository.findAllByCliente_Oficina(oficina);
     }
 
     public void deletar(Integer id){

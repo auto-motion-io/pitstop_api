@@ -20,7 +20,9 @@ public class VeiculoController {
 
     @GetMapping()
     public ResponseEntity<List<Veiculo>> listarTodos(){
-        return ResponseEntity.status(200).body(veiculoService.listarVeiculos());
+        List<Veiculo> veiculos = veiculoService.listarVeiculos();
+        if(veiculos.isEmpty()) return ResponseEntity.status(204).build();
+        return ResponseEntity.status(200).body(veiculos);
     }
 
     @PostMapping()
@@ -50,6 +52,13 @@ public class VeiculoController {
     @GetMapping("/buscar-por-cliente/{idCliente}")
     public ResponseEntity<List<Veiculo>> buscarPorCliente(@PathVariable int idCliente){
         List<Veiculo> veiculos = veiculoService.buscarPorIdCliente(idCliente);
+        if(veiculos.isEmpty()) return ResponseEntity.status(204).build();
+        return ResponseEntity.status(200).body(veiculos);
+    }
+
+    @GetMapping("/buscar-por-oficina/{idOficina}")
+    public ResponseEntity<List<Veiculo>> buscarPorOficina(@PathVariable int idOficina){
+        List<Veiculo> veiculos = veiculoService.buscarPorIdOficina(idOficina);
         if(veiculos.isEmpty()) return ResponseEntity.status(204).build();
         return ResponseEntity.status(200).body(veiculos);
     }
