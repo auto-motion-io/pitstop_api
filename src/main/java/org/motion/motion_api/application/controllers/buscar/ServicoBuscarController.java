@@ -35,9 +35,12 @@ public class ServicoBuscarController {
     }
 
     @Operation(summary = "Busca buscar-serviços com o filtro de tipoVeiculo que a oficina atende")
-    @GetMapping(value = "/tipo-veiculo")
-    public ResponseEntity<List<ServicoBuscar>> buscarPorTipoVeiculo(@RequestParam(required = false, defaultValue = "") String tipoVeiculo){
-        List<ServicoBuscar> servicos = servicoBuscarService.buscarPorTipoVeiculo(tipoVeiculo);
+    @GetMapping(value = "/tipo-veiculo-nome")
+    public ResponseEntity<List<ServicoBuscar>> buscarPorTipoVeiculo(
+            @RequestParam(required = false, defaultValue = "") String tipoVeiculo,
+            @RequestParam(required = false, defaultValue = "") String nome
+            ){
+        List<ServicoBuscar> servicos = servicoBuscarService.buscarPorTipoVeiculo(tipoVeiculo,nome);
         System.out.println(tipoVeiculo);
         if(servicos.isEmpty()) return ResponseEntity.status(204).build();
         return ResponseEntity.ok(servicos);

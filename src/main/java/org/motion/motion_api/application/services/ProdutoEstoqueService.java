@@ -42,8 +42,8 @@ public class ProdutoEstoqueService {
         return produtoEstoqueRepository.findById(id).orElseThrow(()-> new RecursoNaoEncontradoException("Produto de estoque não encontrado com o id: " + id));
     }
 
-    public List<ProdutoEstoque> listarPorPreco(double precoMinimo, double precoMaximo){
-        return produtoEstoqueRepository.findByValorVendaBetween(precoMinimo, precoMaximo);
+    public List<ProdutoEstoque> listarPorPreco(double precoMinimo, double precoMaximo, String nome){
+        return produtoEstoqueRepository.findByValorVendaBetweenAndNomeContainingIgnoreCase(precoMinimo, precoMaximo,nome);
     }
     
     public void deletar(Integer id){

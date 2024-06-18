@@ -55,13 +55,15 @@ public class OficinaController {
         return ResponseEntity.ok(oficinas);
     }
 
-    @Operation(summary = "Busca oficinas por tipo de veiculo, propulsão e marca, recebe os três parametros")
-    @GetMapping("/tipo-veiculo-propulsao-marca")
+    @Operation(summary = "Busca oficinas por tipo de veiculo, propulsão, marca e nome recebe os quatro parametros")
+    @GetMapping("/tipo-veiculo-propulsao-marca-nome")
     public ResponseEntity<List<Oficina>> buscarOficinasPorTipoVeiculoPropulsaoMarca(
             @RequestParam(required = false, defaultValue = "") String tipoVeiculo,
             @RequestParam(required = false, defaultValue = "") String tipoPropulsao,
-            @RequestParam(required = false, defaultValue = "") String marca) {
-        List<Oficina> oficinas = oficinaService.buscarPorTipoVeiculoPropulsaoMarca(tipoVeiculo, tipoPropulsao, marca);
+            @RequestParam(required = false, defaultValue = "") String marca,
+            @RequestParam(required = false, defaultValue = "") String nome
+    ) {
+        List<Oficina> oficinas = oficinaService.buscarPorTipoVeiculoPropulsaoMarcaNome(tipoVeiculo, tipoPropulsao, marca,nome);
         if (oficinas.isEmpty()) return ResponseEntity.status(204).build();
         return ResponseEntity.ok(oficinas);
     }

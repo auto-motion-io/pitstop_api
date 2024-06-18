@@ -38,8 +38,8 @@ public class OficinaService implements OficinaServiceStrategy{
         return oficinaRepository.findByInformacoesOficina_TipoVeiculosTrabalhaContainingIgnoreCase(tipo);
     }
 
-    public List<Oficina> buscarPorTipoVeiculoPropulsaoMarca(String tipoVeiculo, String tipoPropulsao, String marca){
-        return oficinaRepository.findByInformacoesOficina_TipoVeiculosTrabalhaContainingIgnoreCaseAndInformacoesOficina_TipoPropulsaoTrabalhaContainingIgnoreCaseAndInformacoesOficina_MarcasVeiculosTrabalhaContainingIgnoreCase(tipoVeiculo, tipoPropulsao, marca);
+    public List<Oficina> buscarPorTipoVeiculoPropulsaoMarcaNome(String tipoVeiculo, String tipoPropulsao, String marca, String nome){
+        return oficinaRepository.findByInformacoesOficina_TipoVeiculosTrabalhaContainingIgnoreCaseAndInformacoesOficina_TipoPropulsaoTrabalhaContainingIgnoreCaseAndInformacoesOficina_MarcasVeiculosTrabalhaContainingIgnoreCaseAndNomeContainingIgnoreCase(tipoVeiculo, tipoPropulsao, marca,nome);
     }
 
 

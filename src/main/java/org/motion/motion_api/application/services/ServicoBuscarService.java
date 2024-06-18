@@ -28,8 +28,8 @@ public class ServicoBuscarService {
             () -> new RuntimeException("Serviço não encontrado com o id: " + id));
     }
 
-    public List<ServicoBuscar> buscarPorTipoVeiculo(String tipoVeiculo) {
-        List<ServicoBuscar> servicos = servicoBuscarRepository.findAllByOficina_InformacoesOficinaTipoVeiculosTrabalhaContainingIgnoreCase(tipoVeiculo);
+    public List<ServicoBuscar> buscarPorTipoVeiculo(String tipoVeiculo, String nome) {
+        List<ServicoBuscar> servicos = servicoBuscarRepository.findAllByOficina_InformacoesOficinaTipoVeiculosTrabalhaContainingIgnoreCaseAndNomeContainingIgnoreCase(tipoVeiculo,nome);
         return servicos;
     }
 
