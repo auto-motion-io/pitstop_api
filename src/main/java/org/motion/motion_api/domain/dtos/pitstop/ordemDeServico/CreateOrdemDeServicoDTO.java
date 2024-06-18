@@ -19,18 +19,12 @@ public record CreateOrdemDeServicoDTO(
         Integer fkVeiculo,
         @NotNull
         Integer fkCliente,
-        @NotNull
         Integer fkMecanico,
         @NotNull
         LocalDate dataInicio,
-        @NotNull
         LocalDate dataFim,
-        @NotBlank
         String tipoOs,
-        @NotBlank
         List<String> produtos,
-        @NotBlank
         List<String> servicos,
-        @NotBlank
         String observacoes) {
 }

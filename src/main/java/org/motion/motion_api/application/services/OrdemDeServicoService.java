@@ -16,9 +16,7 @@ import org.springframework.stereotype.Service;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.StringJoiner;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -125,40 +123,59 @@ OrdemDeServicoService {
     }
 
     public FileSystemResource downloadCsvPorId(int id) throws IOException {
-        var sb = new StringBuilder();
         OrdemDeServico ordem = ordemDeServicoRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Ordem de serviço não encontrada com o id: " + id));
 
-
         String[] headers = {"id", "status", "garantia", "token", "fkOficina", "fkVeiculo", "fkMecanico", "dataInicio", "dataFim", "tipoOs", "produtos", "servicos", "observacoes"};
 
+        // Matriz para armazenar os dados do CSV
+        String[][] data = new String[2][headers.length];
+
+        // Adicionar os headers na matriz
+        for (int i = 0; i < headers.length; i++) {
+            data[0][i] = headers[i];
+        }
+
+        // Adicionar os dados da ordem na matriz
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        data[1][0] = ordem.getId() != null ? ordem.getId().toString() : "";
+        data[1][1] = ordem.getStatus() != null ? ordem.getStatus() : "";
+        data[1][2] = ordem.getGarantia() != null ? ordem.getGarantia() : "";
+        data[1][3] = ordem.getToken() != null ? ordem.getToken() : "";
+        data[1][4] = ordem.getOficina() != null && ordem.getOficina().getId() != null ? ordem.getOficina().getId().toString() : "";
+        data[1][5] = ordem.getVeiculo() != null && ordem.getVeiculo().getId() != null ? ordem.getVeiculo().getId().toString() : "";
+        data[1][6] = ordem.getMecanico() != null && ordem.getMecanico().getId() != null ? ordem.getMecanico().getId().toString() : "";
+        data[1][7] = ordem.getDataInicio() != null ? ordem.getDataInicio().format(formatter) : "";
+        data[1][8] = ordem.getDataFim() != null ? ordem.getDataFim().format(formatter) : "";
+        data[1][9] = ordem.getTipoOs() != null ? ordem.getTipoOs() : "";
+        data[1][10] = ordem.getProdutos() != null ? ordem.getProdutos().stream().map(ProdutoEstoque::getNome).collect(Collectors.joining(", ")) : "";
+        data[1][11] = ordem.getServicos() != null ? ordem.getServicos().stream().map(Servico::getNome).collect(Collectors.joining(", ")) : "";
+        data[1][12] = ordem.getObservacoes() != null ? ordem.getObservacoes() : "";
+
+        // Fila para gerenciar as linhas do CSV
+        Queue<String> csvLines = new ArrayDeque<>();
+
+        // Adicionar os headers na fila
         var sj1 = new StringJoiner(";");
         for (String header : headers) {
             sj1.add(header);
         }
+        csvLines.add(sj1.toString());
 
-
-        sb.append(sj1 + "\n");
-
+        // Adicionar os dados da ordem na fila
         var sj2 = new StringJoiner(";");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        sj2.add(ordem.getId() != null ? ordem.getId().toString() : "");
-        sj2.add(ordem.getStatus() != null ? ordem.getStatus() : "");
-        sj2.add(ordem.getGarantia() != null ? ordem.getGarantia() : "");
-        sj2.add(ordem.getToken() != null ? ordem.getToken() : "");
-        sj2.add(ordem.getOficina() != null && ordem.getOficina().getId() != null ? ordem.getOficina().getId().toString() : "");
-        sj2.add(ordem.getVeiculo() != null && ordem.getVeiculo().getId() != null ? ordem.getVeiculo().getId().toString() : "");
-        sj2.add(ordem.getMecanico() != null && ordem.getMecanico().getId() != null ? ordem.getMecanico().getId().toString() : "");
-        sj2.add(ordem.getDataInicio() != null ? ordem.getDataInicio().format(formatter) : "");
-        sj2.add(ordem.getDataFim() != null ? ordem.getDataFim().format(formatter) : "");
-        sj2.add(ordem.getTipoOs() != null ? ordem.getTipoOs() : "");
-        sj2.add(ordem.getProdutos() != null ? ordem.getProdutos().stream().map(ProdutoEstoque::getNome).collect(Collectors.joining(", ")) : "");
-        sj2.add(ordem.getServicos() != null ? ordem.getServicos().stream().map(Servico::getNome).collect(Collectors.joining(", ")) : "");
-        sj2.add(ordem.getObservacoes() != null ? ordem.getObservacoes() : "");
+        for (String value : data[1]) {
+            sj2.add(value);
+        }
+        csvLines.add(sj2.toString());
 
+        // Construir o CSV usando a fila
+        var sb = new StringBuilder();
+        while (!csvLines.isEmpty()) {
+            sb.append(csvLines.poll()).append("\n");
+        }
 
-        sb.append(sj2 + "\n");
-
+        // Escrever o CSV no arquivo
         FileWriter file = new FileWriter("report.csv");
         file.write(sb.toString());
         file.close();
@@ -169,11 +186,9 @@ OrdemDeServicoService {
                 .orElse(MediaType.APPLICATION_OCTET_STREAM);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(mediaType);
-        // 3
+
         ContentDisposition disposition = ContentDisposition
-                // 3.2
-                .attachment() // or .attachment()
-                // 3.1
+                .attachment()
                 .filename(fileResource.getFilename())
                 .build();
         httpHeaders.setContentDisposition(disposition);
