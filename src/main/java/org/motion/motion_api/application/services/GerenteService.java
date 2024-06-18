@@ -114,7 +114,7 @@ public class GerenteService implements GerenteServiceStrategy {
         var auth = authenticationManager.authenticate(usernamePassword);
         String token = tokenService.generateToken((Gerente) auth.getPrincipal());
 
-        return new LoginGerenteResponse(gerente.getId(), gerente.getEmail(), gerente.getNome(), gerente.getSobrenome(), gerente.getOficina(), token);
+        return new LoginGerenteResponse(gerente.getId(), gerente.getEmail(), gerente.getNome(), gerente.getSobrenome(),gerente.getFotoUrl(), gerente.getOficina(), token);
     }
 
     @Transactional
