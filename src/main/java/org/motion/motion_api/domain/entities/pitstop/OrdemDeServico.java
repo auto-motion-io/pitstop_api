@@ -31,13 +31,13 @@ public class OrdemDeServico {
 
 
     @ManyToOne @JoinColumn(name = "fkOficina")
-    @JsonIgnore
+
     private Oficina oficina;
     @ManyToOne @JoinColumn(name = "fkVeiculo")
-    @JsonIgnore
+
     private Veiculo veiculo;
     @ManyToOne @JoinColumn(name = "fkMecanico")
-    @JsonIgnore
+
     private Mecanico mecanico;
 
     @ManyToMany(cascade = CascadeType.ALL)
