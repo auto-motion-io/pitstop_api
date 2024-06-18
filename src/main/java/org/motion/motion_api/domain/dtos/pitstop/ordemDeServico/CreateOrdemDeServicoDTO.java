@@ -1,6 +1,8 @@
 package org.motion.motion_api.domain.dtos.pitstop.ordemDeServico;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.ProdutoOrdemDTO;
+import org.motion.motion_api.domain.dtos.pitstop.servico.ServicoOrdemDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,7 +26,9 @@ public record CreateOrdemDeServicoDTO(
         LocalDate dataInicio,
         LocalDate dataFim,
         String tipoOs,
-        List<String> produtos,
-        List<String> servicos,
-        String observacoes) {
+        List<ProdutoOrdemDTO> produtos,
+        List<ServicoOrdemDTO> servicos,
+        String observacoes,
+        Double valorTotal,
+        Integer quantidade) {
 }

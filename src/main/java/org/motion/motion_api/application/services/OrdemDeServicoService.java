@@ -4,6 +4,8 @@ import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.CreateOrdemDeSer
 import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.UpdateOrdemDeServicoDTO;
 import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.util.ServiceHelper;
+import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.ProdutoOrdemDTO;
+import org.motion.motion_api.domain.dtos.pitstop.servico.ServicoOrdemDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.*;
 import org.motion.motion_api.domain.repositories.IOficinaRepository;
@@ -66,18 +68,32 @@ OrdemDeServicoService {
         if (mecanico != null) {
             ordemDeServico.setMecanico(mecanico);
         }
-
         ordemDeServico.setDataInicio(createOrdemDeServicoDTO.dataInicio());
         ordemDeServico.setDataFim(createOrdemDeServicoDTO.dataFim());
         ordemDeServico.setTipoOs(createOrdemDeServicoDTO.tipoOs());
 
-        List<ProdutoEstoque> produtoEstoque = produtoEstoqueRepository.findByNomeIn(createOrdemDeServicoDTO.produtos());
+
+        List<ProdutoEstoque> produtoEstoque = produtoEstoqueRepository.findByNomeIn(createOrdemDeServicoDTO
+                .produtos()
+                .stream()
+                .map(ProdutoOrdemDTO::nome)
+                .collect(Collectors.toList()));
         ordemDeServico.setProdutos(produtoEstoque);
 
-        List<Servico> servico = servicoRepository.findByNomeIn(createOrdemDeServicoDTO.servicos());
+
+        List<Servico> servico = servicoRepository.findByNomeIn(createOrdemDeServicoDTO
+                .servicos()
+                .stream()
+                .map(ServicoOrdemDTO::nome)
+                .collect(Collectors.toList()));
         ordemDeServico.setServicos(servico);
 
         ordemDeServico.setObservacoes(createOrdemDeServicoDTO.observacoes());
+        ordemDeServico.setValorTotal(produtoEstoque
+                .stream()
+                .mapToDouble(ProdutoEstoque::getValorVenda).sum() + servico.stream()
+                .mapToDouble(Servico::getValorServico).sum());
+
         ordemDeServicoRepository.save(ordemDeServico);
         return ordemDeServico;
     }
@@ -111,7 +127,7 @@ OrdemDeServicoService {
         ordemDeServico.setDataFim(alterarOrdemDeServicoDTO.dataFim());
         ordemDeServico.setTipoOs(alterarOrdemDeServicoDTO.tipoOs());
 
-        List<ProdutoEstoque> produtoEstoque = produtoEstoqueRepository.findByNomeIn(alterarOrdemDeServicoDTO.produtos());
+        List<ProdutoEstoque> produtoEstoque = produtoEstoqueRepository.findByNome(alterarOrdemDeServicoDTO.produtos().toString());
         ordemDeServico.setProdutos(produtoEstoque);
 
         List<Servico> servico = servicoRepository.findByNomeIn(alterarOrdemDeServicoDTO.servicos());
