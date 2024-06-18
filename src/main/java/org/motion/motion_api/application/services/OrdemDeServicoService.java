@@ -1,6 +1,7 @@
 package org.motion.motion_api.application.services;
 
 import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.CreateOrdemDeServicoDTO;
+import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.OrdensPendentesUltimaSemanaDTO;
 import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.UpdateOrdemDeServicoDTO;
 import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.util.ServiceHelper;
@@ -17,7 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -216,5 +219,18 @@ OrdemDeServicoService {
         if (ordemDeServicoRepository.findByToken(token) == null)
             throw new RecursoNaoEncontradoException("Ordem de serviço não encontrada com o token: " + token);
         return ordemDeServicoRepository.findByToken(token);
+    }
+
+
+    public List<OrdensPendentesUltimaSemanaDTO> quantidadeOrdensPendentes(Integer idOficina) {
+        List<OrdensPendentesUltimaSemanaDTO> ordensPendentesUltimaSemana = new ArrayList<>();
+        Oficina oficina = oficinaRepository.findById(idOficina).orElseThrow(() -> new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + idOficina));
+        for (int i = 0; i < 7; i++) {
+            LocalDate data = LocalDate.now().minusDays(i);
+            Integer qtd = ordemDeServicoRepository.countByDataInicioAndStatusEqualsIgnoreCaseAndOficina(data, "PENDENTE",oficina);
+            String diaSemana = data.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("pt", "BR"));
+            ordensPendentesUltimaSemana.add(new OrdensPendentesUltimaSemanaDTO(qtd, diaSemana));
+        }
+        return ordensPendentesUltimaSemana;
     }
 }
