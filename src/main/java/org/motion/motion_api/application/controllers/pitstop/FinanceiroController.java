@@ -37,9 +37,9 @@ public class FinanceiroController {
     }
 
     @Operation(summary = "Lista todas as operações financeiras de uma oficina.")
-    @GetMapping("all/{id}")
-    public ResponseEntity<List<Financeiro>> listarTodasOperacoesFinanceiras(@PathVariable int id) {
-        List<Financeiro> financas = financeiroService.listarTodasOperacoesFinanceiras(id);
+    @GetMapping("/oficina/{idOficina}")
+    public ResponseEntity<List<Financeiro>> listarTodasOperacoesFinanceiras(@PathVariable int idOficina) {
+        List<Financeiro> financas = financeiroService.listarTodasOperacoesFinanceiras(idOficina);
         return ResponseEntity.status(200).body(financas);
     }
 
