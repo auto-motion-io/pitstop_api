@@ -58,7 +58,7 @@ OrdemDeServicoService {
         ordemDeServico.setStatus(createOrdemDeServicoDTO.status());
         ordemDeServico.setGarantia(createOrdemDeServicoDTO.garantia());
         ordemDeServico.setToken(UUID.randomUUID().toString().substring(31, 36).toUpperCase());
-
+        ordemDeServico.setValorTotal(createOrdemDeServicoDTO.valorTotal());
         Oficina oficina = serviceHelper.pegarOficinaValida(createOrdemDeServicoDTO.fkOficina());
 
         ordemDeServico.setOficina(oficina);
@@ -93,10 +93,7 @@ OrdemDeServicoService {
         ordemDeServico.setServicos(servico);
 
         ordemDeServico.setObservacoes(createOrdemDeServicoDTO.observacoes());
-        ordemDeServico.setValorTotal(produtoEstoque
-                .stream()
-                .mapToDouble(ProdutoEstoque::getValorVenda).sum() + servico.stream()
-                .mapToDouble(Servico::getValorServico).sum());
+
 
         ordemDeServicoRepository.save(ordemDeServico);
         return ordemDeServico;

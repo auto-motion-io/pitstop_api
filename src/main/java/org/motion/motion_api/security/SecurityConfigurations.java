@@ -39,7 +39,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.GET,"/galerias/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/produtoEstoque/**").permitAll()
                         .requestMatchers(HttpMethod.PUT,"/infos-oficina/atualiza-zap/**").permitAll()
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
