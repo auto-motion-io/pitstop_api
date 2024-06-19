@@ -1,5 +1,6 @@
 package org.motion.motion_api.application.services;
 
+import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.dtos.pitstop.servico.CreateServicoDTO;
 import org.motion.motion_api.domain.dtos.pitstop.servico.UpdateServicoDTO;
@@ -32,7 +33,7 @@ public class ServicoService {
         return servicoRepository.findAll();
     }
     public Servico cadastrar(CreateServicoDTO servico){
-        Servico servicoCadastrado = new Servico(servico, oficinaRepository.findById(servico.fkOficina()).orElseThrow(()-> new RuntimeException("Oficina não encontrada com o id: " + servico.fkOficina())));
+        Servico servicoCadastrado = new Servico(servico, oficinaRepository.findById(servico.fkOficina()).orElseThrow(()-> new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + servico.fkOficina())));
         servicoRepository.save(servicoCadastrado);
         return servicoCadastrado;
     }

@@ -1,9 +1,11 @@
 package org.motion.motion_api.application.services;
 
+import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.domain.dtos.pitstop.financeiro.CreateFinanceiroDTO;
 import org.motion.motion_api.domain.dtos.pitstop.financeiro.ResponseDataFinanceiro;
 import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.dtos.pitstop.financeiro.ResponseDataUltimoAnoFinanceiroDTO;
+import org.motion.motion_api.domain.dtos.pitstop.financeiro.UpdateFinanceiroDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.Financeiro;
 import org.motion.motion_api.domain.repositories.pitstop.IFinanceiroRepository;
@@ -48,6 +50,17 @@ public class FinanceiroService {
 
     public List<Financeiro> listarTodasOperacoesFinanceiras(int idOficina) {
         return financeiroRepository.findAllByOficina_Id(serviceHelper.pegarOficinaValida(idOficina).getId());
+    }
+
+    public Financeiro atualizarFinanceiro(int id, UpdateFinanceiroDTO dto){
+        Financeiro financeiro = financeiroRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Operação financeira não encontrada com o id: "+id));
+        financeiro.setTransacao(dto.getTransacao());
+        financeiro.setCategoria(dto.getCategoria());
+        financeiro.setFormaPagamento(dto.getFormaPagamento());
+        financeiro.setValor(dto.getValor());
+        financeiro.setData(dto.getData());
+        financeiroRepository.save(financeiro);
+        return financeiro;
     }
 
     public void deletarFinanceiro(int id){

@@ -31,7 +31,7 @@ public class ProdutoEstoqueService {
     }
     
     public ProdutoEstoque cadastrar(CreateProdutoEstoqueDTO createProdutoEstoqueDTO){
-        ProdutoEstoque produtoEstoque = new ProdutoEstoque(createProdutoEstoqueDTO, oficinaRepository.findById(createProdutoEstoqueDTO.fkOficina()).orElseThrow(()-> new RuntimeException("Oficina não encontrada com o id: " + createProdutoEstoqueDTO.fkOficina())));
+        ProdutoEstoque produtoEstoque = new ProdutoEstoque(createProdutoEstoqueDTO, oficinaRepository.findById(createProdutoEstoqueDTO.fkOficina()).orElseThrow(()-> new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + createProdutoEstoqueDTO.fkOficina())));
         Oficina oficina = serviceHelper.pegarOficinaValida(createProdutoEstoqueDTO.fkOficina());
         produtoEstoque.setOficina(oficina);
         produtoEstoqueRepository.save(produtoEstoque);

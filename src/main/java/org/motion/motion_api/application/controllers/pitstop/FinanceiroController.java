@@ -7,6 +7,7 @@ import org.motion.motion_api.domain.dtos.pitstop.financeiro.CreateFinanceiroDTO;
 import org.motion.motion_api.domain.dtos.pitstop.financeiro.ResponseDataFinanceiro;
 import org.motion.motion_api.application.services.FinanceiroService;
 import org.motion.motion_api.domain.dtos.pitstop.financeiro.ResponseDataUltimoAnoFinanceiroDTO;
+import org.motion.motion_api.domain.dtos.pitstop.financeiro.UpdateFinanceiroDTO;
 import org.motion.motion_api.domain.entities.pitstop.Financeiro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +42,13 @@ public class FinanceiroController {
     public ResponseEntity<List<Financeiro>> listarTodasOperacoesFinanceiras(@PathVariable int idOficina) {
         List<Financeiro> financas = financeiroService.listarTodasOperacoesFinanceiras(idOficina);
         return ResponseEntity.status(200).body(financas);
+    }
+
+    @Operation(summary = "Recebe os dados e um id de uma operação financeira e atualiza a operação financeira.")
+    @PutMapping("/atualiza/{id}")
+    public ResponseEntity<Financeiro> atualizar(@PathVariable int id, @Valid @RequestBody UpdateFinanceiroDTO dto) {
+        Financeiro financeiro = financeiroService.atualizarFinanceiro(id,dto);
+        return ResponseEntity.status(200).body(financeiro);
     }
 
     @Operation(summary = "Deleta uma operação financeira.")

@@ -42,7 +42,7 @@ public class ClienteService {
         clienteRepository.save(cliente);
     }
     public Cliente atualizar(Integer id, CreateClienteDTO novoClienteDTO){
-        Cliente cliente = clienteRepository.findById(id).orElseThrow(()-> new RuntimeException("Cliente não encontrado com o id: " + id));
+        Cliente cliente = clienteRepository.findById(id).orElseThrow(()-> new RecursoNaoEncontradoException("Cliente não encontrado com o id: " + id));
         cliente.setNome(novoClienteDTO.nome());
         cliente.setTelefone(novoClienteDTO.telefone());
         cliente.setEmail(novoClienteDTO.email());
@@ -50,7 +50,7 @@ public class ClienteService {
         return cliente;
     }
     public Cliente buscarPorId(Integer id){
-        return clienteRepository.findById(id).orElseThrow(()-> new RuntimeException("Cliente não encontrado com o id: " + id));
+        return clienteRepository.findById(id).orElseThrow(()-> new RecursoNaoEncontradoException("Cliente não encontrado com o id: " + id));
     }
 
     public List<Cliente> buscaPorFiltro(String param){
