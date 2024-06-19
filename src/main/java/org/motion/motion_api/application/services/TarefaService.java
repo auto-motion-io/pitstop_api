@@ -10,6 +10,7 @@ import org.motion.motion_api.domain.repositories.pitstop.ITarefaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -50,5 +51,10 @@ public class TarefaService {
     public void deletar(int id) {
         Tarefa tarefa = buscarPorId(id);
         tarefaRepository.delete(tarefa);
+    }
+
+    public List<Tarefa> listarTarefasDeadlineHoje(Integer idOficina) {
+        Oficina oficina = serviceHelper.pegarOficinaValida(idOficina);
+        return tarefaRepository.findByDtDeadlineAndOficina(LocalDate.now(),oficina);
     }
 }

@@ -21,9 +21,9 @@ public class TarefaController {
 
 
     @Operation(summary = "Busca todas as tarefas, recebe o id da oficina buscada.")
-    @GetMapping("/{id}")
-    public ResponseEntity<List<Tarefa>> listarTodasTarefasPorIdOficina(@PathVariable int id) {
-        List<Tarefa> tarefas = tarefaService.listarTodasTarefasPorIdOficina(id);
+    @GetMapping("/{idOficina}")
+    public ResponseEntity<List<Tarefa>> listarTodasTarefasPorIdOficina(@PathVariable int idOficina) {
+        List<Tarefa> tarefas = tarefaService.listarTodasTarefasPorIdOficina(idOficina);
         return tarefas.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(tarefas);
     }
 
@@ -38,5 +38,19 @@ public class TarefaController {
     @PutMapping("/{id}")
     public ResponseEntity<Tarefa> atualizar(@RequestBody UpdateTarefaDTO updateTarefaDTO, @PathVariable int id) {
         return ResponseEntity.status(200).body(tarefaService.atualizar(id, updateTarefaDTO));
+    }
+
+    @Operation(summary = "Busca tarefas que a data da deadline seja hoje, recebe o id da oficina buscada.")
+    @GetMapping("/deadline-hoje/{idOficina}")
+    public ResponseEntity<List<Tarefa>> listarTarefasDeadlineHoje(@PathVariable int idOficina) {
+        List<Tarefa> tarefas = tarefaService.listarTarefasDeadlineHoje(idOficina);
+        return tarefas.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(tarefas);
+    }
+
+    @Operation(summary = "Deleta uma tarefa recebe o id da tarefa")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable int id) {
+        tarefaService.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }
