@@ -64,8 +64,8 @@ public class FinanceiroService {
     }
 
     public void deletarFinanceiro(int id){
-        if(serviceHelper.pegarOficinaValida(id)==null) return;
-        financeiroRepository.deleteById(id);
+        Financeiro financeiro = financeiroRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Operação financeira não encontrada com o id: "+id));
+        financeiroRepository.deleteById(financeiro.getId());
     }
 
     public List<ResponseDataUltimoAnoFinanceiroDTO> listarDadosFinanceirosDosUltimos12Meses(int idOficina){
