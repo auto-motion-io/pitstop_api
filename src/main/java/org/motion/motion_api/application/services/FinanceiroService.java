@@ -3,13 +3,18 @@ package org.motion.motion_api.application.services;
 import org.motion.motion_api.domain.dtos.pitstop.financeiro.CreateFinanceiroDTO;
 import org.motion.motion_api.domain.dtos.pitstop.financeiro.ResponseDataFinanceiro;
 import org.motion.motion_api.application.services.util.ServiceHelper;
+import org.motion.motion_api.domain.dtos.pitstop.financeiro.ResponseDataUltimoAnoFinanceiroDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.Financeiro;
 import org.motion.motion_api.domain.repositories.pitstop.IFinanceiroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class FinanceiroService {
@@ -18,14 +23,20 @@ public class FinanceiroService {
     @Autowired
     private ServiceHelper serviceHelper;
 
-    public ResponseDataFinanceiro listarDadosFinanceiros(int idOficina) {
-        List<Financeiro> financas = financeiroRepository.findAllByOficina_Id(serviceHelper.pegarOficinaValida(idOficina).getId());
-        List<Financeiro> saidas = financas.stream().filter(f -> f.getTransacao().equals("saida")).toList();
-        List<Financeiro> entradas = financas.stream().filter(f -> f.getTransacao().equals("entrada")).toList();
+    public ResponseDataFinanceiro listarDadosFinanceirosDoMes(int idOficina) {
+        Oficina oficina = serviceHelper.pegarOficinaValida(idOficina);
+        Integer oficinaId = oficina.getId();
+        LocalDate primeiroDiaMesAtual = LocalDate.now().withDayOfMonth(1);
+        LocalDate ultimoDiaMesAtual = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+
+        List<Financeiro> financas = financeiroRepository.findAllByOficina_IdAndDataBetween(oficinaId, primeiroDiaMesAtual, ultimoDiaMesAtual);
+        List<Financeiro> saidas = financas.stream().filter(f -> f.getTransacao().equalsIgnoreCase("saida")).toList();
+        List<Financeiro> entradas = financas.stream().filter(f -> f.getTransacao().equalsIgnoreCase("entrada")).toList();
         Double valorTotalEntradas = entradas.stream().mapToDouble(Financeiro::getValor).sum();
         Double valorTotalSaidas = saidas.stream().mapToDouble(Financeiro::getValor).sum();
         Double saldo = valorTotalEntradas - valorTotalSaidas;
-        return new ResponseDataFinanceiro(valorTotalEntradas,valorTotalSaidas,saldo);
+
+        return new ResponseDataFinanceiro(valorTotalEntradas, valorTotalSaidas, saldo);
     }
 
     public Financeiro registrarTransacaoFinanceira(CreateFinanceiroDTO dto){
@@ -42,6 +53,33 @@ public class FinanceiroService {
     public void deletarFinanceiro(int id){
         if(serviceHelper.pegarOficinaValida(id)==null) return;
         financeiroRepository.deleteById(id);
+    }
+
+    public List<ResponseDataUltimoAnoFinanceiroDTO> listarDadosFinanceirosDosUltimos12Meses(int idOficina){
+        Oficina oficina = serviceHelper.pegarOficinaValida(idOficina);
+        Integer oficinaId = oficina.getId();
+
+        List<ResponseDataUltimoAnoFinanceiroDTO> response = new ArrayList<>();
+
+        LocalDate primeiroDiaMes = LocalDate.now().withDayOfMonth(1);
+        LocalDate ultimoDiaMes = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+
+        for (int i = 0; i < 12; i++) {
+            List<Financeiro> financas = financeiroRepository.findAllByOficina_IdAndDataBetween(oficinaId, primeiroDiaMes, ultimoDiaMes);
+            List<Financeiro> saidas = financas.stream().filter(f -> f.getTransacao().equalsIgnoreCase("saida")).toList();
+            List<Financeiro> entradas = financas.stream().filter(f -> f.getTransacao().equalsIgnoreCase("entrada")).toList();
+            Double valorTotalEntradas = entradas.stream().mapToDouble(Financeiro::getValor).sum();
+            Double valorTotalSaidas = saidas.stream().mapToDouble(Financeiro::getValor).sum();
+            Double saldo = valorTotalEntradas - valorTotalSaidas;
+
+            String nomeMes = primeiroDiaMes.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt", "BR"));
+            response.add(new ResponseDataUltimoAnoFinanceiroDTO(nomeMes, valorTotalEntradas, valorTotalSaidas, saldo));
+
+            primeiroDiaMes = primeiroDiaMes.minusMonths(1).withDayOfMonth(1);
+            ultimoDiaMes = ultimoDiaMes.minusMonths(1).withDayOfMonth(ultimoDiaMes.minusMonths(1).lengthOfMonth());
+        }
+
+        return response;
     }
 
 }
