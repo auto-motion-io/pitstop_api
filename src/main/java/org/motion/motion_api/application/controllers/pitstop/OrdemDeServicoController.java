@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.CreateOrdemDeServicoDTO;
 import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.OrdensPendentesUltimaSemanaDTO;
+import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.OrdensUltimoAnoDTO;
 import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.UpdateOrdemDeServicoDTO;
 import org.motion.motion_api.application.services.OrdemDeServicoService;
 import org.motion.motion_api.domain.entities.pitstop.OrdemDeServico;
@@ -97,4 +98,11 @@ public class OrdemDeServicoController {
     public ResponseEntity<List<OrdensPendentesUltimaSemanaDTO>> quantidadeOrdensPendentes(@PathVariable Integer idOficina){
         return ResponseEntity.ok(ordemDeServicoService.quantidadeOrdensPendentes(idOficina));
     }
+
+    @Operation(summary = "Retorna a quantidade de ordens de serviço de cada mês nos ultimos 12 meses, recebe o id da oficina")
+    @GetMapping("/quantidade-mes/{idOficina}")
+    public ResponseEntity<List<OrdensUltimoAnoDTO>> quantidadeOrdensMes(@PathVariable Integer idOficina){
+        return ResponseEntity.ok(ordemDeServicoService.quantidadeOrdensMes(idOficina));
+    }
+
 }

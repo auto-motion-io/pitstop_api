@@ -13,4 +13,6 @@ public interface IOrdemDeServicoRepository extends JpaRepository<OrdemDeServico,
     OrdemDeServico findByToken (String token);
     List<OrdemDeServico> findAllByOficina(Oficina oficina);
     Integer countByDataInicioAndStatusEqualsIgnoreCaseAndOficina(LocalDate dataInicio, String status, Oficina oficina);
+    Integer countByDataInicioBetweenAndOficina(LocalDate dataInicio, LocalDate dataFim, Oficina oficina);
+
 }

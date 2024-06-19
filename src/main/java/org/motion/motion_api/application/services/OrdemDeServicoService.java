@@ -2,6 +2,7 @@ package org.motion.motion_api.application.services;
 
 import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.CreateOrdemDeServicoDTO;
 import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.OrdensPendentesUltimaSemanaDTO;
+import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.OrdensUltimoAnoDTO;
 import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.UpdateOrdemDeServicoDTO;
 import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.util.ServiceHelper;
@@ -224,7 +225,7 @@ OrdemDeServicoService {
 
     public List<OrdensPendentesUltimaSemanaDTO> quantidadeOrdensPendentes(Integer idOficina) {
         List<OrdensPendentesUltimaSemanaDTO> ordensPendentesUltimaSemana = new ArrayList<>();
-        Oficina oficina = oficinaRepository.findById(idOficina).orElseThrow(() -> new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + idOficina));
+        Oficina oficina = serviceHelper.pegarOficinaValida(idOficina);
         for (int i = 0; i < 7; i++) {
             LocalDate data = LocalDate.now().minusDays(i);
             Integer qtd = ordemDeServicoRepository.countByDataInicioAndStatusEqualsIgnoreCaseAndOficina(data, "PENDENTE",oficina);
@@ -232,5 +233,20 @@ OrdemDeServicoService {
             ordensPendentesUltimaSemana.add(new OrdensPendentesUltimaSemanaDTO(qtd, diaSemana));
         }
         return ordensPendentesUltimaSemana;
+    }
+
+    public List<OrdensUltimoAnoDTO> quantidadeOrdensMes(Integer idOficina) {
+        List<OrdensUltimoAnoDTO> ordensUltimoAno = new ArrayList<>();
+        Oficina oficina = serviceHelper.pegarOficinaValida(idOficina);
+        for (int i = 0; i < 12; i++) {
+            LocalDate dataInicio = LocalDate.now().minusMonths(i).withDayOfMonth(1);
+            LocalDate dataFim = dataInicio.withDayOfMonth(dataInicio.lengthOfMonth());
+
+            Integer qtd = ordemDeServicoRepository.countByDataInicioBetweenAndOficina(dataInicio, dataFim, oficina);
+
+            String mes = dataInicio.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt", "BR"));
+            ordensUltimoAno.add(new OrdensUltimoAnoDTO(qtd, mes));
+        }
+        return ordensUltimoAno;
     }
 }
