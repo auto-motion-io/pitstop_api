@@ -80,4 +80,14 @@ public class ProdutoEstoqueController {
         if(produtoEstoque.isEmpty()) return ResponseEntity.status(204).build();
         return ResponseEntity.ok(produtoEstoque);
     }
+
+    @Operation(summary = "Busca os produtos no estoque que estão com a quantidade inferior ou igual a 10 por id oficina")
+    @GetMapping("/estoque-baixo/{idOficina}")
+    public ResponseEntity<List<ProdutoEstoque>> buscarEstoqueBaixo(@PathVariable int idOficina){
+        List<ProdutoEstoque> produtoEstoque = produtoEstoqueService.buscarEstoqueBaixo(idOficina);
+        if(produtoEstoque.isEmpty()) return ResponseEntity.status(204).build();
+        return ResponseEntity.ok(produtoEstoque);
+    }
+
+
 }

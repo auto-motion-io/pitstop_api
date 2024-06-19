@@ -72,4 +72,10 @@ public class ProdutoEstoqueService {
     public List<ProdutoEstoque> buscarPorOficina(Integer idOficina){
         return produtoEstoqueRepository.findByOficina(oficinaRepository.findById(idOficina).orElseThrow(()-> new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + idOficina))).stream().toList();
     }
+
+    public List<ProdutoEstoque> buscarEstoqueBaixo(Integer idOficina){
+        Oficina oficina = serviceHelper.pegarOficinaValida(idOficina);
+        return produtoEstoqueRepository.findByOficinaAndQuantidadeLessThanEqual(oficina, 10);
+    }
+
 }

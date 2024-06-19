@@ -12,4 +12,5 @@ public interface IProdutoEstoqueRepository extends JpaRepository<ProdutoEstoque,
     List<ProdutoEstoque> findByNomeIn(List<String> nomes);
     List<ProdutoEstoque> findByOficina(Oficina oficina);
     List<ProdutoEstoque> findByValorVendaBetweenAndNomeContainingIgnoreCase(double precoMinimo, double precoMaximo, String nome);
+    List<ProdutoEstoque> findByOficinaAndQuantidadeLessThanEqual(Oficina oficina, Integer quantidade);
 }
