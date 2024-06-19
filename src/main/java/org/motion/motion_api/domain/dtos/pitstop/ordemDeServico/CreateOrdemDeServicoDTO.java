@@ -15,12 +15,8 @@ public record CreateOrdemDeServicoDTO(
         String status,
         @NotBlank
         String garantia,
-        @NotBlank
-        String token,
         @NotNull
         Integer fkVeiculo,
-        @NotNull
-        Integer fkCliente,
         Integer fkMecanico,
         @NotNull
         LocalDate dataInicio,

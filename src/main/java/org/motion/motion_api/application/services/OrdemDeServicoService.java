@@ -57,7 +57,7 @@ OrdemDeServicoService {
         OrdemDeServico ordemDeServico = new OrdemDeServico();
         ordemDeServico.setStatus(createOrdemDeServicoDTO.status());
         ordemDeServico.setGarantia(createOrdemDeServicoDTO.garantia());
-        ordemDeServico.setToken(UUID.randomUUID().toString().substring(31, 36).toUpperCase());
+        ordemDeServico.setToken(UUID.randomUUID().toString().substring(29, 36).toUpperCase());
         ordemDeServico.setValorTotal(createOrdemDeServicoDTO.valorTotal());
         Oficina oficina = serviceHelper.pegarOficinaValida(createOrdemDeServicoDTO.fkOficina());
 
