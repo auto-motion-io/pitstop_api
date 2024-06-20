@@ -68,10 +68,12 @@ OrdemDeServicoService {
         Veiculo veiculo = veiculoRepository.findById(createOrdemDeServicoDTO.fkVeiculo()).orElseThrow(() -> new RecursoNaoEncontradoException("Veículo não encontrado com o id: " + createOrdemDeServicoDTO.fkVeiculo()));
         ordemDeServico.setVeiculo(veiculo);
 
-        Mecanico mecanico = mecanicoRepository.findById(createOrdemDeServicoDTO.fkMecanico()).orElse(null);
-        if (mecanico != null) {
+        if(createOrdemDeServicoDTO.fkMecanico() != null){
+            Mecanico mecanico = mecanicoRepository.findById(createOrdemDeServicoDTO.fkMecanico()).orElse(null);
             ordemDeServico.setMecanico(mecanico);
         }
+
+
         ordemDeServico.setDataInicio(createOrdemDeServicoDTO.dataInicio());
         ordemDeServico.setDataFim(createOrdemDeServicoDTO.dataFim());
         ordemDeServico.setTipoOs(createOrdemDeServicoDTO.tipoOs());
