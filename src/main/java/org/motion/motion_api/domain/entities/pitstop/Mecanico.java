@@ -21,7 +21,7 @@ public class Mecanico {
     private String nome;
     private String telefone;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "fkOficina") @NotNull
     private Oficina oficina;
 
