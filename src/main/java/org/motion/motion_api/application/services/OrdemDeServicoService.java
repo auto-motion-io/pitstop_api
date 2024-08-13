@@ -58,7 +58,6 @@ OrdemDeServicoService {
         ordemDeServico.setStatus(createOrdemDeServicoDTO.status());
         ordemDeServico.setGarantia(createOrdemDeServicoDTO.garantia());
         ordemDeServico.setToken(UUID.randomUUID().toString().substring(29, 36).toUpperCase());
-        ordemDeServico.setValorTotal(createOrdemDeServicoDTO.valorTotal());
         Oficina oficina = serviceHelper.pegarOficinaValida(createOrdemDeServicoDTO.fkOficina());
 
         ordemDeServico.setOficina(oficina);
@@ -85,7 +84,7 @@ OrdemDeServicoService {
                 .map(ProdutoOrdemDTO::nome)
                 .collect(Collectors.toList()));
         ordemDeServico.setProdutos(produtoEstoque);
-
+        var valorProduto = produtoEstoque.stream().mapToDouble(ProdutoEstoque::getValorVenda).sum();
 
         List<Servico> servico = servicoRepository.findByNomeIn(createOrdemDeServicoDTO
                 .servicos()
@@ -93,7 +92,11 @@ OrdemDeServicoService {
                 .map(ServicoOrdemDTO::nome)
                 .collect(Collectors.toList()));
         ordemDeServico.setServicos(servico);
+        var valorServico = servico.stream().mapToDouble(Servico::getValorServico).sum();
 
+
+        var valorTotal = valorProduto + valorServico;
+        ordemDeServico.setValorTotal(valorTotal);
         ordemDeServico.setObservacoes(createOrdemDeServicoDTO.observacoes());
 
 

@@ -3,9 +3,7 @@ package org.motion.motion_api.domain.entities.pitstop;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-
 import org.motion.motion_api.domain.entities.Oficina;
-
 import java.time.LocalDate;
 import java.util.*;
 
@@ -31,18 +29,18 @@ public class OrdemDeServico {
 
 
     @ManyToOne @JoinColumn(name = "fkOficina")
-
+    @JsonIgnore
     private Oficina oficina;
+
     @ManyToOne @JoinColumn(name = "fkVeiculo")
-
     private Veiculo veiculo;
-    @ManyToOne @JoinColumn(name = "fkMecanico")
 
+    @ManyToOne @JoinColumn(name = "fkMecanico")
     private Mecanico mecanico;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @OneToMany()
     private List<ProdutoEstoque> produtos = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @OneToMany()
     private List<Servico> servicos = new ArrayList<>();
 }

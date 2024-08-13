@@ -1,6 +1,7 @@
 package org.motion.motion_api.domain.entities.pitstop;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -21,8 +22,8 @@ public class Mecanico {
     private String nome;
     private String telefone;
 
-    @OneToOne
-    @JoinColumn(name = "fkOficina") @NotNull
+    @ManyToOne @JoinColumn(name = "fkOficina") @NotNull
+    @JsonIgnore
     private Oficina oficina;
 
 
