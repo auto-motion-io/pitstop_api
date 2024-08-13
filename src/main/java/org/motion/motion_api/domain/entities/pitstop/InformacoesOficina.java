@@ -24,6 +24,7 @@ public class InformacoesOficina {
     private String diasSemanaAberto;
     private String tipoVeiculosTrabalha;
     private String tipoPropulsaoTrabalha;
+    @Column(columnDefinition = "TEXT")
     private String marcasVeiculosTrabalha;
 
     public InformacoesOficina(String whatsapp, String horarioIniSem, String horarioFimSem, String horarioIniFds, String horarioFimFds, String diasSemanaAberto, String tipoVeiculosTrabalha, String tipoPropulsaoTrabalha, String marcasVeiculosTrabalha) {
