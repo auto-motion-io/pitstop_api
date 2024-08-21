@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.motion.motion_api.application.services.GerenteService;
 import org.motion.motion_api.domain.dtos.pitstop.gerente.*;
 import org.motion.motion_api.domain.entities.pitstop.Gerente;
+import org.motion.motion_api.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,8 @@ public class GerenteController {
     @Autowired
     private GerenteService gerenteService;
 
-
+    @Autowired
+    private TokenService tokenService;
 
     @Operation(summary = "Retorna todos os gerentes cadastrados." ,security = {@SecurityRequirement(name = "bearer-key")})
     @GetMapping()
@@ -94,5 +96,19 @@ public class GerenteController {
     public ResponseEntity<Void> deletar(@PathVariable int id){
         gerenteService.deletar(id);
         return ResponseEntity.status(204).build();
+    }
+
+    @Operation(summary="Valida o token do google e retorna um gerente")
+    @PostMapping("/google-login") @PermitAll
+    public ResponseEntity<String> validateGoogleToken(@RequestHeader("Authorization") String token){
+        try {
+            if (token.startsWith("Bearer")) {
+                token = token.substring(70);
+            }
+            String userId = tokenService.validateGoogleToken(token);
+            return ResponseEntity.ok(userId);
+        }catch (Exception e){
+            return ResponseEntity.status(401).body("Token inválido: " + e.getMessage());
+        }
     }
 }
