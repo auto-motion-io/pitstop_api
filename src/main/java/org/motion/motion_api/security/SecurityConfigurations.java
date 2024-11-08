@@ -41,6 +41,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.PUT,"/infos-oficina/atualiza-zap/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/gerentes/set-token").permitAll()
                         .requestMatchers(HttpMethod.POST,"/gerentes/confirmar-token").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/ordemDeServicos/cliente/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

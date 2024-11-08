@@ -53,6 +53,12 @@ OrdemDeServicoService {
                 orElseThrow(() -> new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + idOficina));
         return ordemDeServicoRepository.findAllByOficina(oficina);
     }
+
+
+    public List<OrdemDeServico> listarOrdensDeServicoPorCliente(String email) {
+        return ordemDeServicoRepository.findAllByVeiculo_Cliente_Email(email);
+    }
+
     public OrdemDeServico cadastrar(CreateOrdemDeServicoDTO createOrdemDeServicoDTO) {
         OrdemDeServico ordemDeServico = new OrdemDeServico();
         ordemDeServico.setStatus(createOrdemDeServicoDTO.status());
