@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.motion.motion_api.application.services.GerenteService;
 import org.motion.motion_api.domain.dtos.pitstop.gerente.*;
 import org.motion.motion_api.domain.entities.pitstop.Gerente;
+import org.motion.motion_api.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,8 @@ public class GerenteController {
     @Autowired
     private GerenteService gerenteService;
 
-
+    @Autowired
+    private TokenService tokenService;
 
     @Operation(summary = "Retorna todos os gerentes cadastrados." ,security = {@SecurityRequirement(name = "bearer-key")})
     @GetMapping()

@@ -1,6 +1,7 @@
 package org.motion.motion_api.domain.entities.pitstop;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -23,6 +24,7 @@ public class Veiculo {
     private String cor;
 
     @ManyToOne @JoinColumn(name = "fkCliente") @NotNull
+    @JsonIgnore
     private Cliente cliente;
 
     public Veiculo(CreateVeiculoDTO novoVeiculoDTO, Cliente cliente) {

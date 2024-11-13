@@ -25,6 +25,5 @@ public record CreateOrdemDeServicoDTO(
         List<ProdutoOrdemDTO> produtos,
         List<ServicoOrdemDTO> servicos,
         String observacoes,
-        Double valorTotal,
-        Integer quantidade) {
+        Double valorTotal) {
 }
