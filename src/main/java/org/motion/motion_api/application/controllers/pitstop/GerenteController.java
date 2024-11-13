@@ -97,18 +97,4 @@ public class GerenteController {
         gerenteService.deletar(id);
         return ResponseEntity.status(204).build();
     }
-
-    @Operation(summary="Valida o token do google e retorna um gerente")
-    @PostMapping("/google-login") @PermitAll
-    public ResponseEntity<String> validateGoogleToken(@RequestHeader("Authorization") String token){
-        try {
-            if (token.startsWith("Bearer")) {
-                token = token.substring(70);
-            }
-            String userId = tokenService.validateGoogleToken(token);
-            return ResponseEntity.ok(userId);
-        }catch (Exception e){
-            return ResponseEntity.status(401).body("Token inválido: " + e.getMessage());
-        }
-    }
 }

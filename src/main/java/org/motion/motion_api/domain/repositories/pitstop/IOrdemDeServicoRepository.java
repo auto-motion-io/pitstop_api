@@ -14,6 +14,5 @@ public interface IOrdemDeServicoRepository extends JpaRepository<OrdemDeServico,
     List<OrdemDeServico> findAllByOficina(Oficina oficina);
     Integer countByDataInicioAndStatusEqualsIgnoreCaseAndOficina(LocalDate dataInicio, String status, Oficina oficina);
     Integer countByDataInicioBetweenAndOficina(LocalDate dataInicio, LocalDate dataFim, Oficina oficina);
-
     List<OrdemDeServico> findAllByVeiculo_Cliente_Email(String email);
 }

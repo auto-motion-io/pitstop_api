@@ -22,9 +22,6 @@ public class TokenService {
     @Value("${JWT_SECRET:my-secret}")
     private String secret;
 
-    @Value("${GOOGLE_CLIENT_ID:460171893061-335g5gggl1fk0dtg34lembspkjvr6aph.apps.googleusercontent.com}")
-    private String googleClientId;
-
     public String generateToken(Gerente gerente) {
         var algoritmo = Algorithm.HMAC256(secret);
         return JWT.create()
@@ -42,39 +39,4 @@ public class TokenService {
                 .verify(token)
                 .getSubject();
     }
-
-    public String validateGoogleToken(String token) {
-        try {
-            RSAPublicKey publicKey = getGooglePublicKey(token);
-            Algorithm algorithm = Algorithm.RSA256(publicKey, null);
-
-            JWTVerifier verifier = JWT.require(algorithm)
-                    .withAudience(googleClientId)
-                    .build();
-
-            DecodedJWT jwt = verifier.verify(token);
-
-            return jwt.getSubject();
-        } catch (Exception e) {
-            throw new RuntimeException("Token inválido", e);
-        }
-    }
-
-
-    private RSAPublicKey getGooglePublicKey(String token) throws Exception {
-        JwkProvider provider = new JwkProviderBuilder(new URL("https://www.googleapis.com/oauth2/v3/certs"))
-                .build();
-
-        DecodedJWT jwt = JWT.decode(token);
-        String keyId = jwt.getKeyId();
-
-        Jwk jwk = provider.get(keyId);
-
-        if (jwk.getAlgorithm().equals("RS256") && jwk.getPublicKey() instanceof RSAPublicKey) {
-            return (RSAPublicKey) jwk.getPublicKey();
-        } else {
-            throw new IllegalArgumentException("A chave obtida não é uma chave RSA válida");
-        }
-    }
-
 }
