@@ -67,12 +67,6 @@ public class OrdemDeServicoController {
     }
 
 
-    @Operation(summary = "Atualizar ordem de serviço por id")
-    @PutMapping("/{id}")
-    public ResponseEntity<OrdemDeServico> atualizar(@PathVariable Integer id, @RequestBody @Valid UpdateOrdemDeServicoDTO alterarOrdemDeServicoDTO){
-        return ResponseEntity.status(200).body(ordemDeServicoService.atualizar(id, alterarOrdemDeServicoDTO));
-    }
-
     @Operation(summary = "Download ordem de serviço em csv")
     @GetMapping("/download-csv/{id}")
     public ResponseEntity<FileSystemResource> downloadCsvPorId(@PathVariable int id) throws IOException {

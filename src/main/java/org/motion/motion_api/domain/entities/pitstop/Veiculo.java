@@ -24,7 +24,6 @@ public class Veiculo {
     private String cor;
 
     @ManyToOne @JoinColumn(name = "fkCliente") @NotNull
-    @JsonIgnore
     private Cliente cliente;
 
     public Veiculo(CreateVeiculoDTO novoVeiculoDTO, Cliente cliente) {

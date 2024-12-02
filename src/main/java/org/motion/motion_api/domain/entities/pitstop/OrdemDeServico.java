@@ -38,9 +38,12 @@ public class OrdemDeServico {
     @ManyToOne @JoinColumn(name = "fkMecanico")
     private Mecanico mecanico;
 
-    @OneToMany()
+    @OneToMany(fetch = FetchType.EAGER, targetEntity = ProdutoEstoque.class, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "fkProdutoEstoque")
     private List<ProdutoEstoque> produtos = new ArrayList<>();
 
-    @OneToMany()
+    @OneToMany(fetch = FetchType.EAGER, targetEntity = Servico.class, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "fkServico")
     private List<Servico> servicos = new ArrayList<>();
+
 }

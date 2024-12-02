@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IProdutoEstoqueRepository extends JpaRepository<ProdutoEstoque,Integer> {
-    List<ProdutoEstoque> findByNome(String nome);
+    ProdutoEstoque findByNome (String nome);
     List<ProdutoEstoque> findByNomeIn(List<String> nomes);
     List<ProdutoEstoque> findByOficina(Oficina oficina);
     List<ProdutoEstoque> findByValorVendaBetweenAndNomeContainingIgnoreCase(double precoMinimo, double precoMaximo, String nome);

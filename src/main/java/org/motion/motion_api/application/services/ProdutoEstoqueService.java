@@ -66,7 +66,7 @@ public class ProdutoEstoqueService {
     }
     
     public ProdutoEstoque buscarPorNome(String nome){
-        return produtoEstoqueRepository.findByNome(nome).stream().findFirst().orElseThrow(()-> new RecursoNaoEncontradoException("Produto de estoque não encontrado com o nome: " + nome));
+        return produtoEstoqueRepository.findByNome(nome);
     }
 
     public List<ProdutoEstoque> buscarPorOficina(Integer idOficina){
