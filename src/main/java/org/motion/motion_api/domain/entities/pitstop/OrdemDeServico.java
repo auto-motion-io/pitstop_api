@@ -29,7 +29,6 @@ public class OrdemDeServico {
 
 
     @ManyToOne @JoinColumn(name = "fkOficina")
-    @JsonIgnore
     private Oficina oficina;
 
     @ManyToOne @JoinColumn(name = "fkVeiculo")
