@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface IServicoRepository extends JpaRepository<Servico,Integer> {
-    List<Servico> findByNomeIn(List<String> nomes);
+    Servico findByNome (String nome);
     List<Servico> findByOficina(Oficina oficina);
 }

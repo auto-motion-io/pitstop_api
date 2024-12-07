@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.motion.motion_api.domain.entities.Oficina;
+
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "Pitstop_OrdemDeServico")
 @Entity(name = "OrdemDeServico")
@@ -15,8 +17,11 @@ import java.util.*;
 @NoArgsConstructor
 @ToString
 public class OrdemDeServico {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private LocalDate dataInicio;
     private LocalDate dataFim;
     private String status;
@@ -28,22 +33,41 @@ public class OrdemDeServico {
     private String observacoes;
 
 
-    @ManyToOne @JoinColumn(name = "fkOficina")
+    @ManyToOne
+    @JoinColumn(name = "fkOficina")
     @JsonIgnore
     private Oficina oficina;
 
-    @ManyToOne @JoinColumn(name = "fkVeiculo")
+
+    @ManyToOne
+    @JoinColumn(name = "fkVeiculo")
     private Veiculo veiculo;
 
-    @ManyToOne @JoinColumn(name = "fkMecanico")
+    @ManyToOne
+    @JoinColumn(name = "fkCliente")
+    private Cliente cliente;
+
+
+    @ManyToOne
+    @JoinColumn(name = "fkMecanico")
     private Mecanico mecanico;
 
-    @OneToMany(fetch = FetchType.EAGER, targetEntity = ProdutoEstoque.class, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "fkProdutoEstoque")
-    private List<ProdutoEstoque> produtos = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER, targetEntity = Servico.class, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "fkServico")
-    private List<Servico> servicos = new ArrayList<>();
+    @OneToMany(
+            mappedBy = "ordemDeServico",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private List<ProdutoOrdemServico> produtos = new ArrayList<>();
+
+
+    @OneToMany(
+            mappedBy = "ordemDeServico",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private List<ServicoOrdemServico> servicos = new ArrayList<>();
 
 }

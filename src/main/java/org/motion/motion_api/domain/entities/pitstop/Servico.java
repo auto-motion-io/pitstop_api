@@ -26,6 +26,10 @@ public class Servico {
     @JsonIgnore
     private Oficina oficina;
 
+    @ManyToOne
+    @JoinColumn(name = "ordem_de_servico_id")
+    private OrdemDeServico ordemDeServico;
+
     public Servico(CreateServicoDTO createServicoDTO, Oficina oficina) {
         this.nome = createServicoDTO.nome();
         this.descricao = createServicoDTO.descricao();

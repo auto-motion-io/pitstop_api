@@ -16,12 +16,15 @@ public record CreateOrdemDeServicoDTO(
         @NotBlank
         String garantia,
         @NotNull
+        @NotNull
         Integer fkVeiculo,
         Integer fkMecanico,
         @NotNull
         LocalDate dataInicio,
         LocalDate dataFim,
         String tipoOs,
+        @NotNull
+        Integer fkCliente,
         List<ProdutoOrdemDTO> produtos,
         List<ServicoOrdemDTO> servicos,
         String observacoes,

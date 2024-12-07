@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.motion.motion_api.domain.dtos.pitstop.servico.CreateServicoDTO;
 import org.motion.motion_api.application.services.ServicoService;
+import org.motion.motion_api.domain.dtos.pitstop.servico.ServicoResponseDTO;
 import org.motion.motion_api.domain.dtos.pitstop.servico.UpdateServicoDTO;
 import org.motion.motion_api.domain.entities.pitstop.ProdutoEstoque;
 import org.motion.motion_api.domain.entities.pitstop.Servico;
@@ -24,15 +25,14 @@ public class ServicoController {
 
     @Operation(summary = "Retorna todos os serviços cadastrados.")
     @GetMapping()
-    public ResponseEntity<List<Servico>> listarTodos() {
-        List<Servico> servicos = servicoService.listarServicos();
-        return ResponseEntity.status(200).body(servicos);
+    public ResponseEntity<List<ServicoResponseDTO>> listarTodos() {
+        return ResponseEntity.status(200).body(servicoService.listarServicos());
     }
 
     @Operation(summary = "Busca um serviço por id")
     @GetMapping("/{id}")
-    public ResponseEntity<Servico> buscarPorId(@PathVariable int id) {
-        Servico servico = servicoService.buscarPorId(id);
+    public ResponseEntity<ServicoResponseDTO> buscarPorId(@PathVariable int id) {
+        ServicoResponseDTO servico = servicoService.buscarPorId(id);
         return ResponseEntity.ok(servico);
     }
 
@@ -60,9 +60,8 @@ public class ServicoController {
 
     @Operation(summary = "Busca os serviços da oficina, recebe o id da oficina.")
     @GetMapping("/oficina/{idOficina}")
-    public ResponseEntity<List<Servico>> buscarPorOficina(@PathVariable int idOficina){
-        List<Servico> servicos = servicoService.buscarPorOficina(idOficina);
-        if(servicos.isEmpty()) return ResponseEntity.status(204).build();
+    public ResponseEntity<List<ServicoResponseDTO>> buscarPorOficina(@PathVariable int idOficina){
+        List<ServicoResponseDTO> servicos = servicoService.buscarPorOficina(idOficina);
         return ResponseEntity.ok(servicos);
     }
 }

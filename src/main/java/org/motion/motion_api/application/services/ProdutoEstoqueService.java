@@ -3,6 +3,7 @@ package org.motion.motion_api.application.services;
 import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.CreateProdutoEstoqueDTO;
+import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.ProdutoEstoqueResponseDTO;
 import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.UpdateProdutoEstoqueDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.ProdutoEstoque;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProdutoEstoqueService {
@@ -26,8 +28,17 @@ public class ProdutoEstoqueService {
     @Autowired
     ServiceHelper serviceHelper;
     
-    public List<ProdutoEstoque> listarProdutosEstoque(){
-        return produtoEstoqueRepository.findAll();
+    public List<ProdutoEstoqueResponseDTO> listarProdutosEstoque(){
+        List<ProdutoEstoque> produtos = produtoEstoqueRepository.findAll();
+        return produtos.stream().map(produto -> new ProdutoEstoqueResponseDTO(
+                produto.getId(),
+                produto.getNome(),
+                produto.getModeloVeiculo(),
+                produto.getQuantidade(),
+                produto.getValorVenda(),
+                produto.getLocalizacao(),
+                produto.getGarantia()
+        )).collect(Collectors.toList());
     }
     
     public ProdutoEstoque cadastrar(CreateProdutoEstoqueDTO createProdutoEstoqueDTO){
@@ -38,8 +49,17 @@ public class ProdutoEstoqueService {
         return produtoEstoque;
     }
     
-    public ProdutoEstoque buscarPorId(Integer id){
-        return produtoEstoqueRepository.findById(id).orElseThrow(()-> new RecursoNaoEncontradoException("Produto de estoque não encontrado com o id: " + id));
+    public ProdutoEstoqueResponseDTO buscarPorId(Integer id){
+        ProdutoEstoque produtoEstoque = produtoEstoqueRepository.findById(id).orElseThrow(()-> new RecursoNaoEncontradoException("Produto de estoque não encontrado com o id: " + id));
+        return new ProdutoEstoqueResponseDTO(
+                produtoEstoque.getId(),
+                produtoEstoque.getNome(),
+                produtoEstoque.getModeloVeiculo(),
+                produtoEstoque.getQuantidade(),
+                produtoEstoque.getValorVenda(),
+                produtoEstoque.getLocalizacao(),
+                produtoEstoque.getGarantia()
+        );
     }
 
     public List<ProdutoEstoque> listarPorPreco(double precoMinimo, double precoMaximo, String nome){
@@ -47,12 +67,12 @@ public class ProdutoEstoqueService {
     }
     
     public void deletar(Integer id){
-        ProdutoEstoque produtoEstoque = buscarPorId(id);
+        ProdutoEstoque produtoEstoque = produtoEstoqueRepository.findById(id).orElseThrow(()-> new RecursoNaoEncontradoException("Produto de estoque não encontrado com o id: " + id));
         produtoEstoqueRepository.delete(produtoEstoque);
     }
     
     public ProdutoEstoque atualizar(Integer id, UpdateProdutoEstoqueDTO produtoEstoque){
-        ProdutoEstoque produtoEstoqueAtualizado = buscarPorId(id);
+        ProdutoEstoque produtoEstoqueAtualizado = produtoEstoqueRepository.findById(id).orElseThrow(()-> new RecursoNaoEncontradoException("Produto de estoque não encontrado com o id: " + id));
         produtoEstoqueAtualizado.setNome(produtoEstoque.nome());
         produtoEstoqueAtualizado.setModeloVeiculo(produtoEstoque.modeloVeiculo());
         produtoEstoqueAtualizado.setQuantidade(produtoEstoque.quantidade());
@@ -65,12 +85,31 @@ public class ProdutoEstoqueService {
         return produtoEstoqueAtualizado;
     }
     
-    public ProdutoEstoque buscarPorNome(String nome){
-        return produtoEstoqueRepository.findByNome(nome);
+    public ProdutoEstoqueResponseDTO buscarPorNome(String nome){
+        ProdutoEstoque produtoEstoque = produtoEstoqueRepository.findByNome(nome);
+        return new ProdutoEstoqueResponseDTO(
+                produtoEstoque.getId(),
+                produtoEstoque.getNome(),
+                produtoEstoque.getModeloVeiculo(),
+                produtoEstoque.getQuantidade(),
+                produtoEstoque.getValorVenda(),
+                produtoEstoque.getLocalizacao(),
+                produtoEstoque.getGarantia()
+        );
     }
 
-    public List<ProdutoEstoque> buscarPorOficina(Integer idOficina){
-        return produtoEstoqueRepository.findByOficina(oficinaRepository.findById(idOficina).orElseThrow(()-> new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + idOficina))).stream().toList();
+    public List<ProdutoEstoqueResponseDTO> buscarPorOficina(Integer idOficina){
+        Oficina oficina = serviceHelper.pegarOficinaValida(idOficina);
+        List<ProdutoEstoque> produtos = produtoEstoqueRepository.findByOficina(oficina);
+        return produtos.stream().map(produto -> new ProdutoEstoqueResponseDTO(
+                produto.getId(),
+                produto.getNome(),
+                produto.getModeloVeiculo(),
+                produto.getQuantidade(),
+                produto.getValorVenda(),
+                produto.getLocalizacao(),
+                produto.getGarantia()
+        )).collect(Collectors.toList());
     }
 
     public List<ProdutoEstoque> buscarEstoqueBaixo(Integer idOficina){

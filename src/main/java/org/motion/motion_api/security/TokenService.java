@@ -27,7 +27,7 @@ public class TokenService {
         return JWT.create()
                 .withIssuer("motion-api")
                 .withSubject(gerente.getEmail())
-                .withExpiresAt(LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00")))
+                .withExpiresAt(LocalDateTime.now().plusHours(24).toInstant(ZoneOffset.of("-03:00")))
                 .sign(algoritmo);
     }
 

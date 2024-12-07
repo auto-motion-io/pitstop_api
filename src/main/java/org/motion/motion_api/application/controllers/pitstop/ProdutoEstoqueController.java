@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.CreateProdutoEstoqueDTO;
 import org.motion.motion_api.application.services.ProdutoEstoqueService;
+import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.ProdutoEstoqueResponseDTO;
 import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.UpdateProdutoEstoqueDTO;
 import org.motion.motion_api.domain.entities.pitstop.ProdutoEstoque;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class ProdutoEstoqueController {
 
     @Operation(summary = "Retorna todos os produtos de estoque cadastrados.")
     @GetMapping()
-    public ResponseEntity<List<ProdutoEstoque>> listarTodos() {
+    public ResponseEntity<List<ProdutoEstoqueResponseDTO>> listarTodos() {
         return ResponseEntity.status(200).body(produtoEstoqueService.listarProdutosEstoque());
     }
 
@@ -47,8 +48,8 @@ public class ProdutoEstoqueController {
 
     @Operation(summary = "Busca um produto de estoque por id")
     @GetMapping("/{id}")
-    public ResponseEntity<ProdutoEstoque> buscarPorId(@PathVariable int id) {
-        ProdutoEstoque produtoEstoque = produtoEstoqueService.buscarPorId(id);
+    public ResponseEntity<ProdutoEstoqueResponseDTO> buscarPorId(@PathVariable int id) {
+        ProdutoEstoqueResponseDTO produtoEstoque = produtoEstoqueService.buscarPorId(id);
         return ResponseEntity.ok(produtoEstoque);
     }
 
@@ -68,15 +69,15 @@ public class ProdutoEstoqueController {
 
     @Operation(summary = "Busca um produto de estoque por nome")
     @GetMapping("/nome/{nome}")
-    public ResponseEntity<ProdutoEstoque> buscarPorNome(@PathVariable String nome){
-        ProdutoEstoque produtoEstoque = produtoEstoqueService.buscarPorNome(nome);
+    public ResponseEntity<ProdutoEstoqueResponseDTO> buscarPorNome(@PathVariable String nome){
+        ProdutoEstoqueResponseDTO produtoEstoque = produtoEstoqueService.buscarPorNome(nome);
         return ResponseEntity.ok(produtoEstoque);
     }
 
     @Operation(summary = "Busca todos os produtos do estoque de uma oficina")
     @GetMapping("/oficina/{idOficina}")
-    public ResponseEntity<List<ProdutoEstoque>> buscarPorOficina(@PathVariable int idOficina){
-        List<ProdutoEstoque> produtoEstoque = produtoEstoqueService.buscarPorOficina(idOficina);
+    public ResponseEntity<List<ProdutoEstoqueResponseDTO>> buscarPorOficina(@PathVariable int idOficina){
+        List<ProdutoEstoqueResponseDTO> produtoEstoque = produtoEstoqueService.buscarPorOficina(idOficina);
         if(produtoEstoque.isEmpty()) return ResponseEntity.status(204).build();
         return ResponseEntity.ok(produtoEstoque);
     }

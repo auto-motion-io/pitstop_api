@@ -1,8 +1,7 @@
 package org.motion.motion_api.domain.dtos.pitstop.produtoEstoque;
 
-public record ProdutoOrdemDTO(
+public record ProdutoOrdemServicoResponseDTO(
         String nome,
-        Double valor,
-        Integer quantidade
+        Integer quantidadeFornecida
 ) {
 }

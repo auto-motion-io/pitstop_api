@@ -31,6 +31,10 @@ public class ProdutoEstoque {
     @JsonIgnore
     private Oficina oficina;
 
+    @ManyToOne
+    @JoinColumn(name = "ordem_de_servico_id")
+    private OrdemDeServico ordemDeServico;
+
     public ProdutoEstoque(CreateProdutoEstoqueDTO createProdutoEstoqueDTO, Oficina oficina) {
         this.nome = createProdutoEstoqueDTO.nome();
         this.modeloVeiculo = createProdutoEstoqueDTO.modeloVeiculo();

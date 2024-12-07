@@ -1,39 +1,30 @@
 package org.motion.motion_api.application.services;
 
 import jakarta.transaction.Transactional;
-import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.CreateOrdemDeServicoDTO;
-import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.OrdensPendentesUltimaSemanaDTO;
-import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.OrdensUltimoAnoDTO;
-import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.UpdateOrdemDeServicoDTO;
+import org.motion.motion_api.domain.dtos.pitstop.ordemDeServico.*;
 import org.motion.motion_api.application.exceptions.RecursoNaoEncontradoException;
 import org.motion.motion_api.application.services.util.ServiceHelper;
 import org.motion.motion_api.domain.dtos.pitstop.produtoEstoque.ProdutoOrdemDTO;
 import org.motion.motion_api.domain.dtos.pitstop.servico.ServicoOrdemDTO;
 import org.motion.motion_api.domain.entities.Oficina;
 import org.motion.motion_api.domain.entities.pitstop.*;
-import org.motion.motion_api.domain.repositories.IOficinaRepository;
 import org.motion.motion_api.domain.repositories.pitstop.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class
-OrdemDeServicoService {
+@Transactional
+public class OrdemDeServicoService {
 
     @Autowired
     IOrdemDeServicoRepository ordemDeServicoRepository;
     @Autowired
-    IOficinaRepository oficinaRepository;
+    IClienteRepository clienteRepository;
     @Autowired
     IVeiculoRepository veiculoRepository;
     @Autowired
@@ -45,82 +36,127 @@ OrdemDeServicoService {
     @Autowired
     ServiceHelper serviceHelper;
 
-    public List<OrdemDeServico> listarOrdensDeServico() {
-        return ordemDeServicoRepository.findAll();
+
+    public List<OrdemCriadaDTO> listarOrdensDeServico() {
+        List<OrdemDeServico> ordens = ordemDeServicoRepository.findAll();
+
+        return ordens.stream()
+                .map(this::converterParaOrdemCriadaDTO)
+                .toList();
     }
 
-    public List<OrdemDeServico> listarOrdensDeServicoPorOficina(Integer idOficina) {
-        Oficina oficina = oficinaRepository.findById(idOficina).
-                orElseThrow(() -> new RecursoNaoEncontradoException("Oficina não encontrada com o id: " + idOficina));
-        return ordemDeServicoRepository.findAllByOficina(oficina);
+
+
+    public List<OrdemCriadaDTO> listarOrdensDeServicoPorOficina(Integer idOficina) {
+        Oficina oficina = serviceHelper.pegarOficinaValida(idOficina);
+
+        List<OrdemDeServico> ordens = ordemDeServicoRepository.findAllByOficina(oficina);
+
+        return ordens.stream()
+                .map(this::converterParaOrdemCriadaDTO)
+                .toList();
     }
 
 
-    public List<OrdemDeServico> listarOrdensDeServicoPorCliente(String email) {
-        return ordemDeServicoRepository.findAllByVeiculo_Cliente_Email(email);
+
+    public List<OrdemCriadaDTO> listarOrdensDeServicoPorCliente(String email) {
+        List<OrdemDeServico> ordens = ordemDeServicoRepository.findAllByVeiculo_Cliente_Email(email);
+
+        return ordens.stream()
+                .map(this::converterParaOrdemCriadaDTO)
+                .toList();
     }
 
-    @Transactional
-    public OrdemDeServico cadastrar(CreateOrdemDeServicoDTO createOrdemDeServicoDTO) {
+
+    public OrdemCriadaDTO cadastrar(CreateOrdemDeServicoDTO createOrdemDeServicoDTO) {
         OrdemDeServico ordemDeServico = new OrdemDeServico();
         ordemDeServico.setStatus(createOrdemDeServicoDTO.status());
         ordemDeServico.setGarantia(createOrdemDeServicoDTO.garantia());
         ordemDeServico.setToken(UUID.randomUUID().toString().substring(29, 36).toUpperCase());
+        ordemDeServico.setDataInicio(createOrdemDeServicoDTO.dataInicio());
+        ordemDeServico.setDataFim(createOrdemDeServicoDTO.dataFim());
+        ordemDeServico.setTipoOs(createOrdemDeServicoDTO.tipoOs());
+        ordemDeServico.setObservacoes(createOrdemDeServicoDTO.observacoes());
+        ordemDeServico.setValorTotal(createOrdemDeServicoDTO.valorTotal());
+
+        ordemDeServico.setCliente(clienteRepository.findById(createOrdemDeServicoDTO.fkCliente())
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Cliente não encontrado com o id: " + createOrdemDeServicoDTO.fkCliente())));
         Oficina oficina = serviceHelper.pegarOficinaValida(createOrdemDeServicoDTO.fkOficina());
-
         ordemDeServico.setOficina(oficina);
-
-        System.out.println(createOrdemDeServicoDTO.fkOficina());
-
-        Veiculo veiculo = veiculoRepository.findById(createOrdemDeServicoDTO.fkVeiculo()).orElseThrow(() -> new RecursoNaoEncontradoException("Veículo não encontrado com o id: " + createOrdemDeServicoDTO.fkVeiculo()));
+        Veiculo veiculo = veiculoRepository.findById(createOrdemDeServicoDTO.fkVeiculo())
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Veículo não encontrado com o id: " + createOrdemDeServicoDTO.fkVeiculo()));
         ordemDeServico.setVeiculo(veiculo);
 
-        if(createOrdemDeServicoDTO.fkMecanico() != null){
+        if (createOrdemDeServicoDTO.fkMecanico() != null) {
             Mecanico mecanico = mecanicoRepository.findById(createOrdemDeServicoDTO.fkMecanico()).orElse(null);
             ordemDeServico.setMecanico(mecanico);
         }
 
+        ordemDeServico = ordemDeServicoRepository.save(ordemDeServico);
 
-        ordemDeServico.setDataInicio(createOrdemDeServicoDTO.dataInicio());
-        ordemDeServico.setDataFim(createOrdemDeServicoDTO.dataFim());
-        ordemDeServico.setTipoOs(createOrdemDeServicoDTO.tipoOs());
+        for (ProdutoOrdemDTO produtoOrdemDTO : createOrdemDeServicoDTO.produtos()) {
+            ProdutoEstoque produto = produtoEstoqueRepository.findByNome(produtoOrdemDTO.nome());
+            if (produto == null) {
+                throw new RecursoNaoEncontradoException("Produto não encontrado: " + produtoOrdemDTO.nome());
+            }
+            if (produto.getQuantidade() < produtoOrdemDTO.quantidade()) {
+                throw new RuntimeException("Quantidade de produto em estoque insuficiente para a ordem de serviço");
+            }
 
+            ProdutoOrdemServico produtoOrdemServico = new ProdutoOrdemServico();
+            produtoOrdemServico.setProdutoEstoque(produto);
+            produtoOrdemServico.setOrdemDeServico(ordemDeServico);
+            produtoOrdemServico.setQuantidade(produtoOrdemDTO.quantidade());
+            produtoOrdemServico.setValor(produto.getValorVenda());
+            ordemDeServico.getProdutos().add(produtoOrdemServico);
 
-       List<ProdutoEstoque> produtosEstoque = new ArrayList<>();
-       for(ProdutoOrdemDTO produtoOrdemDTO : createOrdemDeServicoDTO.produtos()) {
-           ProdutoEstoque produto = produtoEstoqueRepository.findByNome(produtoOrdemDTO.nome());
-           produtosEstoque.add(produto);
+            produto.setQuantidade(produto.getQuantidade() - produtoOrdemDTO.quantidade());
+            produtoEstoqueRepository.save(produto);
+        }
 
-           if (produto.getQuantidade() < produtoOrdemDTO.quantidade()) {
-               throw new RuntimeException("Quantidade de produto em estoque insuficiente para a ordem de serviço");
-           }
+        for (ServicoOrdemDTO servicoOrdemDTO : createOrdemDeServicoDTO.servicos()) {
+            Servico servico = servicoRepository.findByNome(servicoOrdemDTO.nome());
+            if (servico == null) {
+                throw new RecursoNaoEncontradoException("Serviço não encontrado: " + servicoOrdemDTO.nome());
+            }
+            ServicoOrdemServico servicoOrdemServico = new ServicoOrdemServico();
+            servicoOrdemServico.setServico(servico);
+            servicoOrdemServico.setOrdemDeServico(ordemDeServico);
+            servicoOrdemServico.setNome(servico.getNome());
+            servicoOrdemServico.setGarantia(servico.getGarantia());
+            servicoOrdemServico.setValor(servico.getValorServico());
+            ordemDeServico.getServicos().add(servicoOrdemServico);
+            servicoRepository.save(servico);
+        }
 
-           produto.setQuantidade(produto.getQuantidade() - produtoOrdemDTO.quantidade());
-           produtoEstoqueRepository.save(produto);
-           produtosEstoque.add(produto);
-       }
-        ordemDeServico.setProdutos(produtosEstoque);
+        ordemDeServico = ordemDeServicoRepository.save(ordemDeServico);
 
-        List<Servico> servico = servicoRepository.findByNomeIn(createOrdemDeServicoDTO
-                .servicos()
-                .stream()
-                .map(ServicoOrdemDTO::nome)
-                .collect(Collectors.toList()));
-        ordemDeServico.setServicos(servico);
-
-        ordemDeServico.setObservacoes(createOrdemDeServicoDTO.observacoes());
-        ordemDeServico.setValorTotal(createOrdemDeServicoDTO.valorTotal());
-
-        ordemDeServicoRepository.save(ordemDeServico);
-        return ordemDeServico;
+        return converterParaOrdemCriadaDTO(ordemDeServico);
     }
 
-    public OrdemDeServico buscarPorId(Integer id) {
-        return ordemDeServicoRepository.findById(id).orElseThrow(() -> new RuntimeException("Ordem de serviço não encontrada com o id: " + id));
+
+
+    public OrdemCriadaDTO buscarPorId(Integer id) {
+        OrdemDeServico ordem = ordemDeServicoRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Ordem de serviço não encontrada com o id: " + id));
+
+        return converterParaOrdemCriadaDTO(ordem);
     }
+
+    public OrdemCriadaDTO atualizarStatus(Integer id, String status) {
+        OrdemDeServico ordemDeServico = ordemDeServicoRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Ordem de serviço não encontrada com o id: " + id));
+
+        ordemDeServico.setStatus(status);
+        ordemDeServico = ordemDeServicoRepository.save(ordemDeServico);
+
+        return converterParaOrdemCriadaDTO(ordemDeServico);
+    }
+
 
     public void deletar(Integer id) {
-        OrdemDeServico ordemDeServico = buscarPorId(id);
+        OrdemDeServico ordemDeServico = ordemDeServicoRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Ordem de serviço não encontrada com o id: " + id));
 
         ordemDeServico.getProdutos().clear();
         ordemDeServico.getServicos().clear();
@@ -128,86 +164,15 @@ OrdemDeServicoService {
         ordemDeServicoRepository.delete(ordemDeServico);
     }
 
-    public FileSystemResource downloadCsvPorId(int id) throws IOException {
-        OrdemDeServico ordem = ordemDeServicoRepository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Ordem de serviço não encontrada com o id: " + id));
-
-        String[] headers = {"id", "status", "garantia", "token", "fkOficina", "fkVeiculo", "fkMecanico", "dataInicio", "dataFim", "tipoOs", "produtos", "servicos", "observacoes"};
-
-        // Matriz para armazenar os dados do CSV
-        String[][] data = new String[2][headers.length];
-
-        // Adicionar os headers na matriz
-        for (int i = 0; i < headers.length; i++) {
-            data[0][i] = headers[i];
-        }
-
-        // Adicionar os dados da ordem na matriz
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        data[1][0] = ordem.getId() != null ? ordem.getId().toString() : "";
-        data[1][1] = ordem.getStatus() != null ? ordem.getStatus() : "";
-        data[1][2] = ordem.getGarantia() != null ? ordem.getGarantia() : "";
-        data[1][3] = ordem.getToken() != null ? ordem.getToken() : "";
-        data[1][4] = ordem.getOficina() != null && ordem.getOficina().getId() != null ? ordem.getOficina().getId().toString() : "";
-        data[1][5] = ordem.getVeiculo() != null && ordem.getVeiculo().getId() != null ? ordem.getVeiculo().getId().toString() : "";
-        data[1][6] = ordem.getMecanico() != null && ordem.getMecanico().getId() != null ? ordem.getMecanico().getId().toString() : "";
-        data[1][7] = ordem.getDataInicio() != null ? ordem.getDataInicio().format(formatter) : "";
-        data[1][8] = ordem.getDataFim() != null ? ordem.getDataFim().format(formatter) : "";
-        data[1][9] = ordem.getTipoOs() != null ? ordem.getTipoOs() : "";
-        data[1][10] = ordem.getProdutos() != null ? ordem.getProdutos().stream().map(ProdutoEstoque::getNome).collect(Collectors.joining(", ")) : "";
-        data[1][11] = ordem.getServicos() != null ? ordem.getServicos().stream().map(Servico::getNome).collect(Collectors.joining(", ")) : "";
-        data[1][12] = ordem.getObservacoes() != null ? ordem.getObservacoes() : "";
-
-        // Fila para gerenciar as linhas do CSV
-        Queue<String> csvLines = new ArrayDeque<>();
-
-        // Adicionar os headers na fila
-        var sj1 = new StringJoiner(";");
-        for (String header : headers) {
-            sj1.add(header);
-        }
-        csvLines.add(sj1.toString());
-
-        // Adicionar os dados da ordem na fila
-        var sj2 = new StringJoiner(";");
-        for (String value : data[1]) {
-            sj2.add(value);
-        }
-        csvLines.add(sj2.toString());
-
-        // Construir o CSV usando a fila
-        var sb = new StringBuilder();
-        while (!csvLines.isEmpty()) {
-            sb.append(csvLines.poll()).append("\n");
-        }
-
-        // Escrever o CSV no arquivo
-        FileWriter file = new FileWriter("report.csv");
-        file.write(sb.toString());
-        file.close();
-        var fileResource = new FileSystemResource("report.csv");
-
-        MediaType mediaType = MediaTypeFactory
-                .getMediaType(fileResource)
-                .orElse(MediaType.APPLICATION_OCTET_STREAM);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(mediaType);
-
-        ContentDisposition disposition = ContentDisposition
-                .attachment()
-                .filename(fileResource.getFilename())
-                .build();
-        httpHeaders.setContentDisposition(disposition);
-
-        return fileResource;
-    }
-
-    public OrdemDeServico buscarPorToken(String token) {
-        if (ordemDeServicoRepository.findByToken(token) == null)
+    public OrdemCriadaDTO buscarPorToken(String token) {
+        // Busca a ordem de serviço pelo token ou lança uma exceção caso não seja encontrada
+        OrdemDeServico ordem = ordemDeServicoRepository.findByToken(token);
+        if (ordem == null) {
             throw new RecursoNaoEncontradoException("Ordem de serviço não encontrada com o token: " + token);
-        return ordemDeServicoRepository.findByToken(token);
-    }
+        }
 
+        return converterParaOrdemCriadaDTO(ordem);
+    }
 
     public List<OrdensPendentesUltimaSemanaDTO> quantidadeOrdensPendentes(Integer idOficina) {
         List<OrdensPendentesUltimaSemanaDTO> ordensPendentesUltimaSemana = new ArrayList<>();
@@ -220,6 +185,8 @@ OrdemDeServicoService {
         }
         return ordensPendentesUltimaSemana;
     }
+
+
 
     public List<OrdensUltimoAnoDTO> quantidadeOrdensMes(Integer idOficina) {
         List<OrdensUltimoAnoDTO> ordensUltimoAno = new ArrayList<>();
@@ -236,17 +203,51 @@ OrdemDeServicoService {
         return ordensUltimoAno;
     }
 
-    public List<ProdutoEstoque> addProdutoEstoqueAtOrdemDeServico(Integer idOrdemDeServico, List<ProdutoOrdemDTO> produtos) {
-        OrdemDeServico ordemDeServico = ordemDeServicoRepository.findById(idOrdemDeServico)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Ordem de serviço não encontrada com o id: " + idOrdemDeServico));
 
-        List<ProdutoEstoque> produtoEstoque = produtoEstoqueRepository.findByNomeIn(produtos
-                .stream()
-                .map(ProdutoOrdemDTO::nome)
-                .collect(Collectors.toList()));
 
-        ordemDeServico.getProdutos().addAll(produtoEstoque);
-        ordemDeServicoRepository.save(ordemDeServico);
-        return produtoEstoque;
+
+    public OrdemCriadaDTO converterParaOrdemCriadaDTO(OrdemDeServico ordem) {
+        List<ProdutoOrdemDTO> produtosDto = ordem.getProdutos().stream()
+                .map(produtoOrdemServico -> new ProdutoOrdemDTO(
+                        produtoOrdemServico.getProdutoEstoque().getNome(),
+                        produtoOrdemServico.getValor(),
+                        produtoOrdemServico.getQuantidade()
+                ))
+                .collect(Collectors.toList());
+
+        List<ServicoOrdemDTO> servicosDto = ordem.getServicos().stream()
+                .map(servico -> new ServicoOrdemDTO(
+                        servico.getNome(),
+                        servico.getGarantia(),
+                        servico.getValor()
+                ))
+                .collect(Collectors.toList());
+
+        return new OrdemCriadaDTO(
+                ordem.getId(),
+                ordem.getOficina(),
+                ordem.getStatus(),
+                ordem.getDataInicio(),
+                ordem.getDataFim(),
+                ordem.getToken(),
+                ordem.getTipoOs(),
+                ordem.getGarantia(),
+                ordem.getCliente().getNome(),
+                ordem.getCliente().getTelefone(),
+                ordem.getCliente().getEmail(),
+                ordem.getVeiculo().getPlaca(),
+                ordem.getVeiculo().getMarca(),
+                ordem.getVeiculo().getModelo(),
+                ordem.getVeiculo().getAnoFabricacao(),
+                ordem.getVeiculo().getCor(),
+                ordem.getMecanico() != null ? ordem.getMecanico().getNome() : null,
+                ordem.getMecanico() != null ? ordem.getMecanico().getTelefone() : null,
+                ordem.getValorTotal(),
+                ordem.getObservacoes(),
+                produtosDto,
+                servicosDto
+        );
     }
+
+
 }
