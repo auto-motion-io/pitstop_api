@@ -95,13 +95,17 @@ public class OrdemDeServicoService {
         ordemDeServico = ordemDeServicoRepository.save(ordemDeServico);
 
         for (ProdutoOrdemDTO produtoOrdemDTO : createOrdemDeServicoDTO.produtos()) {
-            ProdutoEstoque produto = produtoEstoqueRepository.findByNome(produtoOrdemDTO.nome());
-            if (produto == null) {
+            Optional<ProdutoEstoque> opProduto = produtoEstoqueRepository.findByNomeAndOficina(produtoOrdemDTO.nome(), oficina);
+
+            if (opProduto.isEmpty()) {
                 throw new RecursoNaoEncontradoException("Produto não encontrado: " + produtoOrdemDTO.nome());
             }
+            ProdutoEstoque produto = opProduto.get();
+
             if (produto.getQuantidade() < produtoOrdemDTO.quantidade()) {
                 throw new RuntimeException("Quantidade de produto em estoque insuficiente para a ordem de serviço");
             }
+
 
             ProdutoOrdemServico produtoOrdemServico = new ProdutoOrdemServico();
             produtoOrdemServico.setProdutoEstoque(produto);
@@ -115,10 +119,11 @@ public class OrdemDeServicoService {
         }
 
         for (ServicoOrdemDTO servicoOrdemDTO : createOrdemDeServicoDTO.servicos()) {
-            Servico servico = servicoRepository.findByNome(servicoOrdemDTO.nome());
-            if (servico == null) {
+            Optional<Servico> opServico = servicoRepository.findByNomeAndOficina(servicoOrdemDTO.nome(), oficina);
+            if (opServico.isEmpty()) {
                 throw new RecursoNaoEncontradoException("Serviço não encontrado: " + servicoOrdemDTO.nome());
             }
+            Servico servico = opServico.get();
             ServicoOrdemServico servicoOrdemServico = new ServicoOrdemServico();
             servicoOrdemServico.setServico(servico);
             servicoOrdemServico.setOrdemDeServico(ordemDeServico);
